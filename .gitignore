@@ -1,0 +1,29 @@
+*.class
+*.zip
+*.apk
+*.iml
+.DS_Store
+
+# IDE folders #
+gen/
+bin/
+out/
+proguard_logs/
+projectFilesBackup/
+.idea/*
+!.idea/codeStyleSettings.xml
+!.idea/encodings.xml
+!.idea/inspectionProfiles/
+*.iml
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/captures
+.externalNativeBuild
+
+# Gradle files
+.gradle/
+*build/
+
+# Local configuration file (sdk path, etc)
+local.properties
