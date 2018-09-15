@@ -13,7 +13,7 @@ class NoteItemBlueprint(override val presenter: ItemPresenter<NoteItemView, Note
     : ItemBlueprint<NoteItemView, NoteItem> {
 
     override val viewHolderProvider = ViewHolderBuilder.ViewHolderProvider(
-            layoutId = R.layout.group_item,
+            layoutId = R.layout.note_item,
             creator = { _, view -> NoteItemViewHolder(view) }
     )
 

@@ -3,7 +3,8 @@ package com.tomclaw.nimpas.screen.safe.di
 import android.content.Context
 import android.os.Bundle
 import com.avito.konveyor.ItemBinder
-import com.avito.konveyor.blueprint.Item
+import com.avito.konveyor.adapter.AdapterPresenter
+import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
 import com.tomclaw.nimpas.journal.Journal
 import com.tomclaw.nimpas.screen.safe.RecordConverter
@@ -20,7 +21,6 @@ import com.tomclaw.nimpas.screen.safe.adapter.presenter.CardItemPresenter
 import com.tomclaw.nimpas.screen.safe.adapter.presenter.GroupItemPresenter
 import com.tomclaw.nimpas.screen.safe.adapter.presenter.NoteItemPresenter
 import com.tomclaw.nimpas.screen.safe.adapter.presenter.WebItemPresenter
-import com.tomclaw.nimpas.util.DataProvider
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Module
@@ -35,13 +35,19 @@ class SafeModule(
 
     @Provides
     @PerActivity
+    internal fun provideAdapterPresenter(binder: ItemBinder): AdapterPresenter {
+        return SimpleAdapterPresenter(binder, binder)
+    }
+
+    @Provides
+    @PerActivity
     internal fun provideSafePresenter(
             interactor: SafeInteractor,
-            dataProvider: DataProvider<Item>,
+            adapterPresenter: AdapterPresenter,
             recordConverter: RecordConverter,
             schedulers: SchedulersFactory
     ): SafePresenter {
-        return SafePresenterImpl(interactor, dataProvider, recordConverter, schedulers, state)
+        return SafePresenterImpl(interactor, adapterPresenter, recordConverter, schedulers, state)
     }
 
     @Provides
@@ -51,12 +57,6 @@ class SafeModule(
             schedulers: SchedulersFactory
     ): SafeInteractor {
         return SafeInteractorImpl(journal, schedulers)
-    }
-
-    @Provides
-    @PerActivity
-    internal fun provideDataProvider(): DataProvider<Item> {
-        return DataProvider()
     }
 
     @Provides

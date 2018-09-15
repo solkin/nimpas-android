@@ -8,6 +8,7 @@ class WebItemPresenter : ItemPresenter<WebItemView, WebItem> {
 
     override fun bindView(view: WebItemView, item: WebItem, position: Int) {
         view.setTitle(item.title)
+        view.setSubtitle(item.subtitle)
     }
 
 }

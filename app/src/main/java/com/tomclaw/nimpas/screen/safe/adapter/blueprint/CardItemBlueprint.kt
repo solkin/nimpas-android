@@ -13,7 +13,7 @@ class CardItemBlueprint(override val presenter: ItemPresenter<CardItemView, Card
     : ItemBlueprint<CardItemView, CardItem> {
 
     override val viewHolderProvider = ViewHolderBuilder.ViewHolderProvider(
-            layoutId = R.layout.group_item,
+            layoutId = R.layout.card_item,
             creator = { _, view -> CardItemViewHolder(view) }
     )
 

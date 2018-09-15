@@ -1,8 +1,10 @@
 package com.tomclaw.nimpas.screen.safe
 
 import android.os.Bundle
+import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.blueprint.Item
-import com.tomclaw.nimpas.util.DataProvider
+import com.avito.konveyor.data_source.ListDataSource
+import com.tomclaw.nimpas.screen.safe.adapter.item.WebItem
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.disposables.CompositeDisposable
 
@@ -30,7 +32,7 @@ interface SafePresenter {
 
 class SafePresenterImpl(
         private val interactor: SafeInteractor,
-        private val dataProvider: DataProvider<Item>,
+        private val adapterPresenter: AdapterPresenter,
         private val recordConverter: RecordConverter,
         private val schedulers: SchedulersFactory,
         state: Bundle?
@@ -43,6 +45,11 @@ class SafePresenterImpl(
 
     override fun attachView(view: SafeView) {
         this.view = view
+
+        val items = listOf(WebItem(1, 0, "Title", "Subtitle"))
+        val dataSource = ListDataSource<Item>(items)
+        adapterPresenter.onDataSourceChanged(dataSource)
+        view.contentUpdated()
     }
 
     override fun detachView() {

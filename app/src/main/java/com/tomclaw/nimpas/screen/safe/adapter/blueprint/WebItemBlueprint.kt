@@ -13,7 +13,7 @@ class WebItemBlueprint(override val presenter: ItemPresenter<WebItemView, WebIte
     : ItemBlueprint<WebItemView, WebItem> {
 
     override val viewHolderProvider = ViewHolderBuilder.ViewHolderProvider(
-            layoutId = R.layout.group_item,
+            layoutId = R.layout.web_item,
             creator = { _, view -> WebItemViewHolder(view) }
     )
 
