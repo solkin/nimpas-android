@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
+import com.tomclaw.nimpas.screen.safe.adapter.item.GroupItem
 import com.tomclaw.nimpas.screen.safe.adapter.item.WebItem
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.disposables.CompositeDisposable
@@ -46,8 +47,11 @@ class SafePresenterImpl(
     override fun attachView(view: SafeView) {
         this.view = view
 
-        val items = listOf(WebItem(1, 0, "Title", "Subtitle"))
-        val dataSource = ListDataSource<Item>(items)
+        val items = listOf<Item>(
+                GroupItem(2, "Group title"),
+                WebItem(1, 0, "Web Title", "Subtitle")
+        )
+        val dataSource = ListDataSource(items)
         adapterPresenter.onDataSourceChanged(dataSource)
         view.contentUpdated()
     }
