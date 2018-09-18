@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView.VERTICAL
 import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.avito.konveyor.blueprint.Item
+import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.R
 import io.reactivex.Observable
 
@@ -30,6 +31,8 @@ class SafeViewImpl(
 
     private val recycler: RecyclerView = view.findViewById(R.id.recycler)
 
+    private val itemRelay = PublishRelay.create<Item>()
+
     init {
         val orientation = VERTICAL
         val layoutManager = LinearLayoutManager(view.context, orientation, false)
@@ -41,16 +44,14 @@ class SafeViewImpl(
     }
 
     override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun showContent() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        
     }
 
-    override fun itemClicks(): Observable<Item> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun itemClicks(): Observable<Item> = itemRelay
 
     override fun contentUpdated() {
         adapter.notifyDataSetChanged()

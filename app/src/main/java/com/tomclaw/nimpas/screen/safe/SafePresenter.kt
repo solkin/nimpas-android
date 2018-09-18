@@ -2,14 +2,11 @@ package com.tomclaw.nimpas.screen.safe
 
 import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
-import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
-import com.tomclaw.nimpas.screen.safe.adapter.card.CardItem
-import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItem
-import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItem
-import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItem
+import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 
 interface SafePresenter {
 
@@ -49,16 +46,11 @@ class SafePresenterImpl(
     override fun attachView(view: SafeView) {
         this.view = view
 
-        val items = listOf<Item>(
-                GroupItem(1, "Group title"),
-                PasswordItem(2, "Pass Title", "Subtitle"),
-                CardItem(3, "Card Title", "1234 5678 9012 3456"),
-                NoteItem(4, "Note Title", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
-                NoteItem(5, "Note Title", "Lorem ipsum dolor sit amet.")
-        )
-        val dataSource = ListDataSource(items)
-        adapterPresenter.onDataSourceChanged(dataSource)
-        view.contentUpdated()
+        subscriptions += view.itemClicks().subscribe {
+            router?.leaveScreen()
+        }
+
+        loadRecords()
     }
 
     override fun detachView() {
@@ -76,8 +68,32 @@ class SafePresenterImpl(
 
     override fun saveState() = Bundle().apply {}
 
+    private fun loadRecords() {
+        subscriptions += interactor.getRecords()
+                .observeOn(schedulers.mainThread())
+                .doOnSubscribe { view?.showProgress() }
+                .doAfterTerminate { view?.showContent() }
+                .subscribe(
+                        { onLoaded(it) },
+                        { onError() }
+                )
+    }
+
+    private fun onLoaded(records: List<Record>) {
+        val items = records.map { recordConverter.convert(it) }
+        val dataSource = ListDataSource(items)
+        adapterPresenter.onDataSourceChanged(dataSource)
+        view?.contentUpdated()
+    }
+
+    private fun onError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onUpdate() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }
+
+private const val RECORDS_LIST_KEY = "records_list"

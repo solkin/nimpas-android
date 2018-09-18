@@ -21,9 +21,9 @@ data class Card(
         val id: Long,
         val title: String,
         val number: String,
-        val expiration: String?,
+        val expiration: Int?,
         val holder: String?,
-        val security: String?
+        val security: Int?
 ) : Record
 
 data class Note(
