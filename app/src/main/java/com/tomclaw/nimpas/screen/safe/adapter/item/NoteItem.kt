@@ -6,14 +6,12 @@ import com.avito.konveyor.blueprint.Item
 
 class NoteItem(
         override val id: Long,
-        val image: Int,
         val title: String,
         val text: String
 ) : Item, Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
-        writeInt(image)
         writeString(title)
         writeString(text)
     }
@@ -23,10 +21,9 @@ class NoteItem(
     companion object CREATOR : Parcelable.Creator<NoteItem> {
         override fun createFromParcel(parcel: Parcel): NoteItem {
             val id = parcel.readLong()
-            val image = parcel.readInt()
             val title = parcel.readString().orEmpty()
             val text = parcel.readString().orEmpty()
-            return NoteItem(id, image, title, text)
+            return NoteItem(id, title, text)
         }
 
         override fun newArray(size: Int): Array<NoteItem?> {
