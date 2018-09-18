@@ -4,10 +4,10 @@ import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
-import com.tomclaw.nimpas.screen.safe.adapter.item.CardItem
-import com.tomclaw.nimpas.screen.safe.adapter.item.GroupItem
-import com.tomclaw.nimpas.screen.safe.adapter.item.NoteItem
-import com.tomclaw.nimpas.screen.safe.adapter.item.WebItem
+import com.tomclaw.nimpas.screen.safe.adapter.card.CardItem
+import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItem
+import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItem
+import com.tomclaw.nimpas.screen.safe.adapter.web.WebItem
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.disposables.CompositeDisposable
 
@@ -53,7 +53,8 @@ class SafePresenterImpl(
                 GroupItem(1, "Group title"),
                 WebItem(2, 0, "Web Title", "Subtitle"),
                 CardItem(3, 0, "Card Title", "1234 5678 9012 3456"),
-                NoteItem(4, "Note Title", "Note text")
+                NoteItem(4, "Note Title", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+                NoteItem(4, "Note Title", "Lorem ipsum dolor sit amet.")
         )
         val dataSource = ListDataSource(items)
         adapterPresenter.onDataSourceChanged(dataSource)

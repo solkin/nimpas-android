@@ -1,13 +1,10 @@
-package com.tomclaw.nimpas.screen.safe.adapter.blueprint
+package com.tomclaw.nimpas.screen.safe.adapter.group
 
 import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.blueprint.ItemBlueprint
 import com.avito.konveyor.blueprint.ItemPresenter
 import com.avito.konveyor.blueprint.ViewHolderBuilder
 import com.tomclaw.nimpas.R
-import com.tomclaw.nimpas.screen.safe.adapter.item.GroupItem
-import com.tomclaw.nimpas.screen.safe.adapter.view.GroupItemView
-import com.tomclaw.nimpas.screen.safe.adapter.view.GroupItemViewHolder
 
 class GroupItemBlueprint(override val presenter: ItemPresenter<GroupItemView, GroupItem>)
     : ItemBlueprint<GroupItemView, GroupItem> {

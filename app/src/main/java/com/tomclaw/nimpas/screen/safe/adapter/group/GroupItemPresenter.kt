@@ -1,8 +1,6 @@
-package com.tomclaw.nimpas.screen.safe.adapter.presenter
+package com.tomclaw.nimpas.screen.safe.adapter.group
 
 import com.avito.konveyor.blueprint.ItemPresenter
-import com.tomclaw.nimpas.screen.safe.adapter.item.GroupItem
-import com.tomclaw.nimpas.screen.safe.adapter.view.GroupItemView
 
 class GroupItemPresenter : ItemPresenter<GroupItemView, GroupItem> {
 

@@ -7,19 +7,17 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingBottom="16dp"
-    android:paddingTop="16dp"
+    android:padding="12dp"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/circle_back"
         android:scaleType="center"
         android:src="@drawable/folder"
+        android:tint="@color/color_accent_light"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -27,12 +25,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="1"
-        android:paddingEnd="12dp"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp"
         android:paddingStart="12dp"
         android:textColor="?android:textColorPrimary"
         android:textSize="16sp"
+        tools:ignore="RtlSymmetry"
         tools:text="Title" />
 
 </LinearLayout>

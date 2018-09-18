@@ -1,8 +1,6 @@
-package com.tomclaw.nimpas.screen.safe.adapter.presenter
+package com.tomclaw.nimpas.screen.safe.adapter.card
 
 import com.avito.konveyor.blueprint.ItemPresenter
-import com.tomclaw.nimpas.screen.safe.adapter.item.CardItem
-import com.tomclaw.nimpas.screen.safe.adapter.view.CardItemView
 
 class CardItemPresenter : ItemPresenter<CardItemView, CardItem> {
 

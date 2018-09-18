@@ -1,8 +1,6 @@
-package com.tomclaw.nimpas.screen.safe.adapter.presenter
+package com.tomclaw.nimpas.screen.safe.adapter.web
 
 import com.avito.konveyor.blueprint.ItemPresenter
-import com.tomclaw.nimpas.screen.safe.adapter.item.WebItem
-import com.tomclaw.nimpas.screen.safe.adapter.view.WebItemView
 
 class WebItemPresenter : ItemPresenter<WebItemView, WebItem> {
 

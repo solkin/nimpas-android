@@ -1,35 +1,35 @@
-package com.tomclaw.nimpas.screen.safe.adapter.item
+package com.tomclaw.nimpas.screen.safe.adapter.web
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.avito.konveyor.blueprint.Item
 
-class CardItem(
+class WebItem(
         override val id: Long,
         val image: Int,
         val title: String,
-        val number: String
+        val subtitle: String?
 ) : Item, Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
         writeInt(image)
         writeString(title)
-        writeString(number)
+        writeString(subtitle)
     }
 
     override fun describeContents(): Int = 0
 
-    companion object CREATOR : Parcelable.Creator<CardItem> {
-        override fun createFromParcel(parcel: Parcel): CardItem {
+    companion object CREATOR : Parcelable.Creator<WebItem> {
+        override fun createFromParcel(parcel: Parcel): WebItem {
             val id = parcel.readLong()
             val image = parcel.readInt()
             val title = parcel.readString().orEmpty()
-            val number = parcel.readString().orEmpty()
-            return CardItem(id, image, title, number)
+            val subtitle = parcel.readString()
+            return WebItem(id, image, title, subtitle)
         }
 
-        override fun newArray(size: Int): Array<CardItem?> {
+        override fun newArray(size: Int): Array<WebItem?> {
             return arrayOfNulls(size)
         }
     }

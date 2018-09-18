@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.safe.adapter.view
+package com.tomclaw.nimpas.screen.safe.adapter.web
 
 import android.view.View
 import android.widget.TextView
@@ -7,20 +7,20 @@ import com.avito.konveyor.blueprint.ItemView
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.util.bind
 
-interface CardItemView : ItemView {
+interface WebItemView : ItemView {
 
     fun setImage(image: Int)
 
     fun setTitle(title: String)
 
-    fun setNumber(number: String)
+    fun setSubtitle(subtitle: String?)
 
 }
 
-class CardItemViewHolder(view: View) : BaseViewHolder(view), CardItemView {
+class WebItemViewHolder(view: View) : BaseViewHolder(view), WebItemView {
 
     private val title: TextView = view.findViewById(R.id.title)
-    private val number: TextView = view.findViewById(R.id.number)
+    private val subtitle: TextView = view.findViewById(R.id.subtitle)
 
     override fun setImage(image: Int) {
 
@@ -30,8 +30,8 @@ class CardItemViewHolder(view: View) : BaseViewHolder(view), CardItemView {
         this.title.bind(title)
     }
 
-    override fun setNumber(number: String) {
-        this.number.bind(number)
+    override fun setSubtitle(subtitle: String?) {
+        this.subtitle.bind(subtitle)
     }
 
 }
