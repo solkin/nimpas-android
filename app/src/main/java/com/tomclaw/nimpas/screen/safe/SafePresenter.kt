@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
+import com.tomclaw.nimpas.screen.safe.adapter.item.CardItem
 import com.tomclaw.nimpas.screen.safe.adapter.item.GroupItem
 import com.tomclaw.nimpas.screen.safe.adapter.item.WebItem
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -48,8 +49,9 @@ class SafePresenterImpl(
         this.view = view
 
         val items = listOf<Item>(
-                GroupItem(2, "Group title"),
-                WebItem(1, 0, "Web Title", "Subtitle")
+                GroupItem(1, "Group title"),
+                WebItem(2, 0, "Web Title", "Subtitle"),
+                CardItem(3, 0, "Card Title", "1234 5678 9012 3456")
         )
         val dataSource = ListDataSource(items)
         adapterPresenter.onDataSourceChanged(dataSource)

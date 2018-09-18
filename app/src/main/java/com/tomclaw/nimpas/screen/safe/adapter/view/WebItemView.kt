@@ -9,6 +9,8 @@ import com.tomclaw.nimpas.util.bind
 
 interface WebItemView : ItemView {
 
+    fun setImage(image: Int)
+
     fun setTitle(title: String)
 
     fun setSubtitle(subtitle: String?)
@@ -19,6 +21,10 @@ class WebItemViewHolder(view: View) : BaseViewHolder(view), WebItemView {
 
     private val title: TextView = view.findViewById(R.id.title)
     private val subtitle: TextView = view.findViewById(R.id.subtitle)
+
+    override fun setImage(image: Int) {
+
+    }
 
     override fun setTitle(title: String) {
         this.title.bind(title)

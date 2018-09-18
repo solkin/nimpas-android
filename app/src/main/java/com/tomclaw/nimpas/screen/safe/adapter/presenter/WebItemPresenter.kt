@@ -7,6 +7,7 @@ import com.tomclaw.nimpas.screen.safe.adapter.view.WebItemView
 class WebItemPresenter : ItemPresenter<WebItemView, WebItem> {
 
     override fun bindView(view: WebItemView, item: WebItem, position: Int) {
+        view.setImage(item.image)
         view.setTitle(item.title)
         view.setSubtitle(item.subtitle)
     }
