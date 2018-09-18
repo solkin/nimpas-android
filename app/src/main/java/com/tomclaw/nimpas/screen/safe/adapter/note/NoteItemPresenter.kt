@@ -5,6 +5,7 @@ import com.avito.konveyor.blueprint.ItemPresenter
 class NoteItemPresenter : ItemPresenter<NoteItemView, NoteItem> {
 
     override fun bindView(view: NoteItemView, item: NoteItem, position: Int) {
+        view.setIcon(item.id)
         view.setTitle(item.title)
         view.setText(item.text)
     }

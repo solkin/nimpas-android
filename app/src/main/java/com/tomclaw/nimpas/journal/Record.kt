@@ -8,18 +8,17 @@ data class Group(
         val records: List<Record>
 ) : Record
 
-data class Website(
+data class Password(
         val id: Int,
-        val image: Int,
         val title: String,
         val username: String?,
         val password: String?,
-        val url: String?
+        val url: String?,
+        val description: String?
 ) : Record
 
 data class Card(
         val id: Int,
-        val image: Int,
         val title: String,
         val number: String,
         val expiration: String?,

@@ -1,15 +1,16 @@
-package com.tomclaw.nimpas.screen.safe.adapter.web
+package com.tomclaw.nimpas.screen.safe.adapter.pass
 
 import android.view.View
 import android.widget.TextView
 import com.avito.konveyor.adapter.BaseViewHolder
 import com.avito.konveyor.blueprint.ItemView
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.util.ItemImageView
 import com.tomclaw.nimpas.util.bind
 
-interface WebItemView : ItemView {
+interface PassItemView : ItemView {
 
-    fun setImage(image: Int)
+    fun setIcon(itemId: Long)
 
     fun setTitle(title: String)
 
@@ -17,13 +18,14 @@ interface WebItemView : ItemView {
 
 }
 
-class WebItemViewHolder(view: View) : BaseViewHolder(view), WebItemView {
+class PassItemViewHolder(view: View) : BaseViewHolder(view), PassItemView {
 
+    private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
     private val subtitle: TextView = view.findViewById(R.id.subtitle)
 
-    override fun setImage(image: Int) {
-
+    override fun setIcon(itemId: Long) {
+        icon.setItemId(itemId)
     }
 
     override fun setTitle(title: String) {

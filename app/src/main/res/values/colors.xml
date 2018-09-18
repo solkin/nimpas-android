@@ -4,4 +4,21 @@
     <color name="color_primary_dark">#41587a</color>
     <color name="color_accent">#548860</color>
     <color name="color_accent_light">#d3e9d7</color>
+
+    <color name="color_grey">#5F6368</color>
+
+    <color name="color_yellow">#EB9736</color>
+    <color name="color_yellow_light">#FEEFC3</color>
+    <color name="color_pink">#B64A8E</color>
+    <color name="color_pink_light">#FDCFE8</color>
+    <color name="color_red">#BD4444</color>
+    <color name="color_red_light">#FAD2CF</color>
+    <color name="color_green">#499067</color>
+    <color name="color_green_light">#D5EBDF</color>
+    <color name="color_violet">#8C4FBF</color>
+    <color name="color_violet_light">#E9D2FD</color>
+    <color name="color_blue">#399CA3</color>
+    <color name="color_blue_light">#CBF0F8</color>
+    <color name="color_brown">#C68338</color>
+    <color name="color_brown_light">#FEDFC8</color>
 </resources>

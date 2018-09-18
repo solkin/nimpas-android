@@ -1,10 +1,10 @@
-package com.tomclaw.nimpas.screen.safe.adapter.web
+package com.tomclaw.nimpas.screen.safe.adapter.pass
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.avito.konveyor.blueprint.Item
 
-class WebItem(
+class PassItem(
         override val id: Long,
         val image: Int,
         val title: String,
@@ -20,16 +20,16 @@ class WebItem(
 
     override fun describeContents(): Int = 0
 
-    companion object CREATOR : Parcelable.Creator<WebItem> {
-        override fun createFromParcel(parcel: Parcel): WebItem {
+    companion object CREATOR : Parcelable.Creator<PassItem> {
+        override fun createFromParcel(parcel: Parcel): PassItem {
             val id = parcel.readLong()
             val image = parcel.readInt()
             val title = parcel.readString().orEmpty()
             val subtitle = parcel.readString()
-            return WebItem(id, image, title, subtitle)
+            return PassItem(id, image, title, subtitle)
         }
 
-        override fun newArray(size: Int): Array<WebItem?> {
+        override fun newArray(size: Int): Array<PassItem?> {
             return arrayOfNulls(size)
         }
     }

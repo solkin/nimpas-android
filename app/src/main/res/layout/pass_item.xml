@@ -7,18 +7,17 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="12dp"
-    tools:ignore="UseCompoundDrawables">
+    android:padding="12dp">
 
-    <ImageView
+    <com.tomclaw.nimpas.util.ItemImageView
         android:id="@+id/icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@drawable/circle_back"
         android:scaleType="center"
-        android:src="@drawable/folder"
-        android:tint="@color/color_accent_light"
-        tools:ignore="ContentDescription" />
+        android:src="@drawable/key"
+        tools:background="@drawable/circle_back"
+        tools:ignore="ContentDescription"
+        tools:tint="@color/color_accent_light" />
 
     <LinearLayout
         android:layout_width="match_parent"

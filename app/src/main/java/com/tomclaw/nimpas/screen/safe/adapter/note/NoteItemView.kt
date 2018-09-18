@@ -5,9 +5,12 @@ import android.widget.TextView
 import com.avito.konveyor.adapter.BaseViewHolder
 import com.avito.konveyor.blueprint.ItemView
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.util.ItemImageView
 import com.tomclaw.nimpas.util.bind
 
 interface NoteItemView : ItemView {
+
+    fun setIcon(itemId: Long)
 
     fun setTitle(title: String)
 
@@ -17,8 +20,13 @@ interface NoteItemView : ItemView {
 
 class NoteItemViewHolder(view: View) : BaseViewHolder(view), NoteItemView {
 
+    private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
     private val text: TextView = view.findViewById(R.id.text)
+
+    override fun setIcon(itemId: Long) {
+        icon.setItemId(itemId)
+    }
 
     override fun setTitle(title: String) {
         this.title.bind(title)

@@ -5,11 +5,12 @@ import android.widget.TextView
 import com.avito.konveyor.adapter.BaseViewHolder
 import com.avito.konveyor.blueprint.ItemView
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.util.ItemImageView
 import com.tomclaw.nimpas.util.bind
 
 interface CardItemView : ItemView {
 
-    fun setImage(image: Int)
+    fun setIcon(itemId: Long)
 
     fun setTitle(title: String)
 
@@ -19,11 +20,12 @@ interface CardItemView : ItemView {
 
 class CardItemViewHolder(view: View) : BaseViewHolder(view), CardItemView {
 
+    private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
     private val number: TextView = view.findViewById(R.id.number)
 
-    override fun setImage(image: Int) {
-
+    override fun setIcon(itemId: Long) {
+        icon.setItemId(itemId)
     }
 
     override fun setTitle(title: String) {
