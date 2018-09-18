@@ -7,7 +7,7 @@ import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.screen.safe.adapter.card.CardItem
 import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItem
 import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItem
-import com.tomclaw.nimpas.screen.safe.adapter.pass.PassItem
+import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItem
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.disposables.CompositeDisposable
 
@@ -51,8 +51,8 @@ class SafePresenterImpl(
 
         val items = listOf<Item>(
                 GroupItem(1, "Group title"),
-                PassItem(2, 0, "Pass Title", "Subtitle"),
-                CardItem(3, 0, "Card Title", "1234 5678 9012 3456"),
+                PasswordItem(2, "Pass Title", "Subtitle"),
+                CardItem(3, "Card Title", "1234 5678 9012 3456"),
                 NoteItem(4, "Note Title", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
                 NoteItem(5, "Note Title", "Lorem ipsum dolor sit amet.")
         )

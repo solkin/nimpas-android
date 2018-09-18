@@ -16,11 +16,11 @@ import com.tomclaw.nimpas.screen.safe.SafePresenterImpl
 import com.tomclaw.nimpas.screen.safe.adapter.card.CardItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItemBlueprint
-import com.tomclaw.nimpas.screen.safe.adapter.pass.PassItemBlueprint
+import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.card.CardItemPresenter
 import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItemPresenter
 import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItemPresenter
-import com.tomclaw.nimpas.screen.safe.adapter.pass.PassItemPresenter
+import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemPresenter
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Module
@@ -86,8 +86,8 @@ class SafeModule(
     @IntoSet
     @PerActivity
     internal fun provideWebItemBlueprint(
-            presenter: PassItemPresenter
-    ): ItemBlueprint<*, *> = PassItemBlueprint(presenter)
+            presenter: PasswordItemPresenter
+    ): ItemBlueprint<*, *> = PasswordItemBlueprint(presenter)
 
     @Provides
     @IntoSet
@@ -109,7 +109,7 @@ class SafeModule(
 
     @Provides
     @PerActivity
-    internal fun provideWebItemPresenter() = PassItemPresenter()
+    internal fun provideWebItemPresenter() = PasswordItemPresenter()
 
     @Provides
     @PerActivity

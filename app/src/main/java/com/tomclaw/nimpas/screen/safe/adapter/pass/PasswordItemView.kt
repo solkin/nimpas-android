@@ -8,7 +8,7 @@ import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.util.ItemImageView
 import com.tomclaw.nimpas.util.bind
 
-interface PassItemView : ItemView {
+interface PasswordItemView : ItemView {
 
     fun setIcon(itemId: Long)
 
@@ -18,7 +18,7 @@ interface PassItemView : ItemView {
 
 }
 
-class PassItemViewHolder(view: View) : BaseViewHolder(view), PassItemView {
+class PasswordItemViewHolder(view: View) : BaseViewHolder(view), PasswordItemView {
 
     private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)

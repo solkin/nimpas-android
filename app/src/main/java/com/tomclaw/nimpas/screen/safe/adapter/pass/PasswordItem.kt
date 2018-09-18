@@ -4,32 +4,29 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.avito.konveyor.blueprint.Item
 
-class PassItem(
+class PasswordItem(
         override val id: Long,
-        val image: Int,
         val title: String,
         val subtitle: String?
 ) : Item, Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
-        writeInt(image)
         writeString(title)
         writeString(subtitle)
     }
 
     override fun describeContents(): Int = 0
 
-    companion object CREATOR : Parcelable.Creator<PassItem> {
-        override fun createFromParcel(parcel: Parcel): PassItem {
+    companion object CREATOR : Parcelable.Creator<PasswordItem> {
+        override fun createFromParcel(parcel: Parcel): PasswordItem {
             val id = parcel.readLong()
-            val image = parcel.readInt()
             val title = parcel.readString().orEmpty()
             val subtitle = parcel.readString()
-            return PassItem(id, image, title, subtitle)
+            return PasswordItem(id, title, subtitle)
         }
 
-        override fun newArray(size: Int): Array<PassItem?> {
+        override fun newArray(size: Int): Array<PasswordItem?> {
             return arrayOfNulls(size)
         }
     }
