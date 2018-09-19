@@ -16,6 +16,8 @@ interface CardItemView : ItemView {
 
     fun setNumber(number: String)
 
+    fun setOnClickListener(listener: (() -> Unit)?)
+
 }
 
 class CardItemViewHolder(view: View) : BaseViewHolder(view), CardItemView {
@@ -23,6 +25,11 @@ class CardItemViewHolder(view: View) : BaseViewHolder(view), CardItemView {
     private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
     private val number: TextView = view.findViewById(R.id.number)
+    private var listener: (() -> Unit)? = null
+
+    init {
+        view.setOnClickListener { listener?.invoke() }
+    }
 
     override fun setIcon(itemId: Long) {
         icon.setItemId(itemId)
@@ -34,6 +41,14 @@ class CardItemViewHolder(view: View) : BaseViewHolder(view), CardItemView {
 
     override fun setNumber(number: String) {
         this.number.bind(number)
+    }
+
+    override fun setOnClickListener(listener: (() -> Unit)?) {
+        this.listener = listener
+    }
+
+    override fun onUnbind() {
+        this.listener = null
     }
 
 }

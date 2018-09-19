@@ -2,14 +2,17 @@ package com.tomclaw.nimpas.screen.safe
 
 import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
+import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.journal.GROUP_DEFAULT
 import com.tomclaw.nimpas.journal.Record
+import com.tomclaw.nimpas.screen.safe.adapter.ItemClickListener
 import com.tomclaw.nimpas.util.SchedulersFactory
+import dagger.Lazy
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 
-interface SafePresenter {
+interface SafePresenter : ItemClickListener {
 
     fun attachView(view: SafeView)
 
@@ -20,6 +23,8 @@ interface SafePresenter {
     fun detachRouter()
 
     fun saveState(): Bundle
+
+    fun onBackPressed()
 
     fun onUpdate()
 
@@ -33,7 +38,7 @@ interface SafePresenter {
 
 class SafePresenterImpl(
         private val interactor: SafeInteractor,
-        private val adapterPresenter: AdapterPresenter,
+        private val adapterPresenter: Lazy<AdapterPresenter>,
         private val recordConverter: RecordConverter,
         private val schedulers: SchedulersFactory,
         state: Bundle?
@@ -44,12 +49,11 @@ class SafePresenterImpl(
 
     private val subscriptions = CompositeDisposable()
 
+    private var navigation: Set<Long> = state?.getLongArray(KEY_NAVIGATION)?.toMutableSet()
+            ?: mutableSetOf()
+
     override fun attachView(view: SafeView) {
         this.view = view
-
-        subscriptions += view.itemClicks().subscribe { item ->
-            loadRecords(groupId = item.id)
-        }
 
         loadRecords()
     }
@@ -67,7 +71,9 @@ class SafePresenterImpl(
         this.router = null
     }
 
-    override fun saveState() = Bundle().apply {}
+    override fun saveState() = Bundle().apply {
+        putLongArray(KEY_NAVIGATION, navigation.toLongArray())
+    }
 
     private fun loadRecords(groupId: Long = GROUP_DEFAULT) {
         subscriptions += interactor.getRecords(groupId)
@@ -83,7 +89,7 @@ class SafePresenterImpl(
     private fun onLoaded(records: List<Record>) {
         val items = records.map { recordConverter.convert(it) }
         val dataSource = ListDataSource(items)
-        adapterPresenter.onDataSourceChanged(dataSource)
+        adapterPresenter.get().onDataSourceChanged(dataSource)
         view?.contentUpdated()
     }
 
@@ -91,10 +97,25 @@ class SafePresenterImpl(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun onBackPressed() {
+        if (navigation.isNotEmpty()) {
+            navigation -= navigation.last()
+            val lastId = navigation.lastOrNull() ?: GROUP_DEFAULT
+            loadRecords(lastId)
+        } else {
+            router?.leaveScreen()
+        }
+    }
+
     override fun onUpdate() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun onItemClick(item: Item) {
+        navigation += item.id
+        loadRecords(item.id)
+    }
+
 }
 
-private const val RECORDS_LIST_KEY = "records_list"
+private const val KEY_NAVIGATION = "navigation"

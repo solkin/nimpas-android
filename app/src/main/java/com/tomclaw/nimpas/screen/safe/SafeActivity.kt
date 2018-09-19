@@ -37,6 +37,10 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
         presenter.attachView(view)
     }
 
+    override fun onBackPressed() {
+        presenter.onBackPressed()
+    }
+
     override fun onStart() {
         super.onStart()
         presenter.attachRouter(this)
@@ -69,7 +73,7 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
     }
 
     override fun leaveScreen() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        finish()
     }
 
 }

@@ -16,6 +16,8 @@ interface NoteItemView : ItemView {
 
     fun setText(text: String)
 
+    fun setOnClickListener(listener: (() -> Unit)?)
+
 }
 
 class NoteItemViewHolder(view: View) : BaseViewHolder(view), NoteItemView {
@@ -23,6 +25,11 @@ class NoteItemViewHolder(view: View) : BaseViewHolder(view), NoteItemView {
     private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
     private val text: TextView = view.findViewById(R.id.text)
+    private var listener: (() -> Unit)? = null
+
+    init {
+        view.setOnClickListener { listener?.invoke() }
+    }
 
     override fun setIcon(itemId: Long) {
         icon.setItemId(itemId)
@@ -34,6 +41,14 @@ class NoteItemViewHolder(view: View) : BaseViewHolder(view), NoteItemView {
 
     override fun setText(text: String) {
         this.text.bind(text)
+    }
+
+    override fun setOnClickListener(listener: (() -> Unit)?) {
+        this.listener = listener
+    }
+
+    override fun onUnbind() {
+        this.listener = null
     }
 
 }

@@ -16,6 +16,8 @@ interface PasswordItemView : ItemView {
 
     fun setSubtitle(subtitle: String?)
 
+    fun setOnClickListener(listener: (() -> Unit)?)
+
 }
 
 class PasswordItemViewHolder(view: View) : BaseViewHolder(view), PasswordItemView {
@@ -23,6 +25,11 @@ class PasswordItemViewHolder(view: View) : BaseViewHolder(view), PasswordItemVie
     private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
     private val subtitle: TextView = view.findViewById(R.id.subtitle)
+    private var listener: (() -> Unit)? = null
+
+    init {
+        view.setOnClickListener { listener?.invoke() }
+    }
 
     override fun setIcon(itemId: Long) {
         icon.setItemId(itemId)
@@ -34,6 +41,14 @@ class PasswordItemViewHolder(view: View) : BaseViewHolder(view), PasswordItemVie
 
     override fun setSubtitle(subtitle: String?) {
         this.subtitle.bind(subtitle)
+    }
+
+    override fun setOnClickListener(listener: (() -> Unit)?) {
+        this.listener = listener
+    }
+
+    override fun onUnbind() {
+        this.listener = null
     }
 
 }

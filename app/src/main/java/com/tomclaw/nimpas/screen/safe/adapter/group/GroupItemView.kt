@@ -14,12 +14,19 @@ interface GroupItemView : ItemView {
 
     fun setTitle(title: String)
 
+    fun setOnClickListener(listener: (() -> Unit)?)
+
 }
 
 class GroupItemViewHolder(view: View) : BaseViewHolder(view), GroupItemView {
 
     private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
+    private var listener: (() -> Unit)? = null
+
+    init {
+        view.setOnClickListener { listener?.invoke() }
+    }
 
     override fun setIcon(itemId: Long) {
         this.icon.setItemId(itemId)
@@ -27,6 +34,14 @@ class GroupItemViewHolder(view: View) : BaseViewHolder(view), GroupItemView {
 
     override fun setTitle(title: String) {
         this.title.bind(title)
+    }
+
+    override fun setOnClickListener(listener: (() -> Unit)?) {
+        this.listener = listener
+    }
+
+    override fun onUnbind() {
+        this.listener = null
     }
 
 }

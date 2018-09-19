@@ -14,15 +14,16 @@ import com.tomclaw.nimpas.screen.safe.SafeInteractorImpl
 import com.tomclaw.nimpas.screen.safe.SafePresenter
 import com.tomclaw.nimpas.screen.safe.SafePresenterImpl
 import com.tomclaw.nimpas.screen.safe.adapter.card.CardItemBlueprint
-import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItemBlueprint
-import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItemBlueprint
-import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.card.CardItemPresenter
+import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItemPresenter
+import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItemPresenter
+import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemPresenter
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
@@ -43,7 +44,7 @@ class SafeModule(
     @PerActivity
     internal fun provideSafePresenter(
             interactor: SafeInteractor,
-            adapterPresenter: AdapterPresenter,
+            adapterPresenter: Lazy<AdapterPresenter>,
             recordConverter: RecordConverter,
             schedulers: SchedulersFactory
     ): SafePresenter {
@@ -105,18 +106,22 @@ class SafeModule(
 
     @Provides
     @PerActivity
-    internal fun provideGroupItemPresenter() = GroupItemPresenter()
+    internal fun provideGroupItemPresenter(presenter: SafePresenter) =
+            GroupItemPresenter(presenter)
 
     @Provides
     @PerActivity
-    internal fun provideWebItemPresenter() = PasswordItemPresenter()
+    internal fun provideWebItemPresenter(presenter: SafePresenter) =
+            PasswordItemPresenter(presenter)
 
     @Provides
     @PerActivity
-    internal fun provideCardItemPresenter() = CardItemPresenter()
+    internal fun provideCardItemPresenter(presenter: SafePresenter) =
+            CardItemPresenter(presenter)
 
     @Provides
     @PerActivity
-    internal fun provideNoteItemPresenter() = NoteItemPresenter()
+    internal fun provideNoteItemPresenter(presenter: SafePresenter) =
+            NoteItemPresenter(presenter)
 
 }
