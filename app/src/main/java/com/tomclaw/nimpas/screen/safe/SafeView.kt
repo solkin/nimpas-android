@@ -1,7 +1,6 @@
 package com.tomclaw.nimpas.screen.safe
 
 import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.VERTICAL
@@ -30,13 +29,11 @@ class SafeViewImpl(
     init {
         val orientation = VERTICAL
         val layoutManager = LinearLayoutManager(view.context, orientation, false)
-        val itemDecoration = DividerItemDecoration(view.context, orientation)
         adapter.setHasStableIds(true)
         recycler.adapter = adapter
         recycler.layoutManager = layoutManager
         recycler.itemAnimator = DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
-        recycler.addItemDecoration(itemDecoration)
     }
 
     override fun showProgress() {
