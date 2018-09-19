@@ -55,7 +55,7 @@ class SafePresenterImpl(
     override fun attachView(view: SafeView) {
         this.view = view
 
-        loadRecords()
+        loadRecords(groupId = getLastId())
     }
 
     override fun detachView() {
@@ -100,8 +100,7 @@ class SafePresenterImpl(
     override fun onBackPressed() {
         if (navigation.isNotEmpty()) {
             navigation -= navigation.last()
-            val lastId = navigation.lastOrNull() ?: GROUP_DEFAULT
-            loadRecords(lastId)
+            loadRecords(groupId = getLastId())
         } else {
             router?.leaveScreen()
         }
@@ -115,6 +114,8 @@ class SafePresenterImpl(
         navigation += item.id
         loadRecords(item.id)
     }
+
+    private fun getLastId() = navigation.lastOrNull() ?: GROUP_DEFAULT
 
 }
 
