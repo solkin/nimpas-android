@@ -1,33 +1,41 @@
 package com.tomclaw.nimpas.journal
 
-interface Record
-
-data class Group(
+abstract class Record(
         val id: Long,
-        val title: String,
-        val records: List<Record>
-) : Record
+        val groupId: Long
+)
 
-data class Password(
-        val id: Long,
+class Group(
+        id: Long,
+        groupId: Long,
+        val title: String
+) : Record(id, groupId)
+
+class Password(
+        id: Long,
+        groupId: Long,
         val title: String,
         val username: String?,
         val password: String?,
         val url: String?,
         val description: String?
-) : Record
+) : Record(id, groupId)
 
-data class Card(
-        val id: Long,
+class Card(
+        id: Long,
+        groupId: Long,
         val title: String,
         val number: String,
         val expiration: Int?,
         val holder: String?,
         val security: Int?
-) : Record
+) : Record(id, groupId)
 
-data class Note(
-        val id: Long,
+class Note(
+        id: Long,
+        groupId: Long,
         val title: String,
         val text: String
-) : Record
+) : Record(id, groupId)
+
+const val GROUP_DEFAULT = 0L

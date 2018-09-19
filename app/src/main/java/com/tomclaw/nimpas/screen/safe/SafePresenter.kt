@@ -3,6 +3,7 @@ package com.tomclaw.nimpas.screen.safe
 import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.data_source.ListDataSource
+import com.tomclaw.nimpas.journal.GROUP_DEFAULT
 import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.disposables.CompositeDisposable
@@ -46,8 +47,8 @@ class SafePresenterImpl(
     override fun attachView(view: SafeView) {
         this.view = view
 
-        subscriptions += view.itemClicks().subscribe {
-            router?.leaveScreen()
+        subscriptions += view.itemClicks().subscribe { item ->
+            loadRecords(groupId = item.id)
         }
 
         loadRecords()
@@ -68,8 +69,8 @@ class SafePresenterImpl(
 
     override fun saveState() = Bundle().apply {}
 
-    private fun loadRecords() {
-        subscriptions += interactor.getRecords()
+    private fun loadRecords(groupId: Long = GROUP_DEFAULT) {
+        subscriptions += interactor.getRecords(groupId)
                 .observeOn(schedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
                 .doAfterTerminate { view?.showContent() }
