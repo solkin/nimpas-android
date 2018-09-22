@@ -19,14 +19,12 @@ interface RecordConverter {
 
 class RecordConverterImpl : RecordConverter {
 
-    override fun convert(record: Record): Item {
-        return when (record) {
-            is Group -> GroupItem(record.id, record.title)
-            is Password -> PasswordItem(record.id, record.title, record.username)
-            is Card -> CardItem(record.id, record.title, record.number)
-            is Note -> NoteItem(record.id, record.title, record.text)
-            else -> throw IllegalArgumentException("Unknown record type!")
-        }
+    override fun convert(record: Record): Item = when (record) {
+        is Group -> GroupItem(record.id, record.title)
+        is Password -> PasswordItem(record.id, record.title, record.username)
+        is Card -> CardItem(record.id, record.title, record.number)
+        is Note -> NoteItem(record.id, record.title, record.text)
+        else -> throw IllegalArgumentException("Unknown record type!")
     }
 
 }
