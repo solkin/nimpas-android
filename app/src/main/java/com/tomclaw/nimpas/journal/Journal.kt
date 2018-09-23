@@ -38,9 +38,7 @@ class JournalImpl(private val file: File) : Journal {
     private var writeTime: Long = 0
 
     override fun init(keyword: String) = Completable.create { emitter ->
-        this.records = mutableMapOf<Long, Record>().apply {
-            writeJournal(this)
-        }
+        initJournal(keyword)
         emitter.onComplete()
     }
 
@@ -53,9 +51,9 @@ class JournalImpl(private val file: File) : Journal {
         records = null
     }
 
-    override fun unlock(keyword: String) = Completable.create { emitter ->
+    override fun unlock(keyword: String): Completable = Completable.create { emitter ->
         this.keyword = keyword
-        readJournal()
+        readJournal(keyword)
         emitter.onComplete()
     }
 
@@ -75,17 +73,24 @@ class JournalImpl(private val file: File) : Journal {
     }
 
     override fun addRecord(record: Record): Completable = Completable.create { emitter ->
+        val keyword = keyword
         val records = records
-        if (records != null) {
+        if (keyword != null && records != null) {
             records[record.id] = record
-            writeJournal(records)
+            writeJournal(keyword, records)
             emitter.onComplete()
         } else {
             emitter.onError(JournalIsLockedException())
         }
     }
 
-    private fun writeJournal(records: Map<Long, Record>) {
+    private fun initJournal(keyword: String) {
+        this.records = mutableMapOf<Long, Record>().apply {
+            writeJournal(keyword, this)
+        }
+    }
+
+    private fun writeJournal(keyword: String, records: Map<Long, Record>) {
         var stream: DataOutputStream? = null
         try {
             writeTime = System.currentTimeMillis()
@@ -97,6 +102,7 @@ class JournalImpl(private val file: File) : Journal {
                 records.values.forEach { record ->
                     writeLong(record.id)
                     writeLong(record.groupId)
+                    writeLong(record.time)
                     when (record) {
                         is Group -> {
                             writeInt(TYPE_GROUP)
@@ -140,8 +146,10 @@ class JournalImpl(private val file: File) : Journal {
         }
     }
 
-    private fun readJournal() {
-        val keyword = keyword ?: throw IllegalArgumentException()
+    private fun readJournal(keyword: String) {
+        if (!file.exists()) {
+            initJournal(keyword)
+        }
         var stream: DataInputStream? = null
         try {
             stream = DataInputStream(BufferedInputStream(FileInputStream(file))).apply {
@@ -151,18 +159,25 @@ class JournalImpl(private val file: File) : Journal {
                         val writeTime = readLong()
                         val records = HashMap<Long, Record>()
                         val recordsCount = readInt()
-                        for (c in 0..recordsCount) {
+                        for (c in 0 until recordsCount) {
                             val id = readLong()
                             val groupId = readLong()
+                            val time = readLong()
                             val recordType = readInt()
                             val record: Record = when (recordType) {
                                 TYPE_GROUP -> {
-                                    Group(id, groupId, title = readUTF())
+                                    Group(
+                                            id,
+                                            groupId,
+                                            time,
+                                            title = readUTF()
+                                    )
                                 }
                                 TYPE_PASSWORD -> {
                                     Password(
                                             id,
                                             groupId,
+                                            time,
                                             title = readUTF(),
                                             username = readNullableUTF(),
                                             password = readNullableUTF(),
@@ -174,6 +189,7 @@ class JournalImpl(private val file: File) : Journal {
                                     Card(
                                             id,
                                             groupId,
+                                            time,
                                             title = readUTF(),
                                             number = readUTF(),
                                             expiration = readNullableInt(),
@@ -185,6 +201,7 @@ class JournalImpl(private val file: File) : Journal {
                                     Note(
                                             id,
                                             groupId,
+                                            time,
                                             title = readUTF(),
                                             text = readUTF()
                                     )

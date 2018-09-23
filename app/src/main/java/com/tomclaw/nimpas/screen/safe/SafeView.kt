@@ -8,7 +8,6 @@ import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
 
-
 interface SafeView {
 
     fun showProgress()
