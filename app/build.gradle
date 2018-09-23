@@ -49,4 +49,5 @@ dependencies {
     implementation 'com.github.avito-tech:Konveyor:0.42.2'
     kapt 'com.google.dagger:dagger-compiler:2.13'
     kapt 'com.google.dagger:dagger-android-processor:2.13'
+    compile project(path: ':bottom-sheet')
 }

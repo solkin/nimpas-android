@@ -1,12 +1,17 @@
 package com.tomclaw.nimpas.screen.safe
 
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.VERTICAL
 import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
+import com.jakewharton.rxrelay2.PublishRelay
+import com.tomclaw.bottomsheet.BottomSheet
 import com.tomclaw.nimpas.R
+import io.reactivex.Observable
+
 
 interface SafeView {
 
@@ -16,6 +21,10 @@ interface SafeView {
 
     fun contentUpdated()
 
+    fun createClicks(): Observable<Unit>
+
+    fun showCreateMenu()
+
 }
 
 class SafeViewImpl(
@@ -24,6 +33,9 @@ class SafeViewImpl(
 ) : SafeView {
 
     private val recycler: RecyclerView = view.findViewById(R.id.recycler)
+    private val createButton: FloatingActionButton = view.findViewById(R.id.create_button)
+
+    private val createRelay = PublishRelay.create<Unit>()
 
     init {
         val orientation = VERTICAL
@@ -33,6 +45,8 @@ class SafeViewImpl(
         recycler.layoutManager = layoutManager
         recycler.itemAnimator = DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
+
+        createButton.setOnClickListener { createRelay.accept(Unit) }
     }
 
     override fun showProgress() {
@@ -45,6 +59,26 @@ class SafeViewImpl(
 
     override fun contentUpdated() {
         adapter.notifyDataSetChanged()
+    }
+
+    override fun createClicks(): Observable<Unit> {
+        return createRelay
+    }
+
+    override fun showCreateMenu() {
+        BottomSheet.Builder(view.context)
+                .apply {
+                    addItem(0, R.string.group, R.drawable.folder)
+                    addItem(1, R.string.password, R.drawable.key)
+                    addItem(2, R.string.card, R.drawable.credit_card)
+                    addItem(3, R.string.note, R.drawable.note_text)
+                }
+                .create()
+                .run {
+                    show()
+                    setOnItemClickListener { parent, view, position, id -> }
+                    setOnItemLongClickListener { parent, view, position, id -> false }
+                }
     }
 
 }

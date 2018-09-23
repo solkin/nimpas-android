@@ -55,6 +55,10 @@ class SafePresenterImpl(
     override fun attachView(view: SafeView) {
         this.view = view
 
+        view.createClicks().subscribe {
+            view.showCreateMenu()
+        }
+
         loadRecords(groupId = getLastId())
     }
 
