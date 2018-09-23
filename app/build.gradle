@@ -47,7 +47,7 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.13'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.github.avito-tech:Konveyor:0.42.2'
+    implementation 'com.github.rubensousa:bottomsheetbuilder:1.6.1'
     kapt 'com.google.dagger:dagger-compiler:2.13'
     kapt 'com.google.dagger:dagger-android-processor:2.13'
-    compile project(path: ':bottom-sheet')
 }

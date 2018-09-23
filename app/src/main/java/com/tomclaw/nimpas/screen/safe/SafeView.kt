@@ -5,10 +5,12 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.VERTICAL
+import android.view.MenuItem
 import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
+import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder
+import com.github.rubensousa.bottomsheetbuilder.adapter.BottomSheetItemClickListener
 import com.jakewharton.rxrelay2.PublishRelay
-import com.tomclaw.bottomsheet.BottomSheet
 import com.tomclaw.nimpas.R
 import io.reactivex.Observable
 
@@ -66,19 +68,13 @@ class SafeViewImpl(
     }
 
     override fun showCreateMenu() {
-        BottomSheet.Builder(view.context)
-                .apply {
-                    addItem(0, R.string.group, R.drawable.folder)
-                    addItem(1, R.string.password, R.drawable.key)
-                    addItem(2, R.string.card, R.drawable.credit_card)
-                    addItem(3, R.string.note, R.drawable.note_text)
-                }
-                .create()
-                .run {
-                    show()
-                    setOnItemClickListener { parent, view, position, id -> }
-                    setOnItemLongClickListener { parent, view, position, id -> false }
-                }
+        BottomSheetBuilder(view.context, R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .setMenu(R.menu.create_menu)
+                .setIconTintColorResource(R.color.color_grey)
+                .setItemClickListener { }
+                .createDialog()
+                .show()
     }
 
 }
