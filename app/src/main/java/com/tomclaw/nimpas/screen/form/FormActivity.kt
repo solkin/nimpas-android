@@ -1,8 +1,12 @@
 package com.tomclaw.nimpas.screen.form
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.journal.GROUP_DEFAULT
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.form.di.FormModule
 import javax.inject.Inject
@@ -13,9 +17,11 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
     lateinit var presenter: FormPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val recordType = intent.getRecordType()
+        val groupId = intent.getGroupId()
         val presenterState = savedInstanceState?.getBundle(KEY_PRESENTER_STATE)
         application.getComponent()
-                .formComponent(FormModule(this, presenterState))
+                .formComponent(FormModule(this, recordType, groupId, presenterState))
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
@@ -51,9 +57,30 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
     }
 
     override fun leaveScreen() {
+        setResult(RESULT_OK)
         finish()
     }
 
+    private fun Intent.getRecordType() = this.getIntExtra(EXTRA_RECORD_TYPE, RECORD_TYPE_INVALID).apply {
+        if (this == RECORD_TYPE_INVALID) {
+            throw IllegalArgumentException("Record type must be specified")
+        }
+    }
+
+    private fun Intent.getGroupId() = this.getLongExtra(EXTRA_GROUP_ID, GROUP_DEFAULT)
+
 }
 
+fun createFormActivityIntent(context: Context,
+                             recordType: Int,
+                             groupId: Long): Intent =
+        Intent(context, FormActivity::class.java)
+                .putExtra(EXTRA_RECORD_TYPE, recordType)
+                .putExtra(EXTRA_GROUP_ID, groupId)
+
 private const val KEY_PRESENTER_STATE = "presenter_state"
+
+private const val EXTRA_RECORD_TYPE = "record_type"
+private const val EXTRA_GROUP_ID = "group_id"
+
+private const val RECORD_TYPE_INVALID = -1

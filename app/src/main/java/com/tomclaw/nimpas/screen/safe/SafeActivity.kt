@@ -8,6 +8,7 @@ import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
+import com.tomclaw.nimpas.screen.form.createFormActivityIntent
 import com.tomclaw.nimpas.screen.safe.di.SafeModule
 import javax.inject.Inject
 
@@ -70,6 +71,15 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun showFormScreen(recordType: Int, groupId: Long) {
+        val intent = createFormActivityIntent(
+                context = this,
+                recordType = recordType,
+                groupId = groupId
+        )
+        startActivityForResult(intent, REQUEST_ADD)
     }
 
     override fun leaveScreen() {

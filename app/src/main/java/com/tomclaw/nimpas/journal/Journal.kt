@@ -29,6 +29,8 @@ interface Journal {
 
     fun addRecord(record: Record): Completable
 
+    fun nextId(): Long
+
 }
 
 class JournalImpl(private val file: File) : Journal {
@@ -36,6 +38,7 @@ class JournalImpl(private val file: File) : Journal {
     private var keyword: String? = null
     private var records: MutableMap<Long, Record>? = null
     private var writeTime: Long = 0
+    private var nextId: Long = 0
 
     override fun init(keyword: String) = Completable.create { emitter ->
         initJournal(keyword)
@@ -84,6 +87,10 @@ class JournalImpl(private val file: File) : Journal {
         }
     }
 
+    override fun nextId(): Long {
+        return ++nextId
+    }
+
     private fun initJournal(keyword: String) {
         this.records = mutableMapOf<Long, Record>().apply {
             writeJournal(keyword, this)
@@ -98,6 +105,7 @@ class JournalImpl(private val file: File) : Journal {
                 writeShort(JOURNAL_VERSION)
                 writeLong(writeTime)
                 // Encrypted data
+                writeLong(nextId)
                 writeInt(records.size)
                 records.values.forEach { record ->
                     writeLong(record.id)
@@ -157,6 +165,8 @@ class JournalImpl(private val file: File) : Journal {
                 when (version) {
                     VERSION_1 -> {
                         val writeTime = readLong()
+                        // Encrypted data
+                        val nextId = readLong()
                         val records = HashMap<Long, Record>()
                         val recordsCount = readInt()
                         for (c in 0 until recordsCount) {
@@ -212,6 +222,7 @@ class JournalImpl(private val file: File) : Journal {
                         }
                         this@JournalImpl.records = records
                         this@JournalImpl.writeTime = writeTime
+                        this@JournalImpl.nextId = nextId
                     }
                     else -> throw UnknownFormatException()
                 }
@@ -232,8 +243,3 @@ class JournalImpl(private val file: File) : Journal {
 private const val JOURNAL_VERSION = 1
 
 private const val VERSION_1: Short = 1
-
-private const val TYPE_GROUP = 1
-private const val TYPE_PASSWORD = 2
-private const val TYPE_CARD = 3
-private const val TYPE_NOTE = 4

@@ -44,3 +44,8 @@ class Note(
 ) : Record(id, groupId, time)
 
 const val GROUP_DEFAULT = 0L
+
+const val TYPE_GROUP = 1
+const val TYPE_PASSWORD = 2
+const val TYPE_CARD = 3
+const val TYPE_NOTE = 4

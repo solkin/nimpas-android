@@ -58,6 +58,7 @@ class FormPresenterImpl(
     }
 
     override fun onBackPressed() {
+        router?.leaveScreen()
     }
 
 }

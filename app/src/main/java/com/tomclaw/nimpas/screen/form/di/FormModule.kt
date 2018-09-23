@@ -15,6 +15,8 @@ import dagger.Provides
 @Module
 class FormModule(
         private val context: Context,
+        private val recordType: Int,
+        private val groupId: Long,
         private val state: Bundle?
 ) {
 
@@ -30,6 +32,6 @@ class FormModule(
     internal fun provideInteractor(
             journal: Journal,
             schedulers: SchedulersFactory
-    ): FormInteractor = FormInteractorImpl(journal, schedulers)
+    ): FormInteractor = FormInteractorImpl(recordType, groupId, journal, schedulers)
 
 }

@@ -30,6 +30,8 @@ interface SafePresenter : ItemClickListener {
 
     interface SafeRouter {
 
+        fun showFormScreen(recordType: Int, groupId: Long)
+
         fun leaveScreen()
 
     }
@@ -55,11 +57,12 @@ class SafePresenterImpl(
     override fun attachView(view: SafeView) {
         this.view = view
 
-        view.createClicks().subscribe {
-            view.showCreateMenu()
+        view.createClicks().subscribe { recordType ->
+            val groupId = getGroupId()
+            router?.showFormScreen(recordType, groupId)
         }
 
-        loadRecords(groupId = getLastId())
+        loadRecords(groupId = getGroupId())
     }
 
     override fun detachView() {
@@ -104,14 +107,15 @@ class SafePresenterImpl(
     override fun onBackPressed() {
         if (navigation.isNotEmpty()) {
             navigation -= navigation.last()
-            loadRecords(groupId = getLastId())
+            loadRecords(groupId = getGroupId())
         } else {
             router?.leaveScreen()
         }
     }
 
     override fun onUpdate() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        loadRecords(groupId = getGroupId())
+        view?.contentUpdated()
     }
 
     override fun onItemClick(item: Item) {
@@ -119,7 +123,7 @@ class SafePresenterImpl(
         loadRecords(item.id)
     }
 
-    private fun getLastId() = navigation.lastOrNull() ?: GROUP_DEFAULT
+    private fun getGroupId() = navigation.lastOrNull() ?: GROUP_DEFAULT
 
 }
 
