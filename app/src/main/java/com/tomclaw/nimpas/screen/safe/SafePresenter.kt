@@ -5,6 +5,7 @@ import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.journal.GROUP_DEFAULT
+import com.tomclaw.nimpas.journal.Group
 import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.screen.safe.adapter.ItemClickListener
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -94,7 +95,10 @@ class SafePresenterImpl(
     }
 
     private fun onLoaded(records: List<Record>) {
-        val items = records.map { recordConverter.convert(it) }
+        val items = records.asSequence()
+                .sortedWith(compareBy({ it !is Group }, { it.time }))
+                .map { recordConverter.convert(it) }
+                .toList()
         val dataSource = ListDataSource(items)
         adapterPresenter.get().onDataSourceChanged(dataSource)
         view?.contentUpdated()
