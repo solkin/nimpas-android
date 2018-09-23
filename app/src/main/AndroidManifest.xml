@@ -17,6 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".screen.form.FormActivity" />
+        <activity android:name=".screen.lock.LockActivity" />
     </application>
 
 </manifest>
