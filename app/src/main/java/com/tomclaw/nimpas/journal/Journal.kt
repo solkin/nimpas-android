@@ -38,8 +38,10 @@ class JournalImpl(private val file: File) : Journal {
     private var writeTime: Long = 0
 
     override fun init(keyword: String) = Completable.create { emitter ->
-        records = mutableMapOf()
-        writeJournal()
+        this.records = mutableMapOf<Long, Record>().apply {
+            writeJournal(this)
+        }
+        emitter.onComplete()
     }
 
     override fun isUnlocked(): Boolean {
@@ -76,15 +78,14 @@ class JournalImpl(private val file: File) : Journal {
         val records = records
         if (records != null) {
             records[record.id] = record
-            writeJournal()
+            writeJournal(records)
             emitter.onComplete()
         } else {
             emitter.onError(JournalIsLockedException())
         }
     }
 
-    private fun writeJournal() {
-        val records = records ?: throw IllegalArgumentException()
+    private fun writeJournal(records: Map<Long, Record>) {
         var stream: DataOutputStream? = null
         try {
             writeTime = System.currentTimeMillis()
