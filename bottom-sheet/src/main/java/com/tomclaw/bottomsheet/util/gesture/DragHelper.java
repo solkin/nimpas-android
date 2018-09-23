@@ -14,8 +14,6 @@
 package com.tomclaw.bottomsheet.util.gesture;
 
 import static com.tomclaw.bottomsheet.util.Condition.ensureAtLeast;
-import static com.tomclaw.bottomsheet.util.Condition.ensureGreater;
-import static com.tomclaw.bottomsheet.util.Condition.ensureSmaller;
 
 /**
  * A helper class, which may be used to measure the distance and speed of drag gestures.
@@ -105,16 +103,6 @@ public class DragHelper {
     }
 
     /**
-     * Returns the distance in pixels, the gesture must last until it is recognized.
-     *
-     * @return The distance in pixels, the gesture must last until it is recognized, as an {@link
-     * Integer} value. The value must be at least 0
-     */
-    public final int getThreshold() {
-        return threshold;
-    }
-
-    /**
      * Marks the instance to be reset. This will cause all properties to be reset to default values,
      * when a value is added by calling the method <code>update(float):void</code> the next time.
      * Therefore this method may be used to start recognizing a new drag gesture, whenever a value
@@ -123,22 +111,6 @@ public class DragHelper {
      */
     public final void reset() {
         reset = true;
-    }
-
-    /**
-     * Marks the instance to be reset. This will cause all properties to be reset to default values,
-     * when a value is added by calling the method <code>update(float):void</code> the next time.
-     * Therefore this method may be used to start recognizing a new drag gesture, whenever a value
-     * is added the next time, while the values of the previous recognition can be still retrieved
-     * until recognizing the new gesture begins. Furthermore, this method changes the threshold,
-     * which is used by the instance.
-     *
-     * @param threshold The distance in pixels, the gesture must last until it is recognized, as an {@link
-     *                  Integer} value. The value must be at least 0
-     */
-    public final void reset(final int threshold) {
-        reset();
-        this.threshold = threshold;
     }
 
     /**
@@ -204,56 +176,6 @@ public class DragHelper {
 
             distance = newDistance;
         }
-    }
-
-    /**
-     * Returns the maximum drag distance.
-     *
-     * @return The maximum drag distance in pixels as a {@link Float} value or 0, if no maximum drag
-     * distance is set
-     */
-    public final float getMaxDragDistance() {
-        return maxDragDistance;
-    }
-
-    /**
-     * Sets the maximum drag distance.
-     *
-     * @param maxDragDistance The maximum drag distance, which should be set, in pixels as a {@link Float} value or
-     *                        0, if no maximum drag distance should be set
-     */
-    public final void setMaxDragDistance(final float maxDragDistance) {
-        if (maxDragDistance != 0) {
-            ensureGreater(maxDragDistance, threshold,
-                    "The maximum drag distance must be greater than " + threshold);
-        }
-
-        this.maxDragDistance = maxDragDistance;
-    }
-
-    /**
-     * Returns the minimum drag distance.
-     *
-     * @return The minimum drag distance in pixels as a {@link Float} value or 0, if no minimum drag
-     * distance is set
-     */
-    public final float getMinDragDistance() {
-        return minDragDistance;
-    }
-
-    /**
-     * Sets the minimum drag distance.
-     *
-     * @param minDragDistance The minimum drag distance, which should be set, in pixels as a {@link Float} value or
-     *                        0, if no minimum drag distance should be set
-     */
-    public final void setMinDragDistance(final float minDragDistance) {
-        if (minDragDistance != 0) {
-            ensureSmaller(minDragDistance, -threshold,
-                    "The minimum drag distance must be smaller than " + -threshold);
-        }
-
-        this.minDragDistance = minDragDistance;
     }
 
     /**

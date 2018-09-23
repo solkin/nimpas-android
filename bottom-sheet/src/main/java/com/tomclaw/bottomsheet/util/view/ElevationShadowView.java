@@ -252,15 +252,6 @@ public class ElevationShadowView extends AppCompatImageView {
     }
 
     /**
-     * Returns, whether parallel light is emulated, or not.
-     *
-     * @return True, if parallel light is emulated, false otherwise
-     */
-    public final boolean isParallelLightEmulated() {
-        return emulateParallelLight;
-    }
-
-    /**
      * Sets, whether parallel light should be emulated, or not.
      *
      * @param emulateParallelLight True, if parallel light should be emulated, false otherwise

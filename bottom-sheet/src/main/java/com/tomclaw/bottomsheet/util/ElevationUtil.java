@@ -326,7 +326,7 @@ public final class ElevationUtil {
             paint.setColor(Color.BLACK);
             paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
             canvas.drawRect(0, 0, bitmapSize, bitmapSize, paint);
-            return BitmapUtil.resize(bitmap, bitmapWidth, bitmapHeight);
+            return resize(bitmap, bitmapWidth, bitmapHeight);
         }
     }
 
@@ -786,6 +786,13 @@ public final class ElevationUtil {
             default:
                 throw new IllegalArgumentException("Invalid orientation: " + orientation);
         }
+    }
+
+    public static Bitmap resize(@NonNull final Bitmap bitmap, final int width, final int height) {
+        ensureNotNull(bitmap, "The bitmap may not be null");
+        ensureAtLeast(width, 1, "The width must be at least 1");
+        ensureAtLeast(height, 1, "The height must be at least 1");
+        return Bitmap.createScaledBitmap(bitmap, width, height, false);
     }
 
 }
