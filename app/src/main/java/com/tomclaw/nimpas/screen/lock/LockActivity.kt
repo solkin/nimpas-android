@@ -1,5 +1,7 @@
 package com.tomclaw.nimpas.screen.lock
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
@@ -51,9 +53,13 @@ class LockActivity : AppCompatActivity(), LockPresenter.LockRouter {
     }
 
     override fun leaveScreen() {
+        setResult(RESULT_OK)
         finish()
     }
 
 }
+
+fun createLockActivityIntent(context: Context): Intent =
+        Intent(context, LockActivity::class.java)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"

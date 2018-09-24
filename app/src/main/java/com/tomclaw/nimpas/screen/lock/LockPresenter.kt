@@ -58,6 +58,7 @@ class LockPresenterImpl(
     }
 
     override fun onBackPressed() {
+        router?.leaveScreen()
     }
 
 }

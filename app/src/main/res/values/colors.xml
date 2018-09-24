@@ -6,6 +6,7 @@
     <color name="color_accent_light">#d3e9d7</color>
 
     <color name="color_grey">#5F6368</color>
+    <color name="color_grey_light">#ecedee</color>
 
     <color name="color_yellow">#EB9736</color>
     <color name="color_yellow_light">#FEEFC3</color>

@@ -4,4 +4,6 @@
     <string name="password">Password</string>
     <string name="card">Credit card</string>
     <string name="note">Note</string>
+    <string name="enter_keyword">Enter a master keyword</string>
+    <string name="unlock">Unlock</string>
 </resources>
