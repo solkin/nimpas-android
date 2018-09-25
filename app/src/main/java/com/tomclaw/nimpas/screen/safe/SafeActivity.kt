@@ -9,6 +9,7 @@ import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.form.createFormActivityIntent
+import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
 import com.tomclaw.nimpas.screen.safe.di.SafeModule
 import javax.inject.Inject
 
@@ -79,6 +80,11 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
                 recordType = recordType,
                 groupId = groupId
         )
+        startActivityForResult(intent, REQUEST_ADD)
+    }
+
+    override fun showLockScreen() {
+        val intent = createLockActivityIntent(context = this)
         startActivityForResult(intent, REQUEST_ADD)
     }
 

@@ -237,9 +237,9 @@ class JournalImpl(private val file: File) : Journal {
 
     private class UnknownRecordException : Exception()
 
-    private class JournalIsLockedException : Exception()
+    class JournalIsLockedException : Exception()
 
-    private class UnlockFailedException : Exception()
+    class UnlockFailedException : Exception()
 
 }
 
