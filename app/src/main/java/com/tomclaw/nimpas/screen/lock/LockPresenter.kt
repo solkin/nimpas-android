@@ -3,6 +3,7 @@ package com.tomclaw.nimpas.screen.lock
 import android.os.Bundle
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 
 interface LockPresenter {
 
@@ -42,8 +43,8 @@ class LockPresenterImpl(
     override fun attachView(view: LockView) {
         this.view = view
 
-        view.keywordChanges().subscribe { keyword = it }
-        view.unlockClicks().subscribe { unlockJournal() }
+        subscriptions += view.keywordChanges().subscribe { keyword = it }
+        subscriptions += view.unlockClicks().subscribe { unlockJournal() }
     }
 
     override fun detachView() {
@@ -68,7 +69,7 @@ class LockPresenterImpl(
     }
 
     private fun unlockJournal() {
-        interactor.unlock(keyword)
+        subscriptions += interactor.unlock(keyword)
                 .observeOn(schedulers.mainThread())
                 .subscribe(
                         { onJournalUnlocked() },

@@ -58,7 +58,7 @@ class SafePresenterImpl(
     override fun attachView(view: SafeView) {
         this.view = view
 
-        view.createClicks().subscribe { recordType ->
+        subscriptions += view.createClicks().subscribe { recordType ->
             val groupId = getGroupId()
             router?.showFormScreen(recordType, groupId)
         }
