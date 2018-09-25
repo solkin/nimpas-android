@@ -35,10 +35,15 @@ class LockPresenterImpl(
     private var view: LockView? = null
     private var router: LockPresenter.LockRouter? = null
 
+    private var keyword: String = state?.getString(KEY_KEYWORD).orEmpty()
+
     private val subscriptions = CompositeDisposable()
 
     override fun attachView(view: LockView) {
         this.view = view
+
+        view.keywordChanges().subscribe { keyword = it }
+        view.unlockClicks().subscribe { unlockJournal() }
     }
 
     override fun detachView() {
@@ -55,10 +60,31 @@ class LockPresenterImpl(
     }
 
     override fun saveState() = Bundle().apply {
+        putString(KEY_KEYWORD, keyword)
     }
 
     override fun onBackPressed() {
         router?.leaveScreen()
     }
 
+    private fun unlockJournal() {
+        interactor.unlock(keyword)
+                .observeOn(schedulers.mainThread())
+                .subscribe(
+                        { onJournalUnlocked() },
+                        { onUnlockFailed() }
+                )
+    }
+
+    private fun onJournalUnlocked() {
+        // TODO: show animation
+        router?.leaveScreen()
+    }
+
+    private fun onUnlockFailed() {
+        // TODO: show animation
+    }
+
 }
+
+private const val KEY_KEYWORD = "keyword"

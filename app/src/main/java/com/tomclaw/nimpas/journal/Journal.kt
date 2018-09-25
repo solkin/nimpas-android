@@ -166,6 +166,7 @@ class JournalImpl(private val file: File) : Journal {
                     VERSION_1 -> {
                         val writeTime = readLong()
                         // Encrypted data
+                        if (false) throw UnlockFailedException()
                         val nextId = readLong()
                         val records = HashMap<Long, Record>()
                         val recordsCount = readInt()
@@ -237,6 +238,8 @@ class JournalImpl(private val file: File) : Journal {
     private class UnknownRecordException : Exception()
 
     private class JournalIsLockedException : Exception()
+
+    private class UnlockFailedException : Exception()
 
 }
 

@@ -11,19 +11,13 @@ import io.reactivex.Observable
 
 interface LockView {
 
-    fun showProgress()
-
-    fun showContent()
-
     fun keywordChanges(): Observable<String>
 
     fun unlockClicks(): Observable<Unit>
 
 }
 
-class LockViewImpl(
-        private val view: View
-) : LockView {
+class LockViewImpl(view: View) : LockView {
 
     private val keywordView: EditText = view.findViewById(R.id.keyword_view)
     private val unlockButton: Button = view.findViewById(R.id.unlock_button)
@@ -33,24 +27,17 @@ class LockViewImpl(
 
     init {
         keywordView.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable) {}
+            override fun afterTextChanged(s: Editable) {}
 
-            override fun beforeTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(text: CharSequence, p1: Int, p2: Int, p3: Int) {
-                keywordChangesRelay.accept(text.toString())
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                keywordChangesRelay.accept(s.toString())
             }
         })
         unlockButton.setOnClickListener { unlockClicksRelay.accept(Unit) }
     }
 
-    override fun showProgress() {
-
-    }
-
-    override fun showContent() {
-
-    }
     override fun keywordChanges(): Observable<String> {
         return keywordChangesRelay
     }
