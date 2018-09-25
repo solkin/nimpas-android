@@ -6,6 +6,7 @@ import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.journal.GROUP_DEFAULT
 import com.tomclaw.nimpas.journal.Group
+import com.tomclaw.nimpas.journal.JournalImpl
 import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.screen.safe.adapter.ItemClickListener
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -32,6 +33,8 @@ interface SafePresenter : ItemClickListener {
     interface SafeRouter {
 
         fun showFormScreen(recordType: Int, groupId: Long)
+
+        fun showLockScreen()
 
         fun leaveScreen()
 
@@ -90,7 +93,7 @@ class SafePresenterImpl(
                 .doAfterTerminate { view?.showContent() }
                 .subscribe(
                         { onLoaded(it) },
-                        { onError() }
+                        { onError(it) }
                 )
     }
 
@@ -104,8 +107,10 @@ class SafePresenterImpl(
         view?.contentUpdated()
     }
 
-    private fun onError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun onError(it: Throwable) {
+        when (it) {
+            is JournalImpl.JournalIsLockedException -> router?.showLockScreen()
+        }
     }
 
     override fun onBackPressed() {
