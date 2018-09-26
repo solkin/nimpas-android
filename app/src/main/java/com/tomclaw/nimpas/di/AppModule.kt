@@ -2,13 +2,8 @@ package com.tomclaw.nimpas.di
 
 import android.app.Application
 import android.content.Context
-import com.tomclaw.nimpas.journal.Card
-import com.tomclaw.nimpas.journal.GROUP_DEFAULT
-import com.tomclaw.nimpas.journal.Group
 import com.tomclaw.nimpas.journal.Journal
 import com.tomclaw.nimpas.journal.JournalImpl
-import com.tomclaw.nimpas.journal.Note
-import com.tomclaw.nimpas.journal.Password
 import com.tomclaw.nimpas.util.SchedulersFactory
 import com.tomclaw.nimpas.util.SchedulersFactoryImpl
 import dagger.Module
@@ -29,11 +24,9 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    internal fun provideJounal(): Journal {
+    internal fun provideJournal(): Journal {
         val file = File(app.filesDir, "journal.dat")
-        return JournalImpl(file).apply {
-            unlock("").subscribe()
-        }
+        return JournalImpl(file)
     }
 
 }

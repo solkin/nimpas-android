@@ -1,6 +1,5 @@
 package com.tomclaw.nimpas.screen.lock
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -54,7 +53,7 @@ class LockActivity : AppCompatActivity(), LockPresenter.LockRouter {
     }
 
     override fun leaveScreen(isUnlocked: Boolean) {
-        val result = if (isUnlocked) { RESULT_OK } else { RESULT_CANCELED }
+        val result = if (isUnlocked) RESULT_OK else RESULT_CANCELED
         setResult(result)
         finish()
     }
