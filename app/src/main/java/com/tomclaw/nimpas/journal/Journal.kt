@@ -72,7 +72,7 @@ class JournalImpl(private val file: File) : Journal {
                 return@create
             }
         }
-        emitter.onError(JournalIsLockedException())
+        emitter.onError(JournalLockedException())
     }
 
     override fun addRecord(record: Record): Completable = Completable.create { emitter ->
@@ -83,7 +83,7 @@ class JournalImpl(private val file: File) : Journal {
             writeJournal(keyword, records)
             emitter.onComplete()
         } else {
-            emitter.onError(JournalIsLockedException())
+            emitter.onError(JournalLockedException())
         }
     }
 
@@ -166,7 +166,7 @@ class JournalImpl(private val file: File) : Journal {
                     VERSION_1 -> {
                         val writeTime = readLong()
                         // Encrypted data
-                        if (false) throw UnlockFailedException()
+                        if (false) throw JournalLockedException()
                         val nextId = readLong()
                         val records = HashMap<Long, Record>()
                         val recordsCount = readInt()
@@ -233,13 +233,11 @@ class JournalImpl(private val file: File) : Journal {
         }
     }
 
-    private class UnknownFormatException : Exception()
+    class UnknownFormatException : Exception()
 
-    private class UnknownRecordException : Exception()
+    class UnknownRecordException : Exception()
 
-    class JournalIsLockedException : Exception()
-
-    class UnlockFailedException : Exception()
+    class JournalLockedException : Exception()
 
 }
 

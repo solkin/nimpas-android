@@ -65,7 +65,8 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            REQUEST_ADD -> {
+            REQUEST_ADD,
+            REQUEST_UNLOCK -> {
                 if (resultCode == RESULT_OK) {
                     presenter.onUpdate()
                 }
@@ -85,7 +86,7 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
 
     override fun showLockScreen() {
         val intent = createLockActivityIntent(context = this)
-        startActivityForResult(intent, REQUEST_ADD)
+        startActivityForResult(intent, REQUEST_UNLOCK)
     }
 
     override fun leaveScreen() {
@@ -96,3 +97,4 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
 private const val REQUEST_ADD = 1
+private const val REQUEST_UNLOCK = 2

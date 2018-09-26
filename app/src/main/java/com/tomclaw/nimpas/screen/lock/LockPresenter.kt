@@ -21,7 +21,7 @@ interface LockPresenter {
 
     interface LockRouter {
 
-        fun leaveScreen()
+        fun leaveScreen(isUnlocked: Boolean)
 
     }
 
@@ -65,7 +65,7 @@ class LockPresenterImpl(
     }
 
     override fun onBackPressed() {
-        router?.leaveScreen()
+        router?.leaveScreen(isUnlocked = false)
     }
 
     private fun unlockJournal() {
@@ -79,7 +79,7 @@ class LockPresenterImpl(
 
     private fun onJournalUnlocked() {
         // TODO: show animation
-        router?.leaveScreen()
+        router?.leaveScreen(isUnlocked = true)
     }
 
     private fun onUnlockFailed() {

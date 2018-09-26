@@ -109,7 +109,7 @@ class SafePresenterImpl(
 
     private fun onError(it: Throwable) {
         when (it) {
-            is JournalImpl.JournalIsLockedException -> router?.showLockScreen()
+            is JournalImpl.JournalLockedException -> router?.showLockScreen()
         }
     }
 
