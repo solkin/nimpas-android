@@ -1,10 +1,24 @@
 package com.tomclaw.nimpas.journal
 
-import com.tomclaw.drawa.util.*
+import com.tomclaw.drawa.util.readNullableInt
+import com.tomclaw.drawa.util.readNullableUTF
+import com.tomclaw.drawa.util.safeClose
+import com.tomclaw.drawa.util.writeNullableInt
+import com.tomclaw.drawa.util.writeNullableUTF
 import io.reactivex.Completable
 import io.reactivex.Single
-import java.io.*
-import java.util.*
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.util.HashMap
+import javax.crypto.Cipher
+import javax.crypto.CipherInputStream
+import javax.crypto.CipherOutputStream
+import javax.crypto.spec.SecretKeySpec
 
 interface Journal {
 
@@ -92,10 +106,13 @@ class JournalImpl(private val file: File) : Journal {
         var stream: DataOutputStream? = null
         try {
             writeTime = System.currentTimeMillis()
-            stream = DataOutputStream(BufferedOutputStream(FileOutputStream(file))).apply {
+            val cipher = Cipher.getInstance("AES").apply {
+                val key = SecretKeySpec(keyword.toByteArray(), "AES")
+                init(Cipher.ENCRYPT_MODE, key)
+            }
+            stream = DataOutputStream(BufferedOutputStream(CipherOutputStream(FileOutputStream(file), cipher))).apply {
                 writeShort(JOURNAL_VERSION)
                 writeLong(writeTime)
-                // Encrypted data
                 writeLong(nextId)
                 writeInt(records.size)
                 records.values.forEach { record ->
@@ -151,12 +168,15 @@ class JournalImpl(private val file: File) : Journal {
         }
         var stream: DataInputStream? = null
         try {
-            stream = DataInputStream(BufferedInputStream(FileInputStream(file))).apply {
+            val cipher = Cipher.getInstance("AES").apply {
+                val key = SecretKeySpec(keyword.toByteArray(), "AES")
+                init(Cipher.DECRYPT_MODE, key)
+            }
+            stream = DataInputStream(BufferedInputStream(CipherInputStream(FileInputStream(file), cipher))).apply {
                 val version = readShort()
                 when (version) {
                     VERSION_1 -> {
                         val writeTime = readLong()
-                        // Encrypted data
                         if (false) throw JournalLockedException()
                         val nextId = readLong()
                         val records = HashMap<Long, Record>()
