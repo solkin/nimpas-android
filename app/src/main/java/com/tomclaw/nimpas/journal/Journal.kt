@@ -1,5 +1,6 @@
 package com.tomclaw.nimpas.journal
 
+import android.annotation.SuppressLint
 import com.tomclaw.drawa.util.readNullableInt
 import com.tomclaw.drawa.util.readNullableUTF
 import com.tomclaw.drawa.util.safeClose
@@ -15,10 +16,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.HashMap
-import javax.crypto.Cipher
-import javax.crypto.CipherInputStream
-import javax.crypto.CipherOutputStream
-import javax.crypto.spec.SecretKeySpec
 
 interface Journal {
 
@@ -106,11 +103,7 @@ class JournalImpl(private val file: File) : Journal {
         var stream: DataOutputStream? = null
         try {
             writeTime = System.currentTimeMillis()
-            val cipher = Cipher.getInstance("AES").apply {
-                val key = SecretKeySpec(keyword.toByteArray(), "AES")
-                init(Cipher.ENCRYPT_MODE, key)
-            }
-            stream = DataOutputStream(BufferedOutputStream(CipherOutputStream(FileOutputStream(file), cipher))).apply {
+            stream = DataOutputStream(BufferedOutputStream(FileOutputStream(file))).apply {
                 writeShort(JOURNAL_VERSION)
                 writeLong(writeTime)
                 writeLong(nextId)
@@ -162,17 +155,14 @@ class JournalImpl(private val file: File) : Journal {
         }
     }
 
+    @SuppressLint("UseSparseArrays")
     private fun readJournal(keyword: String) {
         if (!file.exists()) {
             initJournal(keyword)
         }
         var stream: DataInputStream? = null
         try {
-            val cipher = Cipher.getInstance("AES").apply {
-                val key = SecretKeySpec(keyword.toByteArray(), "AES")
-                init(Cipher.DECRYPT_MODE, key)
-            }
-            stream = DataInputStream(BufferedInputStream(CipherInputStream(FileInputStream(file), cipher))).apply {
+            stream = DataInputStream(BufferedInputStream(FileInputStream(file))).apply {
                 val version = readShort()
                 when (version) {
                     VERSION_1 -> {
