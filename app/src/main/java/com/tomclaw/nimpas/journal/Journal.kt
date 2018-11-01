@@ -16,6 +16,11 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.HashMap
+import javax.crypto.Cipher
+import javax.crypto.CipherInputStream
+import javax.crypto.CipherOutputStream
+import javax.crypto.spec.SecretKeySpec
+
 
 interface Journal {
 
@@ -103,7 +108,11 @@ class JournalImpl(private val file: File) : Journal {
         var stream: DataOutputStream? = null
         try {
             writeTime = System.currentTimeMillis()
-            stream = DataOutputStream(BufferedOutputStream(FileOutputStream(file))).apply {
+            val cipher = Cipher.getInstance("Blowfish").apply {
+                val key = SecretKeySpec(keyword.toByteArray(), "Blowfish")
+                init(Cipher.ENCRYPT_MODE, key)
+            }
+            stream = DataOutputStream(BufferedOutputStream(CipherOutputStream(FileOutputStream(file), cipher))).apply {
                 writeShort(JOURNAL_VERSION)
                 writeLong(writeTime)
                 writeLong(nextId)
@@ -162,7 +171,11 @@ class JournalImpl(private val file: File) : Journal {
         }
         var stream: DataInputStream? = null
         try {
-            stream = DataInputStream(BufferedInputStream(FileInputStream(file))).apply {
+            val cipher = Cipher.getInstance("Blowfish").apply {
+                val key = SecretKeySpec(keyword.toByteArray(), "Blowfish")
+                init(Cipher.DECRYPT_MODE, key)
+            }
+            stream = DataInputStream(BufferedInputStream(CipherInputStream(FileInputStream(file), cipher))).apply {
                 val version = readShort()
                 when (version) {
                     VERSION_1 -> {
