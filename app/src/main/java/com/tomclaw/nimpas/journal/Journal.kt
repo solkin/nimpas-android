@@ -112,9 +112,15 @@ class JournalImpl(private val file: File) : Journal {
                 val key = SecretKeySpec(keyword.toByteArray(), "Blowfish")
                 init(Cipher.ENCRYPT_MODE, key)
             }
-            stream = DataOutputStream(BufferedOutputStream(CipherOutputStream(FileOutputStream(file), cipher))).apply {
+            val fileStream = BufferedOutputStream(FileOutputStream(file))
+            stream = DataOutputStream(fileStream)
+            with(stream) {
                 writeShort(JOURNAL_VERSION)
                 writeLong(writeTime)
+                flush()
+            }
+            stream = DataOutputStream(CipherOutputStream(fileStream, cipher))
+            with(stream) {
                 writeLong(nextId)
                 writeInt(records.size)
                 records.values.forEach { record ->
@@ -175,12 +181,14 @@ class JournalImpl(private val file: File) : Journal {
                 val key = SecretKeySpec(keyword.toByteArray(), "Blowfish")
                 init(Cipher.DECRYPT_MODE, key)
             }
-            stream = DataInputStream(BufferedInputStream(CipherInputStream(FileInputStream(file), cipher))).apply {
-                val version = readShort()
+            val fileStream = BufferedInputStream(FileInputStream(file))
+            stream = DataInputStream(fileStream)
+            val version = stream.readShort()
+            val writeTime = stream.readLong()
+            stream = DataInputStream(CipherInputStream(fileStream, cipher))
+            with(stream) {
                 when (version) {
                     VERSION_1 -> {
-                        val writeTime = readLong()
-                        if (false) throw JournalLockedException()
                         val nextId = readLong()
                         val records = HashMap<Long, Record>()
                         val recordsCount = readInt()
