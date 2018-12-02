@@ -6,8 +6,9 @@ import com.avito.konveyor.blueprint.ItemPresenter
 import com.avito.konveyor.blueprint.ViewHolderBuilder
 import com.tomclaw.nimpas.R
 
-class InputItemBlueprint(override val presenter: ItemPresenter<InputItemView, InputItem>)
-    : ItemBlueprint<InputItemView, InputItem> {
+class InputItemBlueprint(
+        override val presenter: ItemPresenter<InputItemView, InputItem>
+) : ItemBlueprint<InputItemView, InputItem> {
 
     override val viewHolderProvider = ViewHolderBuilder.ViewHolderProvider(
             layoutId = R.layout.input_item,
