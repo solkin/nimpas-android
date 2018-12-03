@@ -1,10 +1,12 @@
 package com.tomclaw.nimpas.screen.form
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.avito.konveyor.ItemBinder
+import com.avito.konveyor.adapter.AdapterPresenter
+import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.journal.GROUP_DEFAULT
 import com.tomclaw.nimpas.main.getComponent
@@ -15,6 +17,12 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
 
     @Inject
     lateinit var presenter: FormPresenter
+
+    @Inject
+    lateinit var adapterPresenter: AdapterPresenter
+
+    @Inject
+    lateinit var binder: ItemBinder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val recordType = intent.getRecordType()
@@ -27,7 +35,9 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.form_activity)
 
-        val view = FormViewImpl(window.decorView)
+
+        val adapter = SimpleRecyclerAdapter(adapterPresenter, binder)
+        val view = FormViewImpl(window.decorView, adapter)
 
         presenter.attachView(view)
     }

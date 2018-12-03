@@ -1,7 +1,9 @@
 package com.tomclaw.nimpas.screen.form
 
 import android.os.Bundle
+import com.avito.konveyor.adapter.AdapterPresenter
 import com.tomclaw.nimpas.util.SchedulersFactory
+import dagger.Lazy
 import io.reactivex.disposables.CompositeDisposable
 
 interface FormPresenter {
@@ -28,6 +30,7 @@ interface FormPresenter {
 
 class FormPresenterImpl(
         private val interactor: FormInteractor,
+        private val adapterPresenter: Lazy<AdapterPresenter>,
         private val schedulers: SchedulersFactory,
         state: Bundle?
 ) : FormPresenter {
