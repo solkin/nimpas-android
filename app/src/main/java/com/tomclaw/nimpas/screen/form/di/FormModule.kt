@@ -11,6 +11,8 @@ import com.tomclaw.nimpas.screen.form.FormInteractor
 import com.tomclaw.nimpas.screen.form.FormInteractorImpl
 import com.tomclaw.nimpas.screen.form.FormPresenter
 import com.tomclaw.nimpas.screen.form.FormPresenterImpl
+import com.tomclaw.nimpas.screen.form.WidgetConverter
+import com.tomclaw.nimpas.screen.form.WidgetConverterImpl
 import com.tomclaw.nimpas.screen.form.adapter.input.InputItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.input.InputItemPresenter
 import com.tomclaw.nimpas.util.PerActivity
@@ -39,8 +41,15 @@ class FormModule(
     internal fun providePresenter(
             interactor: FormInteractor,
             adapterPresenter: Lazy<AdapterPresenter>,
+            widgetConverter: WidgetConverter,
             schedulers: SchedulersFactory
-    ): FormPresenter = FormPresenterImpl(interactor, adapterPresenter, schedulers, state)
+    ): FormPresenter = FormPresenterImpl(
+            interactor,
+            adapterPresenter,
+            widgetConverter,
+            schedulers,
+            state
+    )
 
     @Provides
     @PerActivity
@@ -48,6 +57,12 @@ class FormModule(
             journal: Journal,
             schedulers: SchedulersFactory
     ): FormInteractor = FormInteractorImpl(recordType, groupId, journal, schedulers)
+
+    @Provides
+    @PerActivity
+    internal fun provideRecordConverter(): WidgetConverter {
+        return WidgetConverterImpl()
+    }
 
     @Provides
     @PerActivity

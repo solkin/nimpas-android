@@ -1,10 +1,22 @@
 package com.tomclaw.nimpas.screen.form
 
-import com.tomclaw.nimpas.journal.*
+import com.tomclaw.nimpas.journal.Card
+import com.tomclaw.nimpas.journal.Group
+import com.tomclaw.nimpas.journal.Journal
+import com.tomclaw.nimpas.journal.Note
+import com.tomclaw.nimpas.journal.Password
+import com.tomclaw.nimpas.journal.TYPE_CARD
+import com.tomclaw.nimpas.journal.TYPE_GROUP
+import com.tomclaw.nimpas.journal.TYPE_NOTE
+import com.tomclaw.nimpas.journal.TYPE_PASSWORD
+import com.tomclaw.nimpas.screen.form.model.Widget
 import com.tomclaw.nimpas.util.SchedulersFactory
-import java.util.*
+import io.reactivex.Observable
+import java.util.Random
 
 interface FormInteractor {
+
+    fun getWidgets(): Observable<List<Widget>>
 
 }
 
@@ -16,6 +28,16 @@ class FormInteractorImpl(
 ) : FormInteractor {
 
     private val random = Random(System.currentTimeMillis())
+
+
+    override fun getWidgets(): Observable<List<Widget>> {
+        val widgets: List<Widget> = listOf(
+                Widget.Label(1L, "Label"),
+                Widget.Input(2L, "Hint", "Text")
+        )
+        return Observable.just(widgets)
+                .subscribeOn(schedulers.io())
+    }
 
     init {
         val id = journal.nextId()

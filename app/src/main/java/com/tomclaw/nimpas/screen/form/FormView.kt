@@ -13,6 +13,8 @@ interface FormView {
 
     fun showContent()
 
+    fun contentUpdated()
+
 }
 
 class FormViewImpl(
@@ -32,12 +34,12 @@ class FormViewImpl(
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
     }
 
-    override fun showProgress() {
+    override fun showProgress() {}
 
-    }
+    override fun showContent() {}
 
-    override fun showContent() {
-
+    override fun contentUpdated() {
+        adapter.notifyDataSetChanged()
     }
 
 }

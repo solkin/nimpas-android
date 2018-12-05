@@ -2,9 +2,12 @@ package com.tomclaw.nimpas.screen.form
 
 import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
+import com.avito.konveyor.data_source.ListDataSource
+import com.tomclaw.nimpas.screen.form.model.Widget
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
 
 interface FormPresenter {
 
@@ -31,6 +34,7 @@ interface FormPresenter {
 class FormPresenterImpl(
         private val interactor: FormInteractor,
         private val adapterPresenter: Lazy<AdapterPresenter>,
+        private val widgetConverter: WidgetConverter,
         private val schedulers: SchedulersFactory,
         state: Bundle?
 ) : FormPresenter {
@@ -42,6 +46,8 @@ class FormPresenterImpl(
 
     override fun attachView(view: FormView) {
         this.view = view
+
+        loadWidgets()
     }
 
     override fun detachView() {
@@ -59,6 +65,28 @@ class FormPresenterImpl(
 
     override fun saveState() = Bundle().apply {
     }
+
+    private fun loadWidgets() {
+        subscriptions += interactor.getWidgets()
+                .observeOn(schedulers.mainThread())
+                .doOnSubscribe { view?.showProgress() }
+                .doAfterTerminate { view?.showContent() }
+                .subscribe(
+                        { onLoaded(it) },
+                        { onError(it) }
+                )
+    }
+
+    private fun onLoaded(records: List<Widget>) {
+        val items = records.asSequence()
+                .map { widgetConverter.convert(it) }
+                .toList()
+        val dataSource = ListDataSource(items)
+        adapterPresenter.get().onDataSourceChanged(dataSource)
+        view?.contentUpdated()
+    }
+
+    private fun onError(it: Throwable) {}
 
     override fun onBackPressed() {
         router?.leaveScreen()

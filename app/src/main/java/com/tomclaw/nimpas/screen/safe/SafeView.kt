@@ -51,13 +51,9 @@ class SafeViewImpl(
         createButton.setOnClickListener { showCreateDialog() }
     }
 
-    override fun showProgress() {
+    override fun showProgress() {}
 
-    }
-
-    override fun showContent() {
-
-    }
+    override fun showContent() {}
 
     override fun contentUpdated() {
         adapter.notifyDataSetChanged()
