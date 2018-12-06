@@ -15,6 +15,8 @@ import com.tomclaw.nimpas.screen.form.WidgetConverter
 import com.tomclaw.nimpas.screen.form.WidgetConverterImpl
 import com.tomclaw.nimpas.screen.form.adapter.input.InputItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.input.InputItemPresenter
+import com.tomclaw.nimpas.screen.form.adapter.label.LabelItemBlueprint
+import com.tomclaw.nimpas.screen.form.adapter.label.LabelItemPresenter
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
@@ -77,13 +79,25 @@ class FormModule(
     @Provides
     @IntoSet
     @PerActivity
-    internal fun provideGroupItemBlueprint(
+    internal fun provideInputItemBlueprint(
             presenter: InputItemPresenter
     ): ItemBlueprint<*, *> = InputItemBlueprint(presenter)
 
     @Provides
+    @IntoSet
     @PerActivity
-    internal fun provideGroupItemPresenter(presenter: FormPresenter) =
+    internal fun provideLabelItemBlueprint(
+            presenter: LabelItemPresenter
+    ): ItemBlueprint<*, *> = LabelItemBlueprint(presenter)
+
+    @Provides
+    @PerActivity
+    internal fun provideInputItemPresenter(presenter: FormPresenter) =
             InputItemPresenter()
+
+    @Provides
+    @PerActivity
+    internal fun provideLabelItemPresenter(presenter: FormPresenter) =
+            LabelItemPresenter()
 
 }
