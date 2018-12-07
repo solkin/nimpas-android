@@ -27,7 +27,7 @@ class FormInteractorImpl(
                 Widget.Label(id = 1L, text = "Simple Label"),
                 Widget.Input(id = 2L, hint = "First Input", text = ""),
                 Widget.Input(id = 4L, hint = "Second Input", text = "Default Text"),
-                Widget.Check(id = 5L, text = "Second Input", checked = true)
+                Widget.Check(id = 5L, text = "Checkbox", checked = true)
         )
         return Observable.just(widgets)
                 .subscribeOn(schedulers.io())
