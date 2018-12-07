@@ -6,4 +6,6 @@ sealed class Widget {
 
     class Label(val id: Long, val text: String) : Widget()
 
+    class Check(val id: Long, val text: String, val checked: Boolean) : Widget()
+
 }

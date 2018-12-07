@@ -24,9 +24,10 @@ class FormInteractorImpl(
 
     override fun getWidgets(): Observable<List<Widget>> {
         val widgets: List<Widget> = listOf(
-                Widget.Label(1L, "Simple Label"),
-                Widget.Input(2L, "First Input", ""),
-                Widget.Input(4L, "Second Input", "Default Text")
+                Widget.Label(id = 1L, text = "Simple Label"),
+                Widget.Input(id = 2L, hint = "First Input", text = ""),
+                Widget.Input(id = 4L, hint = "Second Input", text = "Default Text"),
+                Widget.Check(id = 5L, text = "Second Input", checked = true)
         )
         return Observable.just(widgets)
                 .subscribeOn(schedulers.io())

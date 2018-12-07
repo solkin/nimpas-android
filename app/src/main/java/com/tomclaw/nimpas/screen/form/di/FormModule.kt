@@ -13,6 +13,8 @@ import com.tomclaw.nimpas.screen.form.FormPresenter
 import com.tomclaw.nimpas.screen.form.FormPresenterImpl
 import com.tomclaw.nimpas.screen.form.WidgetConverter
 import com.tomclaw.nimpas.screen.form.WidgetConverterImpl
+import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemBlueprint
+import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.input.InputItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.input.InputItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.label.LabelItemBlueprint
@@ -91,6 +93,13 @@ class FormModule(
     ): ItemBlueprint<*, *> = LabelItemBlueprint(presenter)
 
     @Provides
+    @IntoSet
+    @PerActivity
+    internal fun provideCheckItemBlueprint(
+            presenter: CheckItemPresenter
+    ): ItemBlueprint<*, *> = CheckItemBlueprint(presenter)
+
+    @Provides
     @PerActivity
     internal fun provideInputItemPresenter(presenter: FormPresenter) =
             InputItemPresenter()
@@ -99,5 +108,10 @@ class FormModule(
     @PerActivity
     internal fun provideLabelItemPresenter(presenter: FormPresenter) =
             LabelItemPresenter()
+
+    @Provides
+    @PerActivity
+    internal fun provideCheckItemPresenter(presenter: FormPresenter) =
+            CheckItemPresenter()
 
 }
