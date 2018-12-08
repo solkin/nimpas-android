@@ -160,7 +160,7 @@ class JournalImpl(private val file: File) : Journal {
                             writeInt(TYPE_NOTE)
                             record.run {
                                 writeUTF(title)
-                                writeUTF(text)
+                                writeUTF(title)
                             }
                         }
                     }*/

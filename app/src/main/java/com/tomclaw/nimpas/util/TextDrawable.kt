@@ -79,11 +79,11 @@ class TextDrawable private constructor(builder: Builder) : ShapeDrawable(builder
         width = builder.width
         radius = builder.radius
 
-        // text and color
+        // title and color
         text = if (builder.toUpperCase) builder.text.toUpperCase() else builder.text
         color = builder.color
 
-        // text paint settings
+        // title paint settings
         fontSize = builder.fontSize
         textPaint = Paint()
         textPaint.color = builder.textColor
@@ -125,7 +125,7 @@ class TextDrawable private constructor(builder: Builder) : ShapeDrawable(builder
         val count = canvas.save()
         canvas.translate(r.left.toFloat(), r.top.toFloat())
 
-        // draw text
+        // draw title
         val width = if (this.width < 0) r.width() else this.width
         val height = if (this.height < 0) r.height() else this.height
         val fontSize = if (this.fontSize < 0) Math.min(width, height) / 2 else this.fontSize

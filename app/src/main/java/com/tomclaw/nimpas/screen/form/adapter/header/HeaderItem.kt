@@ -1,29 +1,29 @@
-package com.tomclaw.nimpas.screen.form.adapter.label
+package com.tomclaw.nimpas.screen.form.adapter.header
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.avito.konveyor.blueprint.Item
 
-class LabelItem(
+class HeaderItem(
         override val id: Long,
-        val text: String
+        val title: String
 ) : Item, Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
-        writeString(text)
+        writeString(title)
     }
 
     override fun describeContents(): Int = 0
 
-    companion object CREATOR : Parcelable.Creator<LabelItem> {
-        override fun createFromParcel(parcel: Parcel): LabelItem {
+    companion object CREATOR : Parcelable.Creator<HeaderItem> {
+        override fun createFromParcel(parcel: Parcel): HeaderItem {
             val id = parcel.readLong()
             val text = parcel.readString().orEmpty()
-            return LabelItem(id, text)
+            return HeaderItem(id, text)
         }
 
-        override fun newArray(size: Int): Array<LabelItem?> {
+        override fun newArray(size: Int): Array<HeaderItem?> {
             return arrayOfNulls(size)
         }
     }

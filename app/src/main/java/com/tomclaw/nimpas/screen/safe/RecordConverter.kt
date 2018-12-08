@@ -23,7 +23,7 @@ class RecordConverterImpl : RecordConverter {
         TYPE_GROUP -> GroupItem(record.id, record.getField("title"))
         TYPE_PASSWORD -> PasswordItem(record.id, record.getField("title"), record.getField("username"))
         TYPE_CARD -> CardItem(record.id, record.getField("title"), record.getField("number"))
-        TYPE_NOTE -> NoteItem(record.id, record.getField("title"), record.getField("text"))
+        TYPE_NOTE -> NoteItem(record.id, record.getField("title"), record.getField("title"))
         else -> throw IllegalArgumentException("Unknown record type!")
     }
 

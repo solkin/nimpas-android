@@ -15,6 +15,6 @@
         android:paddingBottom="22dp"
         android:textColor="?android:textColorPrimary"
         android:textSize="16sp"
-        tools:text="Label" />
+        tools:text="Check" />
 
 </FrameLayout>

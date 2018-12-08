@@ -17,8 +17,8 @@ import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemPresenter
-import com.tomclaw.nimpas.screen.form.adapter.label.LabelItemBlueprint
-import com.tomclaw.nimpas.screen.form.adapter.label.LabelItemPresenter
+import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItemBlueprint
+import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItemPresenter
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
@@ -88,9 +88,9 @@ class FormModule(
     @Provides
     @IntoSet
     @PerActivity
-    internal fun provideLabelItemBlueprint(
-            presenter: LabelItemPresenter
-    ): ItemBlueprint<*, *> = LabelItemBlueprint(presenter)
+    internal fun provideHeaderItemBlueprint(
+            presenter: HeaderItemPresenter
+    ): ItemBlueprint<*, *> = HeaderItemBlueprint(presenter)
 
     @Provides
     @IntoSet
@@ -106,8 +106,8 @@ class FormModule(
 
     @Provides
     @PerActivity
-    internal fun provideLabelItemPresenter(presenter: FormPresenter) =
-            LabelItemPresenter()
+    internal fun provideHeaderItemPresenter(presenter: FormPresenter) =
+            HeaderItemPresenter()
 
     @Provides
     @PerActivity

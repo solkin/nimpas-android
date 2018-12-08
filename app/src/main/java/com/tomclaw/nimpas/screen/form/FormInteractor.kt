@@ -24,10 +24,10 @@ class FormInteractorImpl(
     override fun getWidgets(): Observable<List<Widget>> {
         val widgets: List<Widget> = listOf(
                 Widget.Edit(id = 2L, hint = "Название", text = ""),
-                Widget.Label(id = 1L, text = "Данные для входа"),
+                Widget.Header(id = 1L, text = "Данные для входа"),
                 Widget.Edit(id = 4L, hint = "Логин", text = ""),
                 Widget.Edit(id = 4L, hint = "Пароль", text = ""),
-                Widget.Label(id = 1L, text = "Дополнительно"),
+                Widget.Header(id = 1L, text = "Дополнительно"),
                 Widget.Edit(id = 4L, hint = "URL", text = ""),
                 Widget.Edit(id = 4L, hint = "Описание", text = "")
         )
