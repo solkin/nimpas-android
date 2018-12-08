@@ -1,10 +1,10 @@
-package com.tomclaw.nimpas.screen.form.adapter.input
+package com.tomclaw.nimpas.screen.form.adapter.edit
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.avito.konveyor.blueprint.Item
 
-class InputItem(
+class EditItem(
         override val id: Long,
         val hint: String,
         val text: String
@@ -18,15 +18,15 @@ class InputItem(
 
     override fun describeContents(): Int = 0
 
-    companion object CREATOR : Parcelable.Creator<InputItem> {
-        override fun createFromParcel(parcel: Parcel): InputItem {
+    companion object CREATOR : Parcelable.Creator<EditItem> {
+        override fun createFromParcel(parcel: Parcel): EditItem {
             val id = parcel.readLong()
             val hint = parcel.readString().orEmpty()
             val text = parcel.readString().orEmpty()
-            return InputItem(id, hint, text)
+            return EditItem(id, hint, text)
         }
 
-        override fun newArray(size: Int): Array<InputItem?> {
+        override fun newArray(size: Int): Array<EditItem?> {
             return arrayOfNulls(size)
         }
     }

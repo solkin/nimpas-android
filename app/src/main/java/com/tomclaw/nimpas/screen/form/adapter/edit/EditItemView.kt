@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.form.adapter.input
+package com.tomclaw.nimpas.screen.form.adapter.edit
 
 import android.view.View
 import android.widget.EditText
@@ -6,7 +6,7 @@ import com.avito.konveyor.adapter.BaseViewHolder
 import com.avito.konveyor.blueprint.ItemView
 import com.tomclaw.nimpas.R
 
-interface InputItemView : ItemView {
+interface EditItemView : ItemView {
 
     fun setHint(hint: String)
 
@@ -16,9 +16,9 @@ interface InputItemView : ItemView {
 
 }
 
-class InputItemViewHolder(view: View) : BaseViewHolder(view), InputItemView {
+class EditItemViewHolder(view: View) : BaseViewHolder(view), EditItemView {
 
-    private val input: EditText = view.findViewById(R.id.input)
+    private val edit: EditText = view.findViewById(R.id.edit)
     private var listener: (() -> Unit)? = null
 
     init {
@@ -26,11 +26,11 @@ class InputItemViewHolder(view: View) : BaseViewHolder(view), InputItemView {
     }
 
     override fun setHint(hint: String) {
-        input.hint = hint
+        edit.hint = hint
     }
 
     override fun setText(text: String) {
-        input.setText(text)
+        edit.setText(text)
     }
 
     override fun setOnClickListener(listener: (() -> Unit)?) {

@@ -23,10 +23,13 @@ class FormInteractorImpl(
 
     override fun getWidgets(): Observable<List<Widget>> {
         val widgets: List<Widget> = listOf(
-                Widget.Label(id = 1L, text = "Транспортное средство"),
-                Widget.Input(id = 2L, hint = "Регистрационный знак", text = ""),
-                Widget.Input(id = 4L, hint = "Second Input", text = "Default Text"),
-                Widget.Check(id = 5L, text = "Checkbox", checked = true)
+                Widget.Edit(id = 2L, hint = "Название", text = ""),
+                Widget.Label(id = 1L, text = "Данные для входа"),
+                Widget.Edit(id = 4L, hint = "Логин", text = ""),
+                Widget.Edit(id = 4L, hint = "Пароль", text = ""),
+                Widget.Label(id = 1L, text = "Дополнительно"),
+                Widget.Edit(id = 4L, hint = "URL", text = ""),
+                Widget.Edit(id = 4L, hint = "Описание", text = "")
         )
         return Observable.just(widgets)
                 .subscribeOn(schedulers.io())

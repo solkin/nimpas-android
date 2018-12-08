@@ -6,7 +6,7 @@
     android:background="@color/color_form_item_background">
 
     <EditText
-        android:id="@+id/input"
+        android:id="@+id/edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
@@ -17,6 +17,6 @@
         android:textColor="@color/color_form_item_text"
         android:textColorHint="@color/color_form_item_hint"
         android:textSize="16sp"
-        tools:text="Input" />
+        tools:hint="Edit" />
 
 </FrameLayout>
