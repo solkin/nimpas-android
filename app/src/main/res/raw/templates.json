@@ -1,54 +1,159 @@
-[
-  {
-    "type": 2,
-    "title": "Password",
-    "icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\"><path d=\"M7 14a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2m5.65-4C11.83 7.67 9.61 6 7 6a6 6 0 0 0-6 6 6 6 0 0 0 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4z\"\/><\/svg>",
-    "fields": [
-      {
-        "key": "title",
-        "type": "string",
-        "title": "Title"
-      },
-      {
-        "type": "header",
-        "title": "Login details"
-      },
-      {
-        "key": "username",
-        "type": "string",
-        "title": "Title",
-        "params": [
-          "optional"
-        ]
-      },
-      {
-        "key": "password",
-        "type": "string",
-        "params": [
-          "optional",
-          "password"
-        ]
-      },
-      {
-        "type": "header",
-        "title": "Additional info"
-      },
-      {
-        "key": "url",
-        "type": "string",
-        "params": [
-          "optional",
-          "url"
-        ]
-      },
-      {
-        "key": "description",
-        "type": "string",
-        "params": [
-          "optional",
-          "autocomplete"
-        ]
-      }
-    ]
-  }
-]
+{
+  "id": "root",
+  "nested": [
+    {
+      "id": "group",
+      "type": 1,
+      "title": "Group",
+      "icon": "M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8c0-1.11-.9-2-2-2h-8z",
+      "color": "#5F6368",
+      "fields": [
+        {
+          "type": "string",
+          "key": "title",
+          "title": "Title"
+        }
+      ]
+    },
+    {
+      "id": "password",
+      "type": 2,
+      "title": "Password",
+      "icon": "M7 14a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2m5.65-4C11.83 7.67 9.61 6 7 6a6 6 0 0 0-6 6 6 6 0 0 0 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4z",
+      "color": "#5F6368",
+      "fields": [
+        {
+          "type": "string",
+          "key": "title",
+          "title": "Title"
+        },
+        {
+          "type": "header",
+          "title": "Login details"
+        },
+        {
+          "type": "string",
+          "key": "username",
+          "title": "Title",
+          "params": [
+            "optional"
+          ]
+        },
+        {
+          "type": "string",
+          "key": "password",
+          "params": [
+            "optional",
+            "password"
+          ]
+        },
+        {
+          "type": "header",
+          "title": "Additional info"
+        },
+        {
+          "type": "string",
+          "key": "url",
+          "params": [
+            "optional",
+            "url"
+          ]
+        },
+        {
+          "type": "string",
+          "key": "description",
+          "params": [
+            "optional",
+            "autocomplete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "card",
+      "type": 3,
+      "title": "Credit card",
+      "icon": "M20 8H4V6h16m0 12H4v-6h16m0-8H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-1.11-.9-2-2-2z",
+      "color": "#5F6368",
+      "fields": [
+        {
+          "type": "string",
+          "key": "title",
+          "title": "Title"
+        },
+        {
+          "type": "header",
+          "title": "Card details"
+        },
+        {
+          "type": "string",
+          "key": "card_number",
+          "title": "Card number",
+          "params": [
+            "card_number"
+          ]
+        },
+        {
+          "type": "string",
+          "key": "card_expiration",
+          "params": [
+            "optional",
+            "card_expiration"
+          ]
+        },
+        {
+          "type": "string",
+          "key": "card_holder",
+          "params": [
+            "optional",
+            "upper_case"
+          ]
+        },
+        {
+          "type": "header",
+          "title": "Security"
+        },
+        {
+          "type": "string",
+          "key": "card_code",
+          "params": [
+            "optional",
+            "number",
+            "password"
+          ]
+        },
+        {
+          "type": "string",
+          "key": "card_pin",
+          "params": [
+            "optional",
+            "number",
+            "password"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "note",
+      "type": 4,
+      "title": "Note",
+      "icon": "M14 10h5.5L14 4.5zM5 3h10l6 6v10a2 2 0 0 1-2 2H5c-1.11 0-2-.9-2-2V5c0-1.11.89-2 2-2m0 9v2h14v-2zm0 4v2h9v-2z",
+      "color": "#5F6368",
+      "fields": [
+        {
+          "type": "string",
+          "key": "title",
+          "title": "Title"
+        },
+        {
+          "type": "string",
+          "key": "text",
+          "title": "Text",
+          "params": [
+            "multiline"
+          ]
+        }
+      ]
+    }
+  ]
+}
