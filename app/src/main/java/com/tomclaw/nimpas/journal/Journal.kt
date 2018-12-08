@@ -1,11 +1,7 @@
 package com.tomclaw.nimpas.journal
 
 import android.annotation.SuppressLint
-import com.tomclaw.drawa.util.readNullableInt
-import com.tomclaw.drawa.util.readNullableUTF
 import com.tomclaw.drawa.util.safeClose
-import com.tomclaw.drawa.util.writeNullableInt
-import com.tomclaw.drawa.util.writeNullableUTF
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.BufferedInputStream
@@ -127,7 +123,13 @@ class JournalImpl(private val file: File) : Journal {
                     writeLong(record.id)
                     writeLong(record.groupId)
                     writeLong(record.time)
-                    when (record) {
+                    writeInt(record.type)
+                    writeInt(record.fields.size)
+                    record.fields.forEach { (key, value) ->
+                        writeUTF(key)
+                        writeUTF(value)
+                    }
+                    /*when (record) {
                         is Group -> {
                             writeInt(TYPE_GROUP)
                             record.run {
@@ -161,7 +163,7 @@ class JournalImpl(private val file: File) : Journal {
                                 writeUTF(text)
                             }
                         }
-                    }
+                    }*/
                 }
                 flush()
             }
@@ -196,52 +198,15 @@ class JournalImpl(private val file: File) : Journal {
                             val id = readLong()
                             val groupId = readLong()
                             val time = readLong()
-                            val recordType = readInt()
-                            val record: Record = when (recordType) {
-                                TYPE_GROUP -> {
-                                    Group(
-                                            id,
-                                            groupId,
-                                            time,
-                                            title = readUTF()
-                                    )
-                                }
-                                TYPE_PASSWORD -> {
-                                    Password(
-                                            id,
-                                            groupId,
-                                            time,
-                                            title = readUTF(),
-                                            username = readNullableUTF(),
-                                            password = readNullableUTF(),
-                                            url = readNullableUTF(),
-                                            description = readNullableUTF()
-                                    )
-                                }
-                                TYPE_CARD -> {
-                                    Card(
-                                            id,
-                                            groupId,
-                                            time,
-                                            title = readUTF(),
-                                            number = readUTF(),
-                                            expiration = readNullableInt(),
-                                            holder = readNullableUTF(),
-                                            security = readNullableInt()
-                                    )
-                                }
-                                TYPE_NOTE -> {
-                                    Note(
-                                            id,
-                                            groupId,
-                                            time,
-                                            title = readUTF(),
-                                            text = readUTF()
-                                    )
-                                }
-                                else -> throw UnknownRecordException()
+                            val type = readInt()
+                            val fields = mutableMapOf<String, String>()
+                            val fieldsCount = readInt()
+                            for (i in 0 until fieldsCount) {
+                                val key = readUTF()
+                                val value = readUTF()
+                                fields += key to value
                             }
-                            records[id] = record
+                            records[id] = Record(id, groupId, time, type, fields)
                         }
                         this@JournalImpl.records = records
                         this@JournalImpl.writeTime = writeTime

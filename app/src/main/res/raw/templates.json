@@ -1,0 +1,54 @@
+[
+  {
+    "type": 2,
+    "title": "Password",
+    "icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\"><path d=\"M7 14a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2m5.65-4C11.83 7.67 9.61 6 7 6a6 6 0 0 0-6 6 6 6 0 0 0 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4z\"\/><\/svg>",
+    "fields": [
+      {
+        "key": "title",
+        "type": "string",
+        "title": "Title"
+      },
+      {
+        "type": "header",
+        "title": "Login details"
+      },
+      {
+        "key": "username",
+        "type": "string",
+        "title": "Title",
+        "params": [
+          "optional"
+        ]
+      },
+      {
+        "key": "password",
+        "type": "string",
+        "params": [
+          "optional",
+          "password"
+        ]
+      },
+      {
+        "type": "header",
+        "title": "Additional info"
+      },
+      {
+        "key": "url",
+        "type": "string",
+        "params": [
+          "optional",
+          "url"
+        ]
+      },
+      {
+        "key": "description",
+        "type": "string",
+        "params": [
+          "optional",
+          "autocomplete"
+        ]
+      }
+    ]
+  }
+]
