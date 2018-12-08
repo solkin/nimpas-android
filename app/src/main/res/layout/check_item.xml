@@ -3,12 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp">
+    android:background="@color/color_form_item_background"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
     <CheckBox
         android:id="@+id/check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="22dp"
+        android:paddingBottom="22dp"
         android:textColor="?android:textColorPrimary"
         android:textSize="16sp"
         tools:text="Label" />

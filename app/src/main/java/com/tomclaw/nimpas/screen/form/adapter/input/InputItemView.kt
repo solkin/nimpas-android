@@ -1,6 +1,5 @@
 package com.tomclaw.nimpas.screen.form.adapter.input
 
-import android.support.design.widget.TextInputLayout
 import android.view.View
 import android.widget.EditText
 import com.avito.konveyor.adapter.BaseViewHolder
@@ -19,7 +18,6 @@ interface InputItemView : ItemView {
 
 class InputItemViewHolder(view: View) : BaseViewHolder(view), InputItemView {
 
-    private val inputLayout: TextInputLayout = view.findViewById(R.id.input_layout)
     private val input: EditText = view.findViewById(R.id.input)
     private var listener: (() -> Unit)? = null
 
@@ -28,7 +26,7 @@ class InputItemViewHolder(view: View) : BaseViewHolder(view), InputItemView {
     }
 
     override fun setHint(hint: String) {
-        inputLayout.hint = hint
+        input.hint = hint
     }
 
     override fun setText(text: String) {

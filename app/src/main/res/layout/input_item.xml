@@ -3,23 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp">
+    android:background="@color/color_form_item_background">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout"
+    <EditText
+        android:id="@+id/input"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="18sp"
-            tools:hint="Hint"
-            tools:text="Input" />
-
-    </android.support.design.widget.TextInputLayout>
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="22dp"
+        android:textColor="@color/color_form_item_text"
+        android:textColorHint="@color/color_form_item_hint"
+        android:textSize="16sp"
+        tools:text="Input" />
 
 </FrameLayout>

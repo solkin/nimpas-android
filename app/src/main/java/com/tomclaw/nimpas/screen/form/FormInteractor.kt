@@ -21,11 +21,10 @@ class FormInteractorImpl(
 
     private val random = Random(System.currentTimeMillis())
 
-
     override fun getWidgets(): Observable<List<Widget>> {
         val widgets: List<Widget> = listOf(
-                Widget.Label(id = 1L, text = "Simple Label"),
-                Widget.Input(id = 2L, hint = "First Input", text = ""),
+                Widget.Label(id = 1L, text = "Транспортное средство"),
+                Widget.Input(id = 2L, hint = "Регистрационный знак", text = ""),
                 Widget.Input(id = 4L, hint = "Second Input", text = "Default Text"),
                 Widget.Check(id = 5L, text = "Checkbox", checked = true)
         )

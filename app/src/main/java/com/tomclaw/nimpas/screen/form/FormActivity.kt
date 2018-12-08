@@ -25,8 +25,8 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
     lateinit var binder: ItemBinder
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val recordType = intent.getRecordType()
-        val groupId = intent.getGroupId()
+        val recordType = 0//intent.getRecordType()
+        val groupId = 0L//intent.getGroupId()
         val presenterState = savedInstanceState?.getBundle(KEY_PRESENTER_STATE)
         application.getComponent()
                 .formComponent(FormModule(this, recordType, groupId, presenterState))
