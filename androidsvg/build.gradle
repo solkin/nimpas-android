@@ -1,0 +1,15 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+    }
+
+    dependencies {
+        testImplementation 'junit:junit:4.12'
+        testImplementation 'org.robolectric:robolectric:3.8'
+    }
+}

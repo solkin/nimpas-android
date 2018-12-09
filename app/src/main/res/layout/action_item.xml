@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+    <FrameLayout
+        android:id="@+id/circle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/circle_back">
+
+        <com.caverock.androidsvg.SVGImageView
+            android:id="@+id/icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:tint="@color/color_grey_light"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/folder"
+            tools:tint="@android:color/white" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:paddingStart="12dp"
+        android:paddingLeft="12dp"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="16sp"
+        tools:ignore="RtlSymmetry"
+        tools:text="Title" />
+
+</LinearLayout>

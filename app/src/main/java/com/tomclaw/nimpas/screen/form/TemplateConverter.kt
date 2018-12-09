@@ -1,7 +1,8 @@
 package com.tomclaw.nimpas.screen.form
 
+import android.graphics.Color
 import com.avito.konveyor.blueprint.Item
-import com.tomclaw.nimpas.screen.form.adapter.group.GroupItem
+import com.tomclaw.nimpas.screen.form.adapter.action.ActionItem
 import com.tomclaw.nimpas.templates.Template
 
 interface TemplateConverter {
@@ -13,14 +14,12 @@ interface TemplateConverter {
 class TemplateConverterImpl : TemplateConverter {
 
     override fun convert(template: Template): Item {
-        return GroupItem(template.id, template.title.orEmpty())
+        return ActionItem(
+                id = template.id,
+                title = template.title.orEmpty(),
+                icon = template.icon,
+                color = Color.parseColor(template.color)
+        )
     }
-
-//    override fun convert(widget: Widget): Item = when (widget) {
-//        is Widget.Group -> GroupItem(widget.id, widget.text)
-//        is Widget.Edit -> EditItem(widget.id, widget.hint, widget.text)
-//        is Widget.Header -> HeaderItem(widget.id, widget.text)
-//        is Widget.Check -> CheckItem(widget.id, widget.text, widget.checked)
-//    }
 
 }

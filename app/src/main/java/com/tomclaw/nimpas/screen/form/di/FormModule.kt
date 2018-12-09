@@ -15,12 +15,12 @@ import com.tomclaw.nimpas.screen.form.FormPresenter
 import com.tomclaw.nimpas.screen.form.FormPresenterImpl
 import com.tomclaw.nimpas.screen.form.TemplateConverter
 import com.tomclaw.nimpas.screen.form.TemplateConverterImpl
+import com.tomclaw.nimpas.screen.form.adapter.action.ActionItemBlueprint
+import com.tomclaw.nimpas.screen.form.adapter.action.ActionItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemPresenter
-import com.tomclaw.nimpas.screen.form.adapter.group.GroupItemBlueprint
-import com.tomclaw.nimpas.screen.form.adapter.group.GroupItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItemPresenter
 import com.tomclaw.nimpas.templates.TemplateRepository
@@ -101,9 +101,9 @@ class FormModule(
     @Provides
     @IntoSet
     @PerActivity
-    internal fun provideGroupItemBlueprint(
-            presenter: GroupItemPresenter
-    ): ItemBlueprint<*, *> = GroupItemBlueprint(presenter)
+    internal fun provideActionItemBlueprint(
+            presenter: ActionItemPresenter
+    ): ItemBlueprint<*, *> = ActionItemBlueprint(presenter)
 
     @Provides
     @IntoSet
@@ -128,8 +128,8 @@ class FormModule(
 
     @Provides
     @PerActivity
-    internal fun provideGroupItemPresenter(presenter: FormPresenter) =
-            GroupItemPresenter()
+    internal fun provideActionItemPresenter(presenter: FormPresenter) =
+            ActionItemPresenter()
 
     @Provides
     @PerActivity
