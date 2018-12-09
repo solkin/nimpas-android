@@ -2,35 +2,42 @@ package com.tomclaw.nimpas.templates
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.avito.konveyor.blueprint.Item
 
 class Template(
         val id: String,
         val type: Int?,
         val title: String?,
         val icon: String?,
-        val color: Int?,
-        val fields: Int?,
-        val nested: Int?
+        val color: String?,
+        val fields: List<Field>?,
+        val nested: List<Template>?
 ) : Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeLong(id)
+        writeString(id)
+        writeInt(type ?: -1)
         writeString(title)
-        writeString(subtitle)
+        writeString(icon)
+        writeString(color)
+        writeTypedList(fields)
+        writeTypedList(nested)
     }
 
     override fun describeContents(): Int = 0
 
-    companion object CREATOR : Parcelable.Creator<PasswordItem> {
-        override fun createFromParcel(parcel: Parcel): PasswordItem {
-            val id = parcel.readLong()
-            val title = parcel.readString().orEmpty()
-            val subtitle = parcel.readString()
-            return PasswordItem(id, title, subtitle)
+    companion object CREATOR : Parcelable.Creator<Template> {
+        override fun createFromParcel(parcel: Parcel): Template {
+            val id = parcel.readString().orEmpty()
+            val type = parcel.readInt().takeIf { it != -1 }
+            val title = parcel.readString()
+            val icon = parcel.readString()
+            val color = parcel.readString()
+            val fields = parcel.createTypedArrayList(Field.CREATOR)
+            val nested = parcel.createTypedArrayList(Template.CREATOR)
+            return Template(id, type, title, icon, color, fields, nested)
         }
 
-        override fun newArray(size: Int): Array<PasswordItem?> {
+        override fun newArray(size: Int): Array<Template?> {
             return arrayOfNulls(size)
         }
     }

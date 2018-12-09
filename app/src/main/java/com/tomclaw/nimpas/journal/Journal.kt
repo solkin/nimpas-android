@@ -129,41 +129,6 @@ class JournalImpl(private val file: File) : Journal {
                         writeUTF(key)
                         writeUTF(value)
                     }
-                    /*when (record) {
-                        is Group -> {
-                            writeInt(TYPE_GROUP)
-                            record.run {
-                                writeUTF(title)
-                            }
-                        }
-                        is Password -> {
-                            writeInt(TYPE_PASSWORD)
-                            record.run {
-                                writeUTF(title)
-                                writeNullableUTF(username)
-                                writeNullableUTF(password)
-                                writeNullableUTF(url)
-                                writeNullableUTF(description)
-                            }
-                        }
-                        is Card -> {
-                            writeInt(TYPE_CARD)
-                            record.run {
-                                writeUTF(title)
-                                writeUTF(number)
-                                writeNullableInt(expiration)
-                                writeNullableUTF(holder)
-                                writeNullableInt(security)
-                            }
-                        }
-                        is Note -> {
-                            writeInt(TYPE_NOTE)
-                            record.run {
-                                writeUTF(title)
-                                writeUTF(title)
-                            }
-                        }
-                    }*/
                 }
                 flush()
             }
