@@ -67,14 +67,14 @@ class FormPresenterImpl(
     }
 
     private fun loadWidgets() {
-        subscriptions += interactor.getWidgets()
-                .observeOn(schedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.showContent() }
-                .subscribe(
-                        { onLoaded(it) },
-                        { onError(it) }
-                )
+//        subscriptions += interactor.getWidgets()
+//                .observeOn(schedulers.mainThread())
+//                .doOnSubscribe { view?.showProgress() }
+//                .doAfterTerminate { view?.showContent() }
+//                .subscribe(
+//                        { onLoaded(it) },
+//                        { onError(it) }
+//                )
     }
 
     private fun onLoaded(records: List<Widget>) {

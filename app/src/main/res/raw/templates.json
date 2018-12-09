@@ -1,179 +1,176 @@
-{
-  "id": "root",
-  "nested": [
-    {
-      "id": "group",
-      "type": 1,
-      "title": "Group",
-      "icon": "M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8c0-1.11-.9-2-2-2h-8z",
-      "color": "#5F6368",
-      "fields": [
-        {
-          "type": "string",
-          "params": {
-            "title": "Title"
-          }
+[
+  {
+    "id": "group",
+    "type": 1,
+    "title": "Group",
+    "icon": "M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8c0-1.11-.9-2-2-2h-8z",
+    "color": "#5F6368",
+    "fields": [
+      {
+        "type": "string",
+        "params": {
+          "title": "Title"
         }
-      ]
-    },
-    {
-      "id": "password",
-      "type": 2,
-      "title": "Password",
-      "icon": "M7 14a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2m5.65-4C11.83 7.67 9.61 6 7 6a6 6 0 0 0-6 6 6 6 0 0 0 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4z",
-      "color": "#5F6368",
-      "fields": [
-        {
-          "type": "string",
-          "key": "title",
-          "params": {
-            "title": "Title"
-          }
-        },
-        {
-          "type": "header",
-          "params": {
-            "title": "Login details"
-          }
-        },
-        {
-          "type": "string",
-          "key": "username",
-          "params": {
-            "hint": "Username",
-            "optional": true
-          }
-        },
-        {
-          "type": "string",
-          "key": "password",
-          "params": {
-            "hint": "Password",
-            "input_type": "password",
-            "optional": true
-          }
-        },
-        {
-          "type": "header",
-          "params": {
-            "title": "Additional info"
-          }
-        },
-        {
-          "type": "string",
-          "key": "url",
-          "params": {
-            "hint": "URL",
-            "input_type": "url",
-            "optional": true
-          }
-        },
-        {
-          "type": "string",
-          "key": "description",
-          "params": {
-            "hint": "Description",
-            "input_type": "autocomplete",
-            "optional": true
-          }
+      }
+    ]
+  },
+  {
+    "id": "password",
+    "type": 2,
+    "title": "Password",
+    "icon": "M7 14a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2m5.65-4C11.83 7.67 9.61 6 7 6a6 6 0 0 0-6 6 6 6 0 0 0 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4z",
+    "color": "#5F6368",
+    "fields": [
+      {
+        "type": "string",
+        "key": "title",
+        "params": {
+          "title": "Title"
         }
-      ]
-    },
-    {
-      "id": "card",
-      "type": 3,
-      "title": "Credit card",
-      "icon": "M20 8H4V6h16m0 12H4v-6h16m0-8H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-1.11-.9-2-2-2z",
-      "color": "#5F6368",
-      "fields": [
-        {
-          "type": "string",
-          "key": "title",
-          "params": {
-            "hint": "Title"
-          }
-        },
-        {
-          "type": "header",
-          "params": {
-            "title": "Card details"
-          }
-        },
-        {
-          "type": "string",
-          "key": "card_number",
-          "params": {
-            "hint": "Card number",
-            "input_type": "card_number"
-          }
-        },
-        {
-          "type": "string",
-          "key": "card_expiration",
-          "params": {
-            "hint": "Card expiration",
-            "input_type": "card_expiration",
-            "optional": true
-          }
-        },
-        {
-          "type": "string",
-          "key": "card_holder",
-          "params": {
-            "hint": "",
-            "input_type": "upper_case",
-            "optional": true
-          }
-        },
-        {
-          "type": "header",
-          "params": {
-            "title": "Security"
-          }
-        },
-        {
-          "type": "string",
-          "key": "card_code",
-          "params": {
-            "hint": "Card security code",
-            "input_type": "number|password",
-            "optional": true
-          }
-        },
-        {
-          "type": "string",
-          "key": "card_pin",
-          "params": {
-            "hint": "Card PIN",
-            "input_type": "number|password",
-            "optional": true
-          }
+      },
+      {
+        "type": "header",
+        "params": {
+          "title": "Login details"
         }
-      ]
-    },
-    {
-      "id": "note",
-      "type": 4,
-      "title": "Note",
-      "icon": "M14 10h5.5L14 4.5zM5 3h10l6 6v10a2 2 0 0 1-2 2H5c-1.11 0-2-.9-2-2V5c0-1.11.89-2 2-2m0 9v2h14v-2zm0 4v2h9v-2z",
-      "color": "#5F6368",
-      "fields": [
-        {
-          "type": "string",
-          "key": "title",
-          "params": {
-            "hint": "Title"
-          }
-        },
-        {
-          "type": "string",
-          "key": "text",
-          "params": {
-            "hint": "Text",
-            "multiline": true
-          }
+      },
+      {
+        "type": "string",
+        "key": "username",
+        "params": {
+          "hint": "Username",
+          "optional": true
         }
-      ]
-    }
-  ]
-}
+      },
+      {
+        "type": "string",
+        "key": "password",
+        "params": {
+          "hint": "Password",
+          "input_type": "password",
+          "optional": true
+        }
+      },
+      {
+        "type": "header",
+        "params": {
+          "title": "Additional info"
+        }
+      },
+      {
+        "type": "string",
+        "key": "url",
+        "params": {
+          "hint": "URL",
+          "input_type": "url",
+          "optional": true
+        }
+      },
+      {
+        "type": "string",
+        "key": "description",
+        "params": {
+          "hint": "Description",
+          "input_type": "autocomplete",
+          "optional": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "card",
+    "type": 3,
+    "title": "Credit card",
+    "icon": "M20 8H4V6h16m0 12H4v-6h16m0-8H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-1.11-.9-2-2-2z",
+    "color": "#5F6368",
+    "fields": [
+      {
+        "type": "string",
+        "key": "title",
+        "params": {
+          "hint": "Title"
+        }
+      },
+      {
+        "type": "header",
+        "params": {
+          "title": "Card details"
+        }
+      },
+      {
+        "type": "string",
+        "key": "card_number",
+        "params": {
+          "hint": "Card number",
+          "input_type": "card_number"
+        }
+      },
+      {
+        "type": "string",
+        "key": "card_expiration",
+        "params": {
+          "hint": "Card expiration",
+          "input_type": "card_expiration",
+          "optional": true
+        }
+      },
+      {
+        "type": "string",
+        "key": "card_holder",
+        "params": {
+          "hint": "",
+          "input_type": "upper_case",
+          "optional": true
+        }
+      },
+      {
+        "type": "header",
+        "params": {
+          "title": "Security"
+        }
+      },
+      {
+        "type": "string",
+        "key": "card_code",
+        "params": {
+          "hint": "Card security code",
+          "input_type": "number|password",
+          "optional": true
+        }
+      },
+      {
+        "type": "string",
+        "key": "card_pin",
+        "params": {
+          "hint": "Card PIN",
+          "input_type": "number|password",
+          "optional": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "note",
+    "type": 4,
+    "title": "Note",
+    "icon": "M14 10h5.5L14 4.5zM5 3h10l6 6v10a2 2 0 0 1-2 2H5c-1.11 0-2-.9-2-2V5c0-1.11.89-2 2-2m0 9v2h14v-2zm0 4v2h9v-2z",
+    "color": "#5F6368",
+    "fields": [
+      {
+        "type": "string",
+        "key": "title",
+        "params": {
+          "hint": "Title"
+        }
+      },
+      {
+        "type": "string",
+        "key": "text",
+        "params": {
+          "hint": "Text",
+          "multiline": true
+        }
+      }
+    ]
+  }
+]

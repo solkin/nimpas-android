@@ -19,6 +19,7 @@ import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItemPresenter
+import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
@@ -59,8 +60,15 @@ class FormModule(
     @PerActivity
     internal fun provideInteractor(
             journal: Journal,
+            templateRepository: TemplateRepository,
             schedulers: SchedulersFactory
-    ): FormInteractor = FormInteractorImpl(recordType, groupId, journal, schedulers)
+    ): FormInteractor = FormInteractorImpl(
+            recordType,
+            groupId,
+            journal,
+            templateRepository,
+            schedulers
+    )
 
     @Provides
     @PerActivity
