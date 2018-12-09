@@ -10,8 +10,9 @@
       "fields": [
         {
           "type": "string",
-          "key": "title",
-          "title": "Title"
+          "params": {
+            "title": "Title"
+          }
         }
       ]
     },
@@ -25,47 +26,56 @@
         {
           "type": "string",
           "key": "title",
-          "title": "Title"
+          "params": {
+            "title": "Title"
+          }
         },
         {
           "type": "header",
-          "title": "Login details"
+          "params": {
+            "title": "Login details"
+          }
         },
         {
           "type": "string",
           "key": "username",
-          "title": "Title",
-          "params": [
-            "optional"
-          ]
+          "params": {
+            "hint": "Username",
+            "optional": true
+          }
         },
         {
           "type": "string",
           "key": "password",
-          "params": [
-            "optional",
-            "password"
-          ]
+          "params": {
+            "hint": "Password",
+            "input_type": "password",
+            "optional": true
+          }
         },
         {
           "type": "header",
-          "title": "Additional info"
+          "params": {
+            "title": "Additional info"
+          }
         },
         {
           "type": "string",
           "key": "url",
-          "params": [
-            "optional",
-            "url"
-          ]
+          "params": {
+            "hint": "URL",
+            "input_type": "url",
+            "optional": true
+          }
         },
         {
           "type": "string",
           "key": "description",
-          "params": [
-            "optional",
-            "autocomplete"
-          ]
+          "params": {
+            "hint": "Description",
+            "input_type": "autocomplete",
+            "optional": true
+          }
         }
       ]
     },
@@ -79,57 +89,65 @@
         {
           "type": "string",
           "key": "title",
-          "title": "Title"
+          "params": {
+            "hint": "Title"
+          }
         },
         {
           "type": "header",
-          "title": "Card details"
+          "params": {
+            "title": "Card details"
+          }
         },
         {
           "type": "string",
           "key": "card_number",
-          "title": "Card number",
-          "params": [
-            "card_number"
-          ]
+          "params": {
+            "hint": "Card number",
+            "input_type": "card_number"
+          }
         },
         {
           "type": "string",
           "key": "card_expiration",
-          "params": [
-            "optional",
-            "card_expiration"
-          ]
+          "params": {
+            "hint": "Card expiration",
+            "input_type": "card_expiration",
+            "optional": true
+          }
         },
         {
           "type": "string",
           "key": "card_holder",
-          "params": [
-            "optional",
-            "upper_case"
-          ]
+          "params": {
+            "hint": "",
+            "input_type": "upper_case",
+            "optional": true
+          }
         },
         {
           "type": "header",
-          "title": "Security"
+          "params": {
+            "title": "Security"
+          }
         },
         {
           "type": "string",
           "key": "card_code",
-          "params": [
-            "optional",
-            "number",
-            "password"
-          ]
+          "params": {
+            "hint": "Card security code",
+            "input_type": "number|password",
+            "optional": true
+          }
         },
         {
           "type": "string",
           "key": "card_pin",
-          "params": [
-            "optional",
-            "number",
-            "password"
-          ]
+          "params": {
+            "hint": "Card PIN",
+            "input_type": "number|password",
+            "optional": true
+          }
         }
       ]
     },
@@ -143,15 +161,17 @@
         {
           "type": "string",
           "key": "title",
-          "title": "Title"
+          "params": {
+            "hint": "Title"
+          }
         },
         {
           "type": "string",
           "key": "text",
-          "title": "Text",
-          "params": [
-            "multiline"
-          ]
+          "params": {
+            "hint": "Text",
+            "multiline": true
+          }
         }
       ]
     }
