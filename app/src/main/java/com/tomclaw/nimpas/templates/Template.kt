@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 
 class Template(
-        val id: String,
+        val id: Long,
         val type: Int? = null,
         val title: String? = null,
         val icon: String? = null,
@@ -14,7 +14,7 @@ class Template(
 ) : Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeString(id)
+        writeLong(id)
         writeInt(type ?: -1)
         writeString(title)
         writeString(icon)
@@ -27,7 +27,7 @@ class Template(
 
     companion object CREATOR : Parcelable.Creator<Template> {
         override fun createFromParcel(parcel: Parcel): Template {
-            val id = parcel.readString().orEmpty()
+            val id = parcel.readLong()
             val type = parcel.readInt().takeIf { it != -1 }
             val title = parcel.readString()
             val icon = parcel.readString()

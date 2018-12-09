@@ -9,7 +9,7 @@ import io.reactivex.Observable
 
 interface FormInteractor {
 
-    fun getTemplate(id: String = ID_ROOT): Observable<Template?>
+    fun getTemplate(id: Long = ID_ROOT): Observable<Template?>
 
 }
 
@@ -21,9 +21,9 @@ class FormInteractorImpl(
         private val schedulers: SchedulersFactory
 ) : FormInteractor {
 
-    private var rootTemplate: Observable<Map<String, Template>>? = null
+    private var rootTemplate: Observable<Map<Long, Template>>? = null
 
-    override fun getTemplate(id: String): Observable<Template?> {
+    override fun getTemplate(id: Long): Observable<Template?> {
         return (rootTemplate ?: loadRootTemplate())
                 .map { it[id] }
                 .subscribeOn(schedulers.io())
@@ -36,12 +36,12 @@ class FormInteractorImpl(
             }
             .doOnNext { rootTemplate = Observable.just(it) }
 
-    private fun flatten(source: Template): Map<String, Template> {
-        val templates = mutableMapOf<String, Template>().also { it[source.id] = source }
+    private fun flatten(source: Template): Map<Long, Template> {
+        val templates = mutableMapOf<Long, Template>().also { it[source.id] = source }
         source.nested?.forEach { templates.putAll(flatten(it)) }
         return templates
     }
 
 }
 
-const val ID_ROOT = "root"
+const val ID_ROOT = 0L

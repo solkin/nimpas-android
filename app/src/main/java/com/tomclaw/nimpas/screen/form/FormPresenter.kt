@@ -2,7 +2,7 @@ package com.tomclaw.nimpas.screen.form
 
 import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
-import com.tomclaw.nimpas.templates.Field
+import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.templates.Template
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
@@ -35,7 +35,8 @@ interface FormPresenter {
 class FormPresenterImpl(
         private val interactor: FormInteractor,
         private val adapterPresenter: Lazy<AdapterPresenter>,
-        private val widgetConverter: WidgetConverter,
+        private val templateConverter: TemplateConverter,
+        private val fieldConverter: FieldConverter,
         private val schedulers: SchedulersFactory,
         state: Bundle?
 ) : FormPresenter {
@@ -45,7 +46,7 @@ class FormPresenterImpl(
 
     private val subscriptions = CompositeDisposable()
 
-    private var navigation: Set<String> = state?.getStringArray(KEY_NAVIGATION)?.toMutableSet()
+    private var navigation: Set<Long> = state?.getLongArray(KEY_NAVIGATION)?.toMutableSet()
             ?: mutableSetOf(ID_ROOT)
 
     override fun attachView(view: FormView) {
@@ -67,7 +68,7 @@ class FormPresenterImpl(
     }
 
     override fun saveState() = Bundle().apply {
-        putStringArray(KEY_NAVIGATION, navigation.toTypedArray())
+        putLongArray(KEY_NAVIGATION, navigation.toLongArray())
     }
 
     private fun loadTemplates() {
@@ -82,25 +83,19 @@ class FormPresenterImpl(
     }
 
     private fun onLoaded(template: Template?) {
-        when {
+        val items = when {
             template == null -> throw IllegalStateException("Template not found")
-            template.nested != null -> showNestedTemplates(template.nested)
-            template.fields != null -> showFields(template.fields)
+            template.nested != null -> template.nested.asSequence()
+                    .map { templateConverter.convert(it) }
+                    .toList()
+            template.fields != null -> template.fields.asSequence()
+                    .map { fieldConverter.convert(it) }
+                    .toList()
             else -> throw IllegalStateException("Template has no neither nested items nor fields")
         }
-    }
-
-    private fun showNestedTemplates(templates: List<Template>) {
-//        val items = templates.asSequence()
-//                .map { widgetConverter.convert(it) }
-//                .toList()
-//        val dataSource = ListDataSource(items)
-//        adapterPresenter.get().onDataSourceChanged(dataSource)
-//        view?.contentUpdated()
-    }
-
-    private fun showFields(fields: List<Field>) {
-
+        val dataSource = ListDataSource(items)
+        adapterPresenter.get().onDataSourceChanged(dataSource)
+        view?.contentUpdated()
     }
 
     private fun onError(it: Throwable) {}

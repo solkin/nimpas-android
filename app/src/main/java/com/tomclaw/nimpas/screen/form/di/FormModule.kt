@@ -7,12 +7,14 @@ import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
 import com.tomclaw.nimpas.journal.Journal
+import com.tomclaw.nimpas.screen.form.FieldConverter
+import com.tomclaw.nimpas.screen.form.FieldConverterImpl
 import com.tomclaw.nimpas.screen.form.FormInteractor
 import com.tomclaw.nimpas.screen.form.FormInteractorImpl
 import com.tomclaw.nimpas.screen.form.FormPresenter
 import com.tomclaw.nimpas.screen.form.FormPresenterImpl
-import com.tomclaw.nimpas.screen.form.WidgetConverter
-import com.tomclaw.nimpas.screen.form.WidgetConverterImpl
+import com.tomclaw.nimpas.screen.form.TemplateConverter
+import com.tomclaw.nimpas.screen.form.TemplateConverterImpl
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemBlueprint
@@ -46,12 +48,14 @@ class FormModule(
     internal fun providePresenter(
             interactor: FormInteractor,
             adapterPresenter: Lazy<AdapterPresenter>,
-            widgetConverter: WidgetConverter,
+            templateConverter: TemplateConverter,
+            fieldConverter: FieldConverter,
             schedulers: SchedulersFactory
     ): FormPresenter = FormPresenterImpl(
             interactor,
             adapterPresenter,
-            widgetConverter,
+            templateConverter,
+            fieldConverter,
             schedulers,
             state
     )
@@ -72,8 +76,14 @@ class FormModule(
 
     @Provides
     @PerActivity
-    internal fun provideRecordConverter(): WidgetConverter {
-        return WidgetConverterImpl()
+    internal fun provideTemplateConverter(): TemplateConverter {
+        return TemplateConverterImpl()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideFieldConverter(): FieldConverter {
+        return FieldConverterImpl()
     }
 
     @Provides
