@@ -2,12 +2,13 @@ package com.tomclaw.nimpas.screen.form
 
 import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
-import com.avito.konveyor.data_source.ListDataSource
-import com.tomclaw.nimpas.screen.form.model.Widget
+import com.tomclaw.nimpas.templates.Field
+import com.tomclaw.nimpas.templates.Template
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
+
 
 interface FormPresenter {
 
@@ -44,10 +45,12 @@ class FormPresenterImpl(
 
     private val subscriptions = CompositeDisposable()
 
+    private var navigation: Set<String> = state?.getStringArray(KEY_NAVIGATION)?.toMutableSet()
+            ?: mutableSetOf(ID_ROOT)
+
     override fun attachView(view: FormView) {
         this.view = view
-
-        loadWidgets()
+        loadTemplates()
     }
 
     override fun detachView() {
@@ -64,26 +67,40 @@ class FormPresenterImpl(
     }
 
     override fun saveState() = Bundle().apply {
+        putStringArray(KEY_NAVIGATION, navigation.toTypedArray())
     }
 
-    private fun loadWidgets() {
-//        subscriptions += interactor.getWidgets()
-//                .observeOn(schedulers.mainThread())
-//                .doOnSubscribe { view?.showProgress() }
-//                .doAfterTerminate { view?.showContent() }
-//                .subscribe(
-//                        { onLoaded(it) },
-//                        { onError(it) }
-//                )
+    private fun loadTemplates() {
+        subscriptions += interactor.getTemplate(navigation.last())
+                .observeOn(schedulers.mainThread())
+                .doOnSubscribe { view?.showProgress() }
+                .doAfterTerminate { view?.showContent() }
+                .subscribe(
+                        { onLoaded(it) },
+                        { onError(it) }
+                )
     }
 
-    private fun onLoaded(records: List<Widget>) {
-        val items = records.asSequence()
-                .map { widgetConverter.convert(it) }
-                .toList()
-        val dataSource = ListDataSource(items)
-        adapterPresenter.get().onDataSourceChanged(dataSource)
-        view?.contentUpdated()
+    private fun onLoaded(template: Template?) {
+        when {
+            template == null -> throw IllegalStateException("Template not found")
+            template.nested != null -> showNestedTemplates(template.nested)
+            template.fields != null -> showFields(template.fields)
+            else -> throw IllegalStateException("Template has no neither nested items nor fields")
+        }
+    }
+
+    private fun showNestedTemplates(templates: List<Template>) {
+//        val items = templates.asSequence()
+//                .map { widgetConverter.convert(it) }
+//                .toList()
+//        val dataSource = ListDataSource(items)
+//        adapterPresenter.get().onDataSourceChanged(dataSource)
+//        view?.contentUpdated()
+    }
+
+    private fun showFields(fields: List<Field>) {
+
     }
 
     private fun onError(it: Throwable) {}
@@ -93,3 +110,5 @@ class FormPresenterImpl(
     }
 
 }
+
+private const val KEY_NAVIGATION = "navigation"

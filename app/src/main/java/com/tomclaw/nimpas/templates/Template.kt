@@ -5,12 +5,12 @@ import android.os.Parcelable
 
 class Template(
         val id: String,
-        val type: Int?,
-        val title: String?,
-        val icon: String?,
-        val color: String?,
-        val fields: List<Field>?,
-        val nested: List<Template>?
+        val type: Int? = null,
+        val title: String? = null,
+        val icon: String? = null,
+        val color: String? = null,
+        val fields: List<Field>? = null,
+        val nested: List<Template>? = null
 ) : Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {

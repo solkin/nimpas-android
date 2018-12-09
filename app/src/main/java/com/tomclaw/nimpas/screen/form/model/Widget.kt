@@ -2,6 +2,8 @@ package com.tomclaw.nimpas.screen.form.model
 
 sealed class Widget {
 
+    class Group(val id: Long, val text: String) : Widget()
+
     class Edit(val id: Long, val hint: String, val text: String) : Widget()
 
     class Header(val id: Long, val text: String) : Widget()

@@ -6,9 +6,10 @@ import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.Observable
 
+
 interface FormInteractor {
 
-    fun getTemplates(): Observable<List<Template>>
+    fun getTemplate(id: String = ID_ROOT): Observable<Template?>
 
 }
 
@@ -20,18 +21,27 @@ class FormInteractorImpl(
         private val schedulers: SchedulersFactory
 ) : FormInteractor {
 
-    override fun getTemplates(): Observable<List<Template>> {
-        return templateRepository.getTemplates()
+    private var rootTemplate: Observable<Map<String, Template>>? = null
+
+    override fun getTemplate(id: String): Observable<Template?> {
+        return (rootTemplate ?: loadRootTemplate())
+                .map { it[id] }
                 .subscribeOn(schedulers.io())
-//        val widgets: List<Widget> = listOf(
-//                Widget.Edit(id = 2L, hint = "Название", text = ""),
-//                Widget.Header(id = 1L, text = "Данные для входа"),
-//                Widget.Edit(id = 4L, hint = "Логин", text = ""),
-//                Widget.Edit(id = 4L, hint = "Пароль", text = ""),
-//                Widget.Header(id = 1L, text = "Дополнительно"),
-//                Widget.Edit(id = 4L, hint = "URL", text = ""),
-//                Widget.Edit(id = 4L, hint = "Описание", text = "")
-//        )
+    }
+
+    private fun loadRootTemplate() = templateRepository.getTemplates()
+            .map {
+                val root = Template(id = ID_ROOT, nested = it)
+                flatten(root)
+            }
+            .doOnNext { rootTemplate = Observable.just(it) }
+
+    private fun flatten(source: Template): Map<String, Template> {
+        val templates = mutableMapOf<String, Template>().also { it[source.id] = source }
+        source.nested?.forEach { templates.putAll(flatten(it)) }
+        return templates
     }
 
 }
+
+const val ID_ROOT = "root"
