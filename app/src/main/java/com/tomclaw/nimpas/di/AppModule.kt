@@ -44,8 +44,8 @@ class AppModule(private val app: Application) {
             gson: Gson,
             schedulersFactory: SchedulersFactory
     ): TemplateRepository {
-        val fd = app.resources.openRawResourceFd(R.raw.templates)
-        return TemplateRepositoryImpl(fd, gson, schedulersFactory)
+        val stream = app.resources.openRawResource(R.raw.templates)
+        return TemplateRepositoryImpl(stream, gson, schedulersFactory)
     }
 
 }
