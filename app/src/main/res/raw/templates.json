@@ -3,8 +3,8 @@
     "id": 100,
     "type": 1,
     "title": "Group",
-    "icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\"><path fill=\"#D5EBDF\" d=\"M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8c0-1.11-.9-2-2-2h-8z\"\/><\/svg>",
-    "color": "#499067",
+    "icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\"><path fill=\"#808080\" d=\"M10 4H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8c0-1.11-.9-2-2-2h-8z\"\/><\/svg>",
+    "color": "#EBEBEB",
     "fields": [
       {
         "type": "string",
@@ -18,8 +18,8 @@
     "id": 200,
     "type": 2,
     "title": "Password",
-    "icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\"><path fill=\"#CBF0F8\" d=\"M7 14a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2m5.65-4C11.83 7.67 9.61 6 7 6a6 6 0 0 0-6 6 6 6 0 0 0 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4z\"\/><\/svg>",
-    "color": "#399CA3",
+    "icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\"><path fill=\"#808080\" d=\"M7 14a2 2 0 0 1-2-2 2 2 0 0 1 2-2 2 2 0 0 1 2 2 2 2 0 0 1-2 2m5.65-4C11.83 7.67 9.61 6 7 6a6 6 0 0 0-6 6 6 6 0 0 0 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4z\"\/><\/svg>",
+    "color": "#EBEBEB",
     "fields": [
       {
         "type": "string",
@@ -81,8 +81,8 @@
     "id": 300,
     "type": 3,
     "title": "Credit card",
-    "icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\"><path fill=\"#FDCFE8\" d=\"M20 8H4V6h16m0 12H4v-6h16m0-8H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-1.11-.9-2-2-2z\"\/><\/svg>",
-    "color": "#B64A8E",
+    "icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\"><path fill=\"#808080\" d=\"M20 8H4V6h16m0 12H4v-6h16m0-8H4c-1.11 0-2 .89-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-1.11-.9-2-2-2z\"\/><\/svg>",
+    "color": "#EBEBEB",
     "fields": [
       {
         "type": "string",
@@ -153,8 +153,8 @@
     "id": 400,
     "type": 4,
     "title": "Note",
-    "icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\"><path fill=\"#FEEFC3\" d=\"M14 10h5.5L14 4.5zM5 3h10l6 6v10a2 2 0 0 1-2 2H5c-1.11 0-2-.9-2-2V5c0-1.11.89-2 2-2m0 9v2h14v-2zm0 4v2h9v-2z\"\/><\/svg>",
-    "color": "#EB9736",
+    "icon": "<svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"24\" height=\"24\"><path fill=\"#808080\" d=\"M14 10h5.5L14 4.5zM5 3h10l6 6v10a2 2 0 0 1-2 2H5c-1.11 0-2-.9-2-2V5c0-1.11.89-2 2-2m0 9v2h14v-2zm0 4v2h9v-2z\"\/><\/svg>",
+    "color": "#EBEBEB",
     "fields": [
       {
         "type": "string",
