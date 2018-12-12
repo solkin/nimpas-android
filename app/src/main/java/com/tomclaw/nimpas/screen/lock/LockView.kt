@@ -1,5 +1,6 @@
 package com.tomclaw.nimpas.screen.lock
 
+import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -19,6 +20,7 @@ interface LockView {
 
 class LockViewImpl(view: View) : LockView {
 
+    private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
     private val keywordView: EditText = view.findViewById(R.id.keyword_view)
     private val unlockButton: Button = view.findViewById(R.id.unlock_button)
 
@@ -26,6 +28,7 @@ class LockViewImpl(view: View) : LockView {
     private val unlockClicksRelay = PublishRelay.create<Unit>()
 
     init {
+        toolbar.setTitle(R.string.app_name)
         keywordView.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
 

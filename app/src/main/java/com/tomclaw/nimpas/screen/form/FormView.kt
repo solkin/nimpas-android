@@ -6,18 +6,25 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
+import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.R
+import io.reactivex.Observable
 
 
 interface FormView {
+
+    fun setTitle(title: String)
 
     fun showProgress()
 
     fun showContent()
 
     fun contentUpdated()
+
+    fun navigationClicks(): Observable<Unit>
 
 }
 
@@ -27,9 +34,16 @@ class FormViewImpl(
 ) : FormView {
 
     private val context: Context = view.context
+    private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
     private val recycler: RecyclerView = view.findViewById(R.id.recycler)
 
+    private val navigationRelay = PublishRelay.create<Unit>()
+
     init {
+        toolbar.setTitle(R.string.create)
+        toolbar.setNavigationOnClickListener {
+            navigationRelay.accept(Unit)
+        }
         val orientation = RecyclerView.VERTICAL
         val layoutManager = LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)
@@ -42,7 +56,10 @@ class FormViewImpl(
             dividerDecoration.setDrawable(it)
             recycler.addItemDecoration(dividerDecoration)
         }
+    }
 
+    override fun setTitle(title: String) {
+        toolbar.title = title
     }
 
     override fun showProgress() {}
@@ -52,6 +69,8 @@ class FormViewImpl(
     override fun contentUpdated() {
         adapter.notifyDataSetChanged()
     }
+
+    override fun navigationClicks(): Observable<Unit> = navigationRelay
 
 }
 

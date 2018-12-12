@@ -51,6 +51,11 @@ class FormPresenterImpl(
 
     override fun attachView(view: FormView) {
         this.view = view
+
+        subscriptions += view.navigationClicks().subscribe {
+            router?.leaveScreen()
+        }
+
         loadTemplates()
     }
 

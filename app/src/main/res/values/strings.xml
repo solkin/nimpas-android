@@ -6,4 +6,5 @@
     <string name="note">Note</string>
     <string name="enter_keyword">Enter a master keyword</string>
     <string name="unlock">Unlock</string>
+    <string name="create">Create</string>
 </resources>

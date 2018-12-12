@@ -6,6 +6,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.VERTICAL
+import android.support.v7.widget.Toolbar
 import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.caverock.androidsvg.SVG
@@ -37,6 +38,7 @@ class SafeViewImpl(
         private val adapter: SimpleRecyclerAdapter
 ) : SafeView {
 
+    private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
     private val recycler: RecyclerView = view.findViewById(R.id.recycler)
     private val createButton: FloatingActionButton = view.findViewById(R.id.create_button)
 
@@ -44,6 +46,7 @@ class SafeViewImpl(
     private val createRelay = PublishRelay.create<Long>()
 
     init {
+        toolbar.setTitle(R.string.app_name)
         val orientation = VERTICAL
         val layoutManager = LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)
