@@ -54,6 +54,7 @@ class FormModule(
             fieldConverter: FieldConverter,
             schedulers: SchedulersFactory
     ): FormPresenter = FormPresenterImpl(
+            templateId,
             interactor,
             adapterPresenter,
             templateConverter,

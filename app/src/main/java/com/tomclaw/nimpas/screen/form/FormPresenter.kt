@@ -33,6 +33,7 @@ interface FormPresenter {
 }
 
 class FormPresenterImpl(
+        private val templateId: Long,
         private val interactor: FormInteractor,
         private val adapterPresenter: Lazy<AdapterPresenter>,
         private val templateConverter: TemplateConverter,
@@ -47,7 +48,7 @@ class FormPresenterImpl(
     private val subscriptions = CompositeDisposable()
 
     private var navigation: Set<Long> = state?.getLongArray(KEY_NAVIGATION)?.toMutableSet()
-            ?: mutableSetOf(ID_ROOT)
+            ?: mutableSetOf(templateId)
 
     override fun attachView(view: FormView) {
         this.view = view

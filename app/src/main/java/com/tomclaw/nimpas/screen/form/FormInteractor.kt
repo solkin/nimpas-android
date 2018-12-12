@@ -24,14 +24,14 @@ class FormInteractorImpl(
     private var rootTemplate: Observable<Map<Long, Template>>? = null
 
     override fun getTemplate(id: Long): Observable<Template?> {
-        return (rootTemplate ?: loadRootTemplate())
+        return (rootTemplate ?: loadTemplate())
                 .map { it[id] }
                 .subscribeOn(schedulers.io())
     }
 
-    private fun loadRootTemplate() = templateRepository.getTemplates()
+    private fun loadTemplate() = templateRepository.getTemplates()
             .map {
-                val root = Template(id = ID_ROOT, nested = it)
+                val root = Template(id = templateId, nested = it)
                 flatten(root)
             }
             .doOnNext { rootTemplate = Observable.just(it) }

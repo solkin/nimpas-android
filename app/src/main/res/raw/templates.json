@@ -8,8 +8,9 @@
     "fields": [
       {
         "type": "string",
+        "key": "title",
         "params": {
-          "title": "Title"
+          "hint": "Title"
         }
       }
     ]
@@ -25,7 +26,7 @@
         "type": "string",
         "key": "title",
         "params": {
-          "title": "Title"
+          "hint": "Title"
         }
       },
       {
@@ -118,7 +119,7 @@
         "type": "string",
         "key": "card_holder",
         "params": {
-          "hint": "",
+          "hint": "Card holder",
           "input_type": "upper_case",
           "optional": true
         }

@@ -71,9 +71,7 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
         finish()
     }
 
-    private fun Intent.getTemplateId() = getLongExtra(EXTRA_TEMPLATE_ID, TEMPLATE_ID_INVALID)
-            .takeIf { it != TEMPLATE_ID_INVALID }
-            ?: throw IllegalArgumentException("Record type must be specified")
+    private fun Intent.getTemplateId() = getLongExtra(EXTRA_TEMPLATE_ID, ID_ROOT)
 
     private fun Intent.getGroupId() = this.getLongExtra(EXTRA_GROUP_ID, GROUP_DEFAULT)
 
