@@ -9,6 +9,7 @@ import com.tomclaw.nimpas.journal.JournalImpl
 import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.journal.TYPE_GROUP
 import com.tomclaw.nimpas.screen.safe.adapter.ItemClickListener
+import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
 import io.reactivex.disposables.CompositeDisposable
@@ -32,7 +33,7 @@ interface SafePresenter : ItemClickListener {
 
     interface SafeRouter {
 
-        fun showFormScreen(recordType: Int, groupId: Long)
+        fun showFormScreen(templateId: Long, groupId: Long)
 
         fun showLockScreen()
 
@@ -46,6 +47,7 @@ class SafePresenterImpl(
         private val interactor: SafeInteractor,
         private val adapterPresenter: Lazy<AdapterPresenter>,
         private val recordConverter: RecordConverter,
+        private val templateRepository: TemplateRepository,
         private val schedulers: SchedulersFactory,
         state: Bundle?
 ) : SafePresenter {
@@ -61,12 +63,31 @@ class SafePresenterImpl(
     override fun attachView(view: SafeView) {
         this.view = view
 
-        subscriptions += view.createClicks().subscribe { recordType ->
+        subscriptions += view.buttonClicks().subscribe {
+            onShowCreateMenu()
+        }
+
+        subscriptions += view.createClicks().subscribe { templateId ->
             val groupId = getGroupId()
-            router?.showFormScreen(recordType, groupId)
+            router?.showFormScreen(templateId, groupId)
         }
 
         loadRecords(groupId = getGroupId())
+    }
+
+    private fun onShowCreateMenu() {
+        subscriptions += templateRepository.getTemplates()
+                .observeOn(schedulers.mainThread())
+                .subscribe {
+                    val items = it.map { template ->
+                        MenuItem(
+                                id = template.id,
+                                title = template.title.orEmpty(),
+                                icon = template.icon
+                        )
+                    }
+                    view?.showCreateDialog(items)
+                }
     }
 
     override fun detachView() {

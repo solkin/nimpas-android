@@ -14,7 +14,7 @@ interface FormInteractor {
 }
 
 class FormInteractorImpl(
-        private val recordType: Int,
+        private val templateId: Long,
         private val groupId: Long,
         private val journal: Journal,
         private val templateRepository: TemplateRepository,

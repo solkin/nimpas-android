@@ -7,13 +7,11 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.VERTICAL
 import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
+import com.caverock.androidsvg.SVG
+import com.caverock.androidsvg.SVGDrawable
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder
 import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.R
-import com.tomclaw.nimpas.journal.TYPE_CARD
-import com.tomclaw.nimpas.journal.TYPE_GROUP
-import com.tomclaw.nimpas.journal.TYPE_NOTE
-import com.tomclaw.nimpas.journal.TYPE_PASSWORD
 import io.reactivex.Observable
 
 
@@ -25,7 +23,11 @@ interface SafeView {
 
     fun contentUpdated()
 
-    fun createClicks(): Observable<Int>
+    fun showCreateDialog(items: List<MenuItem>)
+
+    fun buttonClicks(): Observable<Unit>
+
+    fun createClicks(): Observable<Long>
 
 }
 
@@ -37,7 +39,8 @@ class SafeViewImpl(
     private val recycler: RecyclerView = view.findViewById(R.id.recycler)
     private val createButton: FloatingActionButton = view.findViewById(R.id.create_button)
 
-    private val createRelay = PublishRelay.create<Int>()
+    private val buttonRelay = PublishRelay.create<Unit>()
+    private val createRelay = PublishRelay.create<Long>()
 
     init {
         val orientation = VERTICAL
@@ -48,7 +51,7 @@ class SafeViewImpl(
         recycler.itemAnimator = DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
 
-        createButton.setOnClickListener { showCreateDialog() }
+        createButton.setOnClickListener { buttonRelay.accept(Unit) }
     }
 
     override fun showProgress() {}
@@ -59,24 +62,27 @@ class SafeViewImpl(
         adapter.notifyDataSetChanged()
     }
 
-    override fun createClicks(): Observable<Int> {
+    override fun buttonClicks(): Observable<Unit> {
+        return buttonRelay
+    }
+
+    override fun createClicks(): Observable<Long> {
         return createRelay
     }
 
-    private fun showCreateDialog() {
+    override fun showCreateDialog(items: List<MenuItem>) {
         BottomSheetBuilder(view.context, R.style.AppTheme_BottomSheetDialog)
                 .setMode(BottomSheetBuilder.MODE_LIST)
-                .setMenu(R.menu.create_menu)
                 .setIconTintColorResource(R.color.color_grey)
-                .setItemClickListener {
-                    val recordType = when (it.itemId) {
-                        R.id.group_item -> TYPE_GROUP
-                        R.id.password_item -> TYPE_PASSWORD
-                        R.id.card_item -> TYPE_CARD
-                        R.id.note_item -> TYPE_NOTE
-                        else -> throw IllegalArgumentException()
+                .apply {
+                    items.forEachIndexed { index, item ->
+                        val icon = SVGDrawable(SVG.getFromString(item.icon))
+                        addItem(index, item.title, icon)
                     }
-                    createRelay.accept(recordType)
+                }
+                .setItemClickListener {
+                    val menuItem = items[it.itemId]
+                    createRelay.accept(menuItem.id)
                 }
                 .createDialog()
                 .show()

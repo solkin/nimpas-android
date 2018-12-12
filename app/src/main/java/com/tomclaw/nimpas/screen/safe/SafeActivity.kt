@@ -75,10 +75,10 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun showFormScreen(recordType: Int, groupId: Long) {
+    override fun showFormScreen(templateId: Long, groupId: Long) {
         val intent = createFormActivityIntent(
                 context = this,
-                recordType = recordType,
+                templateId = templateId,
                 groupId = groupId
         )
         startActivityForResult(intent, REQUEST_ADD)

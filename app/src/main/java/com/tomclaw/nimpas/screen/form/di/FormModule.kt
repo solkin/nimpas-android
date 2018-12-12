@@ -34,7 +34,7 @@ import dagger.multibindings.IntoSet
 @Module
 class FormModule(
         private val context: Context,
-        private val recordType: Int,
+        private val templateId: Long,
         private val groupId: Long,
         private val state: Bundle?
 ) {
@@ -69,7 +69,7 @@ class FormModule(
             templateRepository: TemplateRepository,
             schedulers: SchedulersFactory
     ): FormInteractor = FormInteractorImpl(
-            recordType,
+            templateId,
             groupId,
             journal,
             templateRepository,
