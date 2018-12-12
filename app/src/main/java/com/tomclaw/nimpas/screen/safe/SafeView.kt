@@ -1,5 +1,6 @@
 package com.tomclaw.nimpas.screen.safe
 
+import android.graphics.drawable.BitmapDrawable
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -8,10 +9,10 @@ import android.support.v7.widget.RecyclerView.VERTICAL
 import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.caverock.androidsvg.SVG
-import com.caverock.androidsvg.SVGDrawable
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder
 import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.util.toBitmap
 import io.reactivex.Observable
 
 
@@ -76,7 +77,10 @@ class SafeViewImpl(
                 .setIconTintColorResource(R.color.color_grey)
                 .apply {
                     items.forEachIndexed { index, item ->
-                        val icon = SVGDrawable(SVG.getFromString(item.icon))
+                        val bitmap = SVG.getFromString(item.icon)
+                                .renderToPicture()
+                                .toBitmap()
+                        val icon = BitmapDrawable(view.resources, bitmap)
                         addItem(index, item.title, icon)
                     }
                 }
