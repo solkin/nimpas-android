@@ -25,6 +25,7 @@ class NoteItemViewHolder(view: View) : BaseViewHolder(view), NoteItemView {
     private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
     private val text: TextView = view.findViewById(R.id.text)
+
     private var listener: (() -> Unit)? = null
 
     init {

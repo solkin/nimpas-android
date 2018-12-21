@@ -71,7 +71,7 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
         finish()
     }
 
-    private fun Intent.getTemplateId() = getLongExtra(EXTRA_TEMPLATE_ID, ID_ROOT)
+    private fun Intent.getTemplateId() = ID_ROOT //getLongExtra(EXTRA_TEMPLATE_ID, ID_ROOT)
 
     private fun Intent.getGroupId() = this.getLongExtra(EXTRA_GROUP_ID, GROUP_DEFAULT)
 

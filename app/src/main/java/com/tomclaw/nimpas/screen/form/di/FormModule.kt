@@ -6,6 +6,7 @@ import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
+import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.journal.Journal
 import com.tomclaw.nimpas.screen.form.FieldConverter
 import com.tomclaw.nimpas.screen.form.FieldConverterImpl
@@ -15,6 +16,7 @@ import com.tomclaw.nimpas.screen.form.FormPresenter
 import com.tomclaw.nimpas.screen.form.FormPresenterImpl
 import com.tomclaw.nimpas.screen.form.TemplateConverter
 import com.tomclaw.nimpas.screen.form.TemplateConverterImpl
+import com.tomclaw.nimpas.screen.form.adapter.FormEvent
 import com.tomclaw.nimpas.screen.form.adapter.action.ActionItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.action.ActionItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemBlueprint
@@ -30,6 +32,7 @@ import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
+import io.reactivex.Observable
 
 @Module
 class FormModule(
@@ -52,6 +55,7 @@ class FormModule(
             adapterPresenter: Lazy<AdapterPresenter>,
             templateConverter: TemplateConverter,
             fieldConverter: FieldConverter,
+            events: PublishRelay<FormEvent>,
             schedulers: SchedulersFactory
     ): FormPresenter = FormPresenterImpl(
             templateId,
@@ -59,6 +63,7 @@ class FormModule(
             adapterPresenter,
             templateConverter,
             fieldConverter,
+            events,
             schedulers,
             state
     )
@@ -88,6 +93,10 @@ class FormModule(
     internal fun provideFieldConverter(): FieldConverter {
         return FieldConverterImpl()
     }
+
+    @Provides
+    @PerActivity
+    internal fun provideEventsRelay(): PublishRelay<FormEvent> = PublishRelay.create()
 
     @Provides
     @PerActivity
@@ -129,8 +138,8 @@ class FormModule(
 
     @Provides
     @PerActivity
-    internal fun provideActionItemPresenter(presenter: FormPresenter) =
-            ActionItemPresenter()
+    internal fun provideActionItemPresenter(events: PublishRelay<FormEvent>) =
+            ActionItemPresenter(events)
 
     @Provides
     @PerActivity

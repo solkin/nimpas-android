@@ -25,6 +25,7 @@ class CardItemViewHolder(view: View) : BaseViewHolder(view), CardItemView {
     private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
     private val number: TextView = view.findViewById(R.id.number)
+
     private var listener: (() -> Unit)? = null
 
     init {

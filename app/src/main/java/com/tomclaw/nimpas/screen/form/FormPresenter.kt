@@ -3,9 +3,11 @@ package com.tomclaw.nimpas.screen.form
 import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.data_source.ListDataSource
+import com.tomclaw.nimpas.screen.form.adapter.FormEvent
 import com.tomclaw.nimpas.templates.Template
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 
@@ -38,6 +40,7 @@ class FormPresenterImpl(
         private val adapterPresenter: Lazy<AdapterPresenter>,
         private val templateConverter: TemplateConverter,
         private val fieldConverter: FieldConverter,
+        private val events: Observable<FormEvent>,
         private val schedulers: SchedulersFactory,
         state: Bundle?
 ) : FormPresenter {
@@ -54,9 +57,20 @@ class FormPresenterImpl(
         this.view = view
 
         subscriptions += view.navigationClicks().subscribe {
-            router?.leaveScreen()
+            onBackPressed()
         }
 
+        subscriptions += events.subscribe { event ->
+            when (event) {
+                is FormEvent.ActionClicked -> navigate(event.item.id)
+            }
+        }
+
+        loadTemplates()
+    }
+
+    private fun navigate(id: Long) {
+        navigation += id
         loadTemplates()
     }
 
@@ -107,8 +121,15 @@ class FormPresenterImpl(
     private fun onError(it: Throwable) {}
 
     override fun onBackPressed() {
-        router?.leaveScreen()
+        if (navigation.isNotEmpty()) {
+            navigation -= navigation.last()
+            navigate(id = getGroupId())
+        } else {
+            router?.leaveScreen()
+        }
     }
+
+    private fun getGroupId() = navigation.lastOrNull() ?: ID_ROOT
 
 }
 

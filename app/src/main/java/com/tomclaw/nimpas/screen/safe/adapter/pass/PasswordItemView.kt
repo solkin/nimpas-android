@@ -25,6 +25,7 @@ class PasswordItemViewHolder(view: View) : BaseViewHolder(view), PasswordItemVie
     private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
     private val subtitle: TextView = view.findViewById(R.id.subtitle)
+
     private var listener: (() -> Unit)? = null
 
     init {

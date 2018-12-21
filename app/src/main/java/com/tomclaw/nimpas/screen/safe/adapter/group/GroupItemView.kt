@@ -22,6 +22,7 @@ class GroupItemViewHolder(view: View) : BaseViewHolder(view), GroupItemView {
 
     private val icon: ItemImageView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
+
     private var listener: (() -> Unit)? = null
 
     init {

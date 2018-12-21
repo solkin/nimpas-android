@@ -18,6 +18,8 @@ interface ActionItemView : ItemView {
 
     fun setIcon(svg: String, @ColorInt color: Int)
 
+    fun setOnClickListener(listener: (() -> Unit)?)
+
 }
 
 class ActionItemViewHolder(view: View) : BaseViewHolder(view), ActionItemView {
@@ -27,6 +29,12 @@ class ActionItemViewHolder(view: View) : BaseViewHolder(view), ActionItemView {
     private val title: TextView = view.findViewById(R.id.title)
     private val circle: View = view.findViewById(R.id.circle)
     private val icon: SVGImageView = view.findViewById(R.id.icon)
+
+    private var listener: (() -> Unit)? = null
+
+    init {
+        view.setOnClickListener { listener?.invoke() }
+    }
 
     override fun setTitle(text: String) {
         title.bind(text)
@@ -39,6 +47,14 @@ class ActionItemViewHolder(view: View) : BaseViewHolder(view), ActionItemView {
             circle.setBackgroundDrawable(backDrawable)
         }
         icon.setSVG(SVG.getFromString(svg))
+    }
+
+    override fun setOnClickListener(listener: (() -> Unit)?) {
+        this.listener = listener
+    }
+
+    override fun onUnbind() {
+        this.listener = null
     }
 
 }
