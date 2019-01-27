@@ -34,6 +34,7 @@ interface FormPresenter {
 
 }
 
+@Suppress("SuspiciousCollectionReassignment")
 class FormPresenterImpl(
         private val templateId: Long,
         private val interactor: FormInteractor,
@@ -123,7 +124,7 @@ class FormPresenterImpl(
     override fun onBackPressed() {
         if (navigation.isNotEmpty()) {
             navigation -= navigation.last()
-            navigate(id = getGroupId())
+            loadTemplates()
         } else {
             router?.leaveScreen()
         }

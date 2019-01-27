@@ -43,6 +43,7 @@ interface SafePresenter : ItemClickListener {
 
 }
 
+@Suppress("SuspiciousCollectionReassignment")
 class SafePresenterImpl(
         private val interactor: SafeInteractor,
         private val adapterPresenter: Lazy<AdapterPresenter>,
