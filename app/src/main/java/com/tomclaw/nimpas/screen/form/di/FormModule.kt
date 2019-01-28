@@ -32,11 +32,9 @@ import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
-import io.reactivex.Observable
 
 @Module
 class FormModule(
-        private val context: Context,
         private val templateId: Long,
         private val groupId: Long,
         private val state: Bundle?

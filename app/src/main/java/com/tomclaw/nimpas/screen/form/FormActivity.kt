@@ -29,7 +29,7 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
         val groupId = intent.getGroupId()
         val presenterState = savedInstanceState?.getBundle(KEY_PRESENTER_STATE)
         application.getComponent()
-                .formComponent(FormModule(this, templateId, groupId, presenterState))
+                .formComponent(FormModule(templateId, groupId, presenterState))
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
@@ -71,14 +71,14 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
         finish()
     }
 
-    private fun Intent.getTemplateId() = ID_ROOT //getLongExtra(EXTRA_TEMPLATE_ID, ID_ROOT)
+    private fun Intent.getTemplateId() = getLongExtra(EXTRA_TEMPLATE_ID, ID_ROOT)
 
     private fun Intent.getGroupId() = this.getLongExtra(EXTRA_GROUP_ID, GROUP_DEFAULT)
 
 }
 
 fun createFormActivityIntent(context: Context,
-                             templateId: Long,
+                             templateId: Long = ID_ROOT,
                              groupId: Long): Intent =
         Intent(context, FormActivity::class.java)
                 .putExtra(EXTRA_TEMPLATE_ID, templateId)
@@ -88,5 +88,3 @@ private const val KEY_PRESENTER_STATE = "presenter_state"
 
 private const val EXTRA_TEMPLATE_ID = "record_type"
 private const val EXTRA_GROUP_ID = "group_id"
-
-private const val TEMPLATE_ID_INVALID = -1L
