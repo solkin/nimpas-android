@@ -5,6 +5,7 @@ import com.avito.konveyor.blueprint.ItemBlueprint
 import com.avito.konveyor.blueprint.ItemPresenter
 import com.avito.konveyor.blueprint.ViewHolderBuilder
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.screen.form.adapter.button.ActionItemViewHolder
 
 class ActionItemBlueprint(
         override val presenter: ItemPresenter<ActionItemView, ActionItem>
