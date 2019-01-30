@@ -24,10 +24,10 @@ class ActionItem(
     companion object CREATOR : Parcelable.Creator<ActionItem> {
         override fun createFromParcel(parcel: Parcel): ActionItem {
             val id = parcel.readLong()
-            val text = parcel.readString().orEmpty()
+            val title = parcel.readString().orEmpty()
             val icon = parcel.readString()
             val color = parcel.readInt().takeIf { it != -1 }
-            return ActionItem(id, text, icon, color)
+            return ActionItem(id, title, icon, color)
         }
 
         override fun newArray(size: Int): Array<ActionItem?> {

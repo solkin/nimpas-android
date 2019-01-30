@@ -10,9 +10,6 @@ class ButtonItemPresenter(
 
     override fun bindView(view: ButtonItemView, item: ButtonItem, position: Int) {
         view.setTitle(item.title)
-        if (item.icon != null && item.color != null) {
-            view.setIcon(item.icon, item.color)
-        }
         view.setOnClickListener { events.accept(FormEvent.ButtonClicked(item)) }
     }
 

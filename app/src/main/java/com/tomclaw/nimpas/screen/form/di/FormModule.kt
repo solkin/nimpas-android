@@ -1,6 +1,5 @@
 package com.tomclaw.nimpas.screen.form.di
 
-import android.content.Context
 import android.os.Bundle
 import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
@@ -19,6 +18,8 @@ import com.tomclaw.nimpas.screen.form.TemplateConverterImpl
 import com.tomclaw.nimpas.screen.form.adapter.FormEvent
 import com.tomclaw.nimpas.screen.form.adapter.action.ActionItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.action.ActionItemPresenter
+import com.tomclaw.nimpas.screen.form.adapter.button.ButtonItemBlueprint
+import com.tomclaw.nimpas.screen.form.adapter.button.ButtonItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemBlueprint
@@ -135,6 +136,13 @@ class FormModule(
     ): ItemBlueprint<*, *> = CheckItemBlueprint(presenter)
 
     @Provides
+    @IntoSet
+    @PerActivity
+    internal fun provideButtonItemBlueprint(
+            presenter: ButtonItemPresenter
+    ): ItemBlueprint<*, *> = ButtonItemBlueprint(presenter)
+
+    @Provides
     @PerActivity
     internal fun provideActionItemPresenter(events: PublishRelay<FormEvent>) =
             ActionItemPresenter(events)
@@ -153,5 +161,10 @@ class FormModule(
     @PerActivity
     internal fun provideCheckItemPresenter(presenter: FormPresenter) =
             CheckItemPresenter()
+
+    @Provides
+    @PerActivity
+    internal fun provideButtonItemPresenter(events: PublishRelay<FormEvent>) =
+            ButtonItemPresenter(events)
 
 }
