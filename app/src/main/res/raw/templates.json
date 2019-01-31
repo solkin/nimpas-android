@@ -12,6 +12,14 @@
         "params": {
           "hint": "Title"
         }
+      },
+      {
+        "type": "button",
+        "key": "action",
+        "params": {
+          "action": "create",
+          "title": "Create group"
+        }
       }
     ]
   },
