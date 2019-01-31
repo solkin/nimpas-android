@@ -1,6 +1,8 @@
 package com.tomclaw.nimpas.screen.form
 
 import com.avito.konveyor.blueprint.Item
+import com.tomclaw.nimpas.screen.form.adapter.button.ButtonItem
+import com.tomclaw.nimpas.screen.form.adapter.check.CheckItem
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItem
 import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItem
 import com.tomclaw.nimpas.templates.Field
@@ -25,6 +27,16 @@ class FieldConverterImpl : FieldConverter {
                     id = field.hashCode().toLong(),
                     title = field.params?.get("title").orEmpty()
             )
+            FIELD_TYPE_BUTTON -> ButtonItem(
+                    id = field.hashCode().toLong(),
+                    action = field.params?.get("action").orEmpty(),
+                    title = field.params?.get("title").orEmpty()
+            )
+            FIELD_TYPE_CHECK -> CheckItem(
+                    id = field.hashCode().toLong(),
+                    text = field.params?.get("title").orEmpty(),
+                    checked = field.params?.get("checked").orEmpty().toBoolean()
+            )
             else -> throw IllegalArgumentException("Unknown type of field ${field.type}")
         }
     }
@@ -33,3 +45,5 @@ class FieldConverterImpl : FieldConverter {
 
 private const val FIELD_TYPE_STRING = "string"
 private const val FIELD_TYPE_HEADER = "header"
+private const val FIELD_TYPE_BUTTON = "button"
+private const val FIELD_TYPE_CHECK = "check"
