@@ -15,9 +15,8 @@
       },
       {
         "type": "button",
-        "key": "action",
         "params": {
-          "action": "create",
+          "action": "save",
           "title": "Create group"
         }
       }

@@ -53,6 +53,7 @@ class FormPresenterImpl(
 
     private var navigation: Set<Long> = state?.getLongArray(KEY_NAVIGATION)?.toMutableSet()
             ?: mutableSetOf(templateId)
+    private var template: Template? = state?.getParcelable(KEY_TEMPLATE)
 
     override fun attachView(view: FormView) {
         this.view = view
@@ -64,15 +65,22 @@ class FormPresenterImpl(
         subscriptions += events.subscribe { event ->
             when (event) {
                 is FormEvent.ActionClicked -> navigate(event.item.id)
+                is FormEvent.ButtonClicked -> execute(event.item.action)
             }
         }
 
-        loadTemplates()
+        loadTemplate()
     }
 
     private fun navigate(id: Long) {
         navigation += id
-        loadTemplates()
+        loadTemplate()
+    }
+
+    private fun execute(action: String) {
+        when (action) {
+            ACTION_SAVE -> saveRecord()
+        }
     }
 
     override fun detachView() {
@@ -90,9 +98,10 @@ class FormPresenterImpl(
 
     override fun saveState() = Bundle().apply {
         putLongArray(KEY_NAVIGATION, navigation.toLongArray())
+        putParcelable(KEY_TEMPLATE, template)
     }
 
-    private fun loadTemplates() {
+    private fun loadTemplate() {
         subscriptions += interactor.getTemplate(navigation.last())
                 .observeOn(schedulers.mainThread())
                 .doOnSubscribe { view?.showProgress() }
@@ -103,7 +112,19 @@ class FormPresenterImpl(
                 )
     }
 
+    private fun saveRecord() {
+        subscriptions += interactor.saveRecord()
+                .observeOn(schedulers.mainThread())
+                .doOnSubscribe { view?.showProgress() }
+                .doAfterTerminate { view?.showContent() }
+                .subscribe(
+                        { onCompleted() },
+                        { onError(it) }
+                )
+    }
+
     private fun onLoaded(template: Template?) {
+        this.template = template
         val items = when {
             template == null -> throw IllegalStateException("Template not found")
             template.nested != null -> template.nested.asSequence()
@@ -119,12 +140,16 @@ class FormPresenterImpl(
         view?.contentUpdated()
     }
 
+    private fun onCompleted() {
+        router?.leaveScreen()
+    }
+
     private fun onError(it: Throwable) {}
 
     override fun onBackPressed() {
         if (navigation.isNotEmpty()) {
             navigation -= navigation.last()
-            loadTemplates()
+            loadTemplate()
         } else {
             router?.leaveScreen()
         }
@@ -135,3 +160,6 @@ class FormPresenterImpl(
 }
 
 private const val KEY_NAVIGATION = "navigation"
+private const val KEY_TEMPLATE = "template"
+
+private const val ACTION_SAVE = "save"

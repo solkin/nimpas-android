@@ -4,12 +4,15 @@ import com.tomclaw.nimpas.journal.Journal
 import com.tomclaw.nimpas.templates.Template
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.util.SchedulersFactory
+import io.reactivex.Completable
 import io.reactivex.Observable
 
 
 interface FormInteractor {
 
     fun getTemplate(id: Long = ID_ROOT): Observable<Template?>
+
+    fun saveRecord(): Completable
 
 }
 
@@ -27,6 +30,12 @@ class FormInteractorImpl(
         return (rootTemplate ?: loadTemplate())
                 .map { it[id] }
                 .subscribeOn(schedulers.io())
+    }
+
+    override fun saveRecord(): Completable {
+        return Completable.create { emitter ->
+            emitter.onComplete()
+        }
     }
 
     private fun loadTemplate() = templateRepository.getTemplates()
