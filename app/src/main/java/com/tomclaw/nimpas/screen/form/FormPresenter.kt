@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.screen.form.adapter.FormEvent
+import com.tomclaw.nimpas.screen.form.plugin.FormPlugin
 import com.tomclaw.nimpas.templates.Template
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
@@ -42,6 +43,7 @@ class FormPresenterImpl(
         private val templateConverter: TemplateConverter,
         private val fieldConverter: FieldConverter,
         private val events: Observable<FormEvent>,
+        private val plugins: Set<FormPlugin>,
         private val schedulers: SchedulersFactory,
         state: Bundle?
 ) : FormPresenter {
@@ -78,9 +80,17 @@ class FormPresenterImpl(
     }
 
     private fun execute(action: String) {
-        when (action) {
-            ACTION_SAVE -> saveRecord()
-        }
+        plugins.filter { it.action == action }
+                .forEach { plugin ->
+                    plugin.operation()
+                            .observeOn(schedulers.mainThread())
+                            .doOnSubscribe { view?.showProgress() }
+                            .doAfterTerminate { view?.showContent() }
+                            .subscribe(
+                                    { onCompleted() },
+                                    { onError(it) }
+                            )
+                }
     }
 
     override fun detachView() {
@@ -108,17 +118,6 @@ class FormPresenterImpl(
                 .doAfterTerminate { view?.showContent() }
                 .subscribe(
                         { onLoaded(it) },
-                        { onError(it) }
-                )
-    }
-
-    private fun saveRecord() {
-        subscriptions += interactor.saveRecord()
-                .observeOn(schedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.showContent() }
-                .subscribe(
-                        { onCompleted() },
                         { onError(it) }
                 )
     }
@@ -161,5 +160,3 @@ class FormPresenterImpl(
 
 private const val KEY_NAVIGATION = "navigation"
 private const val KEY_TEMPLATE = "template"
-
-private const val ACTION_SAVE = "save"

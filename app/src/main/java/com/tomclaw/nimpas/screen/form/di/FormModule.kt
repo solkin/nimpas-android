@@ -26,6 +26,8 @@ import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItemPresenter
+import com.tomclaw.nimpas.screen.form.plugin.FormPlugin
+import com.tomclaw.nimpas.screen.form.plugin.SaveFormPlugin
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -55,6 +57,7 @@ class FormModule(
             templateConverter: TemplateConverter,
             fieldConverter: FieldConverter,
             events: PublishRelay<FormEvent>,
+            plugins: Set<@JvmSuppressWildcards FormPlugin>,
             schedulers: SchedulersFactory
     ): FormPresenter = FormPresenterImpl(
             templateId,
@@ -63,6 +66,7 @@ class FormModule(
             templateConverter,
             fieldConverter,
             events,
+            plugins,
             schedulers,
             state
     )
@@ -166,5 +170,12 @@ class FormModule(
     @PerActivity
     internal fun provideButtonItemPresenter(events: PublishRelay<FormEvent>) =
             ButtonItemPresenter(events)
+
+    @Provides
+    @IntoSet
+    @PerActivity
+    internal fun provideSaveFormPlugin(): FormPlugin {
+        return SaveFormPlugin()
+    }
 
 }
