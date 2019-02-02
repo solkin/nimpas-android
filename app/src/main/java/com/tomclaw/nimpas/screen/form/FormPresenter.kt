@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.screen.form.adapter.FormEvent
+import com.tomclaw.nimpas.screen.form.adapter.FormItem
 import com.tomclaw.nimpas.screen.form.plugin.FormPlugin
 import com.tomclaw.nimpas.templates.Template
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -56,6 +57,7 @@ class FormPresenterImpl(
     private var navigation: Set<Long> = state?.getLongArray(KEY_NAVIGATION)?.toMutableSet()
             ?: mutableSetOf(templateId)
     private var template: Template? = state?.getParcelable(KEY_TEMPLATE)
+    private var items: List<FormItem>? = state?.getParcelableArrayList(KEY_ITEMS)
 
     override fun attachView(view: FormView) {
         this.view = view
@@ -109,6 +111,7 @@ class FormPresenterImpl(
     override fun saveState() = Bundle().apply {
         putLongArray(KEY_NAVIGATION, navigation.toLongArray())
         putParcelable(KEY_TEMPLATE, template)
+        putParcelableArrayList(KEY_ITEMS, ArrayList(items.orEmpty()))
     }
 
     private fun loadTemplate() {
@@ -134,6 +137,7 @@ class FormPresenterImpl(
                     .toList()
             else -> throw IllegalStateException("Template has no neither nested items nor fields")
         }
+        this.items = items
         val dataSource = ListDataSource(items)
         adapterPresenter.get().onDataSourceChanged(dataSource)
         view?.contentUpdated()
@@ -160,3 +164,4 @@ class FormPresenterImpl(
 
 private const val KEY_NAVIGATION = "navigation"
 private const val KEY_TEMPLATE = "template"
+private const val KEY_ITEMS = "items"

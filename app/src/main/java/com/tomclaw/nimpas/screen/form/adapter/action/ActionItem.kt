@@ -3,14 +3,14 @@ package com.tomclaw.nimpas.screen.form.adapter.action
 import android.os.Parcel
 import android.os.Parcelable
 import android.support.annotation.ColorInt
-import com.avito.konveyor.blueprint.Item
+import com.tomclaw.nimpas.screen.form.adapter.FormItem
 
 class ActionItem(
         override val id: Long,
         val title: String,
         val icon: String?,
         @ColorInt val color: Int?
-) : Item, Parcelable {
+) : FormItem {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)

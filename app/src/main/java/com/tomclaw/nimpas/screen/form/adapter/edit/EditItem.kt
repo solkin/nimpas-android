@@ -2,13 +2,13 @@ package com.tomclaw.nimpas.screen.form.adapter.edit
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.avito.konveyor.blueprint.Item
+import com.tomclaw.nimpas.screen.form.adapter.FormItem
 
 class EditItem(
         override val id: Long,
         val hint: String,
         val text: String
-) : Item, Parcelable {
+) : FormItem {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)

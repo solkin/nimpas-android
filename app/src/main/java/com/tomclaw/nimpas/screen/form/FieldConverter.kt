@@ -1,6 +1,6 @@
 package com.tomclaw.nimpas.screen.form
 
-import com.avito.konveyor.blueprint.Item
+import com.tomclaw.nimpas.screen.form.adapter.FormItem
 import com.tomclaw.nimpas.screen.form.adapter.button.ButtonItem
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItem
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItem
@@ -9,13 +9,13 @@ import com.tomclaw.nimpas.templates.Field
 
 interface FieldConverter {
 
-    fun convert(field: Field): Item
+    fun convert(field: Field): FormItem
 
 }
 
 class FieldConverterImpl : FieldConverter {
 
-    override fun convert(field: Field): Item {
+    override fun convert(field: Field): FormItem {
         // TODO: refactor this
         return when (field.type) {
             FIELD_TYPE_STRING -> EditItem(
