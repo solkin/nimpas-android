@@ -96,5 +96,6 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
 }
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
+
 private const val REQUEST_ADD = 1
 private const val REQUEST_UNLOCK = 2

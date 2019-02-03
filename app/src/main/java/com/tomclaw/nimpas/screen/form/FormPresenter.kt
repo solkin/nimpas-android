@@ -82,9 +82,11 @@ class FormPresenterImpl(
     }
 
     private fun execute(action: String) {
+        val template = template ?: return
+        val items = items ?: return
         plugins.filter { it.action == action }
                 .forEach { plugin ->
-                    plugin.operation()
+                    plugin.operation(template, items)
                             .observeOn(schedulers.mainThread())
                             .doOnSubscribe { view?.showProgress() }
                             .doAfterTerminate { view?.showContent() }
