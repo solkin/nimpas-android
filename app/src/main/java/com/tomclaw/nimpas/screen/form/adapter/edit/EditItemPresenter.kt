@@ -7,6 +7,7 @@ class EditItemPresenter : ItemPresenter<EditItemView, EditItem> {
     override fun bindView(view: EditItemView, item: EditItem, position: Int) {
         view.setHint(item.hint)
         view.setText(item.text)
+        view.setTextChangedListener { item.text = it }
     }
 
 }

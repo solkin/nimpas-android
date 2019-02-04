@@ -12,11 +12,18 @@ interface CheckItemView : ItemView {
 
     fun setChecked(checked: Boolean)
 
+    fun setOnCheckedChangeListener(listener: (Boolean) -> Unit)
+
 }
 
 class CheckItemViewHolder(view: View) : BaseViewHolder(view), CheckItemView {
 
     private val check: CheckBox = view.findViewById(R.id.check)
+    private var listener: ((Boolean) -> Unit)? = null
+
+    init {
+        check.setOnCheckedChangeListener { _, isChecked -> listener?.invoke(isChecked) }
+    }
 
     override fun setText(text: String) {
         check.text = text
@@ -24,6 +31,9 @@ class CheckItemViewHolder(view: View) : BaseViewHolder(view), CheckItemView {
 
     override fun setChecked(checked: Boolean) {
         check.isChecked = checked
+    }
+    override fun setOnCheckedChangeListener(listener: (Boolean) -> Unit) {
+        this.listener = listener
     }
 
 }

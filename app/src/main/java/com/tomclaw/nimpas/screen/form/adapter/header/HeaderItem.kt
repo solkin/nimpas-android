@@ -6,11 +6,13 @@ import com.tomclaw.nimpas.screen.form.adapter.FormItem
 
 class HeaderItem(
         override val id: Long,
+        override val key: String?,
         val title: String
 ) : FormItem {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
+        writeString(key)
         writeString(title)
     }
 
@@ -19,8 +21,9 @@ class HeaderItem(
     companion object CREATOR : Parcelable.Creator<HeaderItem> {
         override fun createFromParcel(parcel: Parcel): HeaderItem {
             val id = parcel.readLong()
+            val key = parcel.readString()
             val text = parcel.readString().orEmpty()
-            return HeaderItem(id, text)
+            return HeaderItem(id, key, text)
         }
 
         override fun newArray(size: Int): Array<HeaderItem?> {

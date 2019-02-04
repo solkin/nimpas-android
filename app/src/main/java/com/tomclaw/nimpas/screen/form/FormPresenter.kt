@@ -5,6 +5,8 @@ import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.screen.form.adapter.FormEvent
 import com.tomclaw.nimpas.screen.form.adapter.FormItem
+import com.tomclaw.nimpas.screen.form.converter.FieldConverter
+import com.tomclaw.nimpas.screen.form.converter.TemplateConverter
 import com.tomclaw.nimpas.screen.form.plugin.FormPlugin
 import com.tomclaw.nimpas.templates.Template
 import com.tomclaw.nimpas.util.SchedulersFactory

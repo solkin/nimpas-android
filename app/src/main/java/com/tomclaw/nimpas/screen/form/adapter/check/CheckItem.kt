@@ -8,12 +8,14 @@ import com.tomclaw.nimpas.util.writeBoolean
 
 class CheckItem(
         override val id: Long,
+        override val key: String?,
         val text: String,
-        val checked: Boolean
+        var checked: Boolean
 ) : FormItem {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
+        writeString(key)
         writeString(text)
         writeBoolean(checked)
     }
@@ -23,9 +25,10 @@ class CheckItem(
     companion object CREATOR : Parcelable.Creator<CheckItem> {
         override fun createFromParcel(parcel: Parcel): CheckItem {
             val id = parcel.readLong()
+            val key = parcel.readString()
             val text = parcel.readString().orEmpty()
             val checked = parcel.readBoolean()
-            return CheckItem(id, text, checked)
+            return CheckItem(id, key, text, checked)
         }
 
         override fun newArray(size: Int): Array<CheckItem?> {

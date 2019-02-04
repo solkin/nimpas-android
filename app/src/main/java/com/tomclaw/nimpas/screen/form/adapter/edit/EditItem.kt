@@ -6,12 +6,14 @@ import com.tomclaw.nimpas.screen.form.adapter.FormItem
 
 class EditItem(
         override val id: Long,
+        override val key: String?,
         val hint: String,
-        val text: String
+        var text: String
 ) : FormItem {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
+        writeString(key)
         writeString(hint)
         writeString(text)
     }
@@ -21,9 +23,10 @@ class EditItem(
     companion object CREATOR : Parcelable.Creator<EditItem> {
         override fun createFromParcel(parcel: Parcel): EditItem {
             val id = parcel.readLong()
+            val key = parcel.readString()
             val hint = parcel.readString().orEmpty()
             val text = parcel.readString().orEmpty()
-            return EditItem(id, hint, text)
+            return EditItem(id, key, hint, text)
         }
 
         override fun newArray(size: Int): Array<EditItem?> {

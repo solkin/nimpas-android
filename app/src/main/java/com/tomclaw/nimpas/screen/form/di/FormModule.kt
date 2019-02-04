@@ -7,14 +7,10 @@ import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
 import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.journal.Journal
-import com.tomclaw.nimpas.screen.form.FieldConverter
-import com.tomclaw.nimpas.screen.form.FieldConverterImpl
 import com.tomclaw.nimpas.screen.form.FormInteractor
 import com.tomclaw.nimpas.screen.form.FormInteractorImpl
 import com.tomclaw.nimpas.screen.form.FormPresenter
 import com.tomclaw.nimpas.screen.form.FormPresenterImpl
-import com.tomclaw.nimpas.screen.form.TemplateConverter
-import com.tomclaw.nimpas.screen.form.TemplateConverterImpl
 import com.tomclaw.nimpas.screen.form.adapter.FormEvent
 import com.tomclaw.nimpas.screen.form.adapter.action.ActionItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.action.ActionItemPresenter
@@ -26,6 +22,10 @@ import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItemPresenter
 import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItemBlueprint
 import com.tomclaw.nimpas.screen.form.adapter.header.HeaderItemPresenter
+import com.tomclaw.nimpas.screen.form.converter.FieldConverter
+import com.tomclaw.nimpas.screen.form.converter.FieldConverterImpl
+import com.tomclaw.nimpas.screen.form.converter.TemplateConverter
+import com.tomclaw.nimpas.screen.form.converter.TemplateConverterImpl
 import com.tomclaw.nimpas.screen.form.plugin.FormPlugin
 import com.tomclaw.nimpas.screen.form.plugin.SaveFormPlugin
 import com.tomclaw.nimpas.templates.TemplateRepository
@@ -174,8 +174,8 @@ class FormModule(
     @Provides
     @IntoSet
     @PerActivity
-    internal fun provideSaveFormPlugin(): FormPlugin {
-        return SaveFormPlugin()
+    internal fun provideSaveFormPlugin(journal: Journal): FormPlugin {
+        return SaveFormPlugin(groupId, journal)
     }
 
 }
