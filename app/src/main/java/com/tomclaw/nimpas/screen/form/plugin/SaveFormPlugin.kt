@@ -29,9 +29,10 @@ class SaveFormPlugin(
                 val fields = items
                         .filter { !it.key.isNullOrEmpty() }
                         .map { item ->
+                            val key = item.key!!
                             when (item) {
-                                is EditItem -> "title" to item.text
-                                is CheckItem -> "checked" to item.checked.toString()
+                                is EditItem -> key to item.text
+                                is CheckItem -> key to item.checked.toString()
                                 else -> throw IllegalArgumentException("Unsupported item type: ${item.javaClass}")
                             }
                         }
