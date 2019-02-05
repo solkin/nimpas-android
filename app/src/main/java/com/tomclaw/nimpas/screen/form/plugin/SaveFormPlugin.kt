@@ -6,8 +6,8 @@ import com.tomclaw.nimpas.screen.form.adapter.FormItem
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItem
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItem
 import com.tomclaw.nimpas.templates.Template
-import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 class SaveFormPlugin(
         private val groupId: Long,
@@ -19,25 +19,26 @@ class SaveFormPlugin(
     override fun operation(
             template: Template,
             items: List<FormItem>
-    ): Observable<Unit> = Completable.create { emitter ->
-        val id = journal.nextId()
-        val time = System.currentTimeMillis()
-        val type = template.type ?: throw IllegalArgumentException("Template type is not specified")
-        val fields = items
-                .filter { !it.key.isNullOrEmpty() }
-                .map { item ->
-                    when (item) {
-                        is EditItem -> "title" to item.text
-                        is CheckItem -> "checked" to item.checked.toString()
-                        else -> throw IllegalArgumentException("Unsupported item type: ${item.javaClass}")
-                    }
-                }
-                .toMap()
-        val record = Record(id, groupId, time, type, fields)
-        journal.addRecord(record).subscribe(
-                { emitter.onComplete() },
-                { emitter.onError(it) }
-        )
-    }.toObservable<Unit>()
+    ): Observable<Unit> = Single
+            .create<Record> { emitter ->
+                val id = journal.nextId()
+                val time = System.currentTimeMillis()
+                val type = template.type
+                        ?: throw IllegalArgumentException("Template type is not specified")
+                val fields = items
+                        .filter { !it.key.isNullOrEmpty() }
+                        .map { item ->
+                            when (item) {
+                                is EditItem -> "title" to item.text
+                                is CheckItem -> "checked" to item.checked.toString()
+                                else -> throw IllegalArgumentException("Unsupported item type: ${item.javaClass}")
+                            }
+                        }
+                        .toMap()
+                val record = Record(id, groupId, time, type, fields)
+                emitter.onSuccess(record)
+            }
+            .flatMapCompletable { journal.addRecord(it) }
+            .toObservable()
 
 }

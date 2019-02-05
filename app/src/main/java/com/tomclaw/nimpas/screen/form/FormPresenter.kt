@@ -84,19 +84,20 @@ class FormPresenterImpl(
     }
 
     private fun execute(action: String) {
+        plugins.filter { it.action == action }.forEach { runPluginOperation(it) }
+    }
+
+    private fun runPluginOperation(plugin: FormPlugin) {
         val template = template ?: return
         val items = items ?: return
-        plugins.filter { it.action == action }
-                .forEach { plugin ->
-                    plugin.operation(template, items)
-                            .observeOn(schedulers.mainThread())
-                            .doOnSubscribe { view?.showProgress() }
-                            .doAfterTerminate { view?.showContent() }
-                            .subscribe(
-                                    { onCompleted() },
-                                    { onError(it) }
-                            )
-                }
+        subscriptions += plugin.operation(template, items)
+                .observeOn(schedulers.mainThread())
+                .doOnSubscribe { view?.showProgress() }
+                .doAfterTerminate { view?.showContent() }
+                .subscribe(
+                        { onCompleted() },
+                        { onError(it) }
+                )
     }
 
     override fun detachView() {
