@@ -16,14 +16,12 @@ interface ButtonItemView : ItemView {
 
 class ButtonItemViewHolder(view: View) : BaseViewHolder(view), ButtonItemView {
 
-    private val context = view.context
-
     private val button: TextView = view.findViewById(R.id.button)
 
     private var listener: (() -> Unit)? = null
 
     init {
-        view.setOnClickListener { listener?.invoke() }
+        button.setOnClickListener { listener?.invoke() }
     }
 
     override fun setTitle(text: String) {

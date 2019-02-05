@@ -6,6 +6,7 @@ import com.tomclaw.nimpas.screen.form.adapter.FormItem
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItem
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItem
 import com.tomclaw.nimpas.templates.Template
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -19,7 +20,7 @@ class SaveFormPlugin(
     override fun operation(
             template: Template,
             items: List<FormItem>
-    ): Observable<Unit> = Single
+    ): Completable = Single
             .create<Record> { emitter ->
                 val id = journal.nextId()
                 val time = System.currentTimeMillis()
@@ -39,6 +40,5 @@ class SaveFormPlugin(
                 emitter.onSuccess(record)
             }
             .flatMapCompletable { journal.addRecord(it) }
-            .toObservable()
 
 }

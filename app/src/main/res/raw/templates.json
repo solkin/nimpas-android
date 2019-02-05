@@ -82,6 +82,13 @@
           "input_type": "autocomplete",
           "optional": true
         }
+      },
+      {
+        "type": "button",
+        "params": {
+          "action": "save",
+          "title": "Create password"
+        }
       }
     ]
   },
@@ -154,6 +161,13 @@
           "input_type": "number|password",
           "optional": true
         }
+      },
+      {
+        "type": "button",
+        "params": {
+          "action": "save",
+          "title": "Create card"
+        }
       }
     ]
   },
@@ -177,6 +191,13 @@
         "params": {
           "hint": "Text",
           "multiline": true
+        }
+      },
+      {
+        "type": "button",
+        "params": {
+          "action": "save",
+          "title": "Create note"
         }
       }
     ]

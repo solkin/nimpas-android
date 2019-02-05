@@ -152,11 +152,13 @@ class FormPresenterImpl(
         router?.leaveScreen()
     }
 
-    private fun onError(it: Throwable) {}
+    private fun onError(it: Throwable) {
+        throw it
+    }
 
     override fun onBackPressed() {
+        navigation -= navigation.last()
         if (navigation.isNotEmpty()) {
-            navigation -= navigation.last()
             loadTemplate()
         } else {
             router?.leaveScreen()
