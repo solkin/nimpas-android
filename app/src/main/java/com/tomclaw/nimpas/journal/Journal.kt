@@ -1,7 +1,9 @@
 package com.tomclaw.nimpas.journal
 
 import android.annotation.SuppressLint
-import com.tomclaw.drawa.util.safeClose
+import com.tomclaw.drawa.util.*
+import com.tomclaw.nimpas.templates.Field
+import com.tomclaw.nimpas.templates.Template
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.BufferedInputStream
@@ -28,6 +30,10 @@ interface Journal {
 
     fun unlock(keyword: String): Completable
 
+    fun getTemplate(templateId: Long): Single<Template>
+
+    fun addTemplate(template: Template): Completable
+
     fun getRecords(groupId: Long = GROUP_DEFAULT): Single<List<Record>>
 
     fun addRecord(record: Record): Completable
@@ -39,6 +45,7 @@ interface Journal {
 class JournalImpl(private val file: File) : Journal {
 
     private var keyword: String? = null
+    private var templates: MutableMap<Long, Template>? = null
     private var records: MutableMap<Long, Record>? = null
     private var writeTime: Long = 0
     private var nextId: Long = 0
@@ -63,6 +70,29 @@ class JournalImpl(private val file: File) : Journal {
         emitter.onComplete()
     }
 
+    override fun getTemplate(templateId: Long): Single<Template> = Single.create { emitter ->
+        if (isUnlocked()) {
+            templates?.get(templateId)?.let { template ->
+                emitter.onSuccess(template)
+                return@create
+            } ?: emitter.onError(TemplateNotFoundException())
+        }
+        emitter.onError(JournalLockedException())
+    }
+
+    override fun addTemplate(template: Template): Completable = Completable.create { emitter ->
+        val keyword = keyword
+        val templates = templates
+        val records = records
+        if (keyword != null && templates != null && records != null) {
+            templates[template.id] = template
+            writeJournal(keyword, templates, records)
+            emitter.onComplete()
+        } else {
+            emitter.onError(JournalLockedException())
+        }
+    }
+
     override fun getRecords(groupId: Long): Single<List<Record>> = Single.create { emitter ->
         if (isUnlocked()) {
             val records = records
@@ -80,10 +110,11 @@ class JournalImpl(private val file: File) : Journal {
 
     override fun addRecord(record: Record): Completable = Completable.create { emitter ->
         val keyword = keyword
+        val templates = templates
         val records = records
-        if (keyword != null && records != null) {
+        if (keyword != null && templates != null && records != null) {
             records[record.id] = record
-            writeJournal(keyword, records)
+            writeJournal(keyword, templates, records)
             emitter.onComplete()
         } else {
             emitter.onError(JournalLockedException())
@@ -95,12 +126,18 @@ class JournalImpl(private val file: File) : Journal {
     }
 
     private fun initJournal(keyword: String) {
-        this.records = mutableMapOf<Long, Record>().apply {
-            writeJournal(keyword, this)
-        }
+        val templates = mutableMapOf<Long, Template>()
+        val records = mutableMapOf<Long, Record>()
+        this.templates = templates
+        this.records = records
+        writeJournal(keyword, templates, records)
     }
 
-    private fun writeJournal(keyword: String, records: Map<Long, Record>) {
+    private fun writeJournal(
+            keyword: String,
+            templates: Map<Long, Template>,
+            records: Map<Long, Record>
+    ) {
         var stream: DataOutputStream? = null
         try {
             writeTime = System.currentTimeMillis()
@@ -113,6 +150,27 @@ class JournalImpl(private val file: File) : Journal {
             with(stream) {
                 writeShort(JOURNAL_VERSION)
                 writeLong(writeTime)
+                flush()
+            }
+            with(stream) {
+                writeInt(templates.size)
+                templates.values.forEach { template ->
+                    writeLong(template.id)
+                    writeNullableInt(template.type)
+                    writeNullableUTF(template.title)
+                    writeNullableUTF(template.icon)
+                    writeNullableUTF(template.color)
+                    writeInt(template.fields?.size ?: 0)
+                    template.fields?.forEach { field ->
+                        writeUTF(field.type)
+                        writeNullableUTF(field.key)
+                        writeInt(field.params?.size ?: 0)
+                        field.params?.forEach { (key, value) ->
+                            writeUTF(key)
+                            writeUTF(value)
+                        }
+                    }
+                }
                 flush()
             }
             stream = DataOutputStream(CipherOutputStream(fileStream, cipher))
@@ -152,6 +210,39 @@ class JournalImpl(private val file: File) : Journal {
             stream = DataInputStream(fileStream)
             val version = stream.readShort()
             val writeTime = stream.readLong()
+            with(stream) {
+                when (version) {
+                    VERSION_1 -> {
+                        val templates = HashMap<Long, Template>()
+                        val templatesCount = readInt()
+                        for (t in 0 until templatesCount) {
+                            val id = readLong()
+                            val type = readNullableInt()
+                            val title = readNullableUTF()
+                            val icon = readNullableUTF()
+                            val color = readNullableUTF()
+                            val fields = mutableListOf<Field>()
+                            val fieldsCount = readInt()
+                            for (f in 0 until fieldsCount) {
+                                val fieldType = readUTF()
+                                val fieldKey = readNullableUTF()
+                                val paramsCount = readInt()
+                                val params = mutableMapOf<String, String>()
+                                for (p in 0 until paramsCount) {
+                                    val key = readUTF()
+                                    val value = readUTF()
+                                    params += key to value
+                                }
+                                fields += Field(fieldType, fieldKey, params)
+                            }
+                            val template = Template(id, type, title, icon, color, fields)
+                            templates += id to template
+                        }
+                        this@JournalImpl.templates = templates
+                    }
+                    else -> throw UnknownFormatException()
+                }
+            }
             stream = DataInputStream(CipherInputStream(fileStream, cipher))
             with(stream) {
                 when (version) {
@@ -164,8 +255,8 @@ class JournalImpl(private val file: File) : Journal {
                             val groupId = readLong()
                             val time = readLong()
                             val type = readInt()
-                            val fields = mutableMapOf<String, String>()
                             val fieldsCount = readInt()
+                            val fields = mutableMapOf<String, String>()
                             for (i in 0 until fieldsCount) {
                                 val key = readUTF()
                                 val value = readUTF()
@@ -190,6 +281,8 @@ class JournalImpl(private val file: File) : Journal {
     class UnknownRecordException : Exception()
 
     class JournalLockedException : Exception()
+
+    class TemplateNotFoundException : Exception()
 
 }
 
