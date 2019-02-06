@@ -13,6 +13,7 @@ import java.io.DataOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.lang.IllegalStateException
 import java.util.HashMap
 import javax.crypto.Cipher
 import javax.crypto.CipherInputStream
@@ -30,13 +31,11 @@ interface Journal {
 
     fun unlock(keyword: String): Completable
 
-    fun getTemplate(templateId: Long): Single<Template>
-
-    fun addTemplate(template: Template): Completable
-
     fun getRecords(groupId: Long = GROUP_DEFAULT): Single<List<Record>>
 
     fun addRecord(record: Record): Completable
+
+    fun deleteRecord(recordId: Long): Completable
 
     fun nextId(): Long
 
@@ -70,29 +69,6 @@ class JournalImpl(private val file: File) : Journal {
         emitter.onComplete()
     }
 
-    override fun getTemplate(templateId: Long): Single<Template> = Single.create { emitter ->
-        if (isUnlocked()) {
-            templates?.get(templateId)?.let { template ->
-                emitter.onSuccess(template)
-                return@create
-            } ?: emitter.onError(TemplateNotFoundException())
-        }
-        emitter.onError(JournalLockedException())
-    }
-
-    override fun addTemplate(template: Template): Completable = Completable.create { emitter ->
-        val keyword = keyword
-        val templates = templates
-        val records = records
-        if (keyword != null && templates != null && records != null) {
-            templates[template.id] = template
-            writeJournal(keyword, templates, records)
-            emitter.onComplete()
-        } else {
-            emitter.onError(JournalLockedException())
-        }
-    }
-
     override fun getRecords(groupId: Long): Single<List<Record>> = Single.create { emitter ->
         if (isUnlocked()) {
             val records = records
@@ -113,8 +89,25 @@ class JournalImpl(private val file: File) : Journal {
         val templates = templates
         val records = records
         if (keyword != null && templates != null && records != null) {
+            templates[record.template.id] = record.template
             records[record.id] = record
             writeJournal(keyword, templates, records)
+            emitter.onComplete()
+        } else {
+            emitter.onError(JournalLockedException())
+        }
+    }
+
+    override fun deleteRecord(recordId: Long): Completable = Completable.create { emitter ->
+        val keyword = keyword
+        val templates = templates
+        val records = records
+        if (keyword != null && templates != null && records != null) {
+            records.remove(recordId)?.let { record ->
+                records.filterValues { it.template.id == record.template.id }
+                        .takeIf { it.isNotEmpty() } ?: templates.remove(record.template.id)
+                writeJournal(keyword, templates, records)
+            }
             emitter.onComplete()
         } else {
             emitter.onError(JournalLockedException())
@@ -181,7 +174,7 @@ class JournalImpl(private val file: File) : Journal {
                     writeLong(record.id)
                     writeLong(record.groupId)
                     writeLong(record.time)
-                    writeInt(record.type)
+                    writeLong(record.template.id)
                     writeInt(record.fields.size)
                     record.fields.forEach { (key, value) ->
                         writeUTF(key)
@@ -210,10 +203,10 @@ class JournalImpl(private val file: File) : Journal {
             stream = DataInputStream(fileStream)
             val version = stream.readShort()
             val writeTime = stream.readLong()
+            val templates = HashMap<Long, Template>()
             with(stream) {
                 when (version) {
                     VERSION_1 -> {
-                        val templates = HashMap<Long, Template>()
                         val templatesCount = readInt()
                         for (t in 0 until templatesCount) {
                             val id = readLong()
@@ -254,7 +247,7 @@ class JournalImpl(private val file: File) : Journal {
                             val id = readLong()
                             val groupId = readLong()
                             val time = readLong()
-                            val type = readInt()
+                            val templateId = readLong()
                             val fieldsCount = readInt()
                             val fields = mutableMapOf<String, String>()
                             for (i in 0 until fieldsCount) {
@@ -262,7 +255,9 @@ class JournalImpl(private val file: File) : Journal {
                                 val value = readUTF()
                                 fields += key to value
                             }
-                            records[id] = Record(id, groupId, time, type, fields)
+                            val template = templates[templateId]
+                                    ?: throw TemplateNotFoundException()
+                            records[id] = Record(id, groupId, time, template, fields)
                         }
                         this@JournalImpl.records = records
                         this@JournalImpl.writeTime = writeTime
@@ -277,8 +272,6 @@ class JournalImpl(private val file: File) : Journal {
     }
 
     class UnknownFormatException : Exception()
-
-    class UnknownRecordException : Exception()
 
     class JournalLockedException : Exception()
 

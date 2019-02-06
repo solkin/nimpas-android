@@ -7,7 +7,7 @@ import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.journal.GROUP_DEFAULT
 import com.tomclaw.nimpas.journal.JournalImpl
 import com.tomclaw.nimpas.journal.Record
-import com.tomclaw.nimpas.journal.TYPE_GROUP
+import com.tomclaw.nimpas.templates.TYPE_GROUP
 import com.tomclaw.nimpas.screen.safe.adapter.ItemClickListener
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -121,7 +121,7 @@ class SafePresenterImpl(
 
     private fun onLoaded(records: List<Record>) {
         val items = records.asSequence()
-                .sortedWith(compareBy({ it.type == TYPE_GROUP }, { it.time }))
+                .sortedWith(compareBy({ it.template.type == TYPE_GROUP }, { it.time }))
                 .map { recordConverter.convert(it) }
                 .toList()
         val dataSource = ListDataSource(items)

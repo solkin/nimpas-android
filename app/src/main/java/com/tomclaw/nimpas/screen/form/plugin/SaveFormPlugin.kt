@@ -19,10 +19,7 @@ class SaveFormPlugin(
     override fun operation(
             template: Template,
             items: List<FormItem>
-    ): Completable = journal.addTemplate(template)
-            .toSingle { }
-            .flatMap { createRecord(template, items) }
-            .flatMapCompletable { journal.addRecord(it) }
+    ): Completable = createRecord(template, items).flatMapCompletable { journal.addRecord(it) }
 
     private fun createRecord(
             template: Template,
@@ -30,8 +27,6 @@ class SaveFormPlugin(
     ) = Single.create<Record> { emitter ->
         val id = journal.nextId()
         val time = System.currentTimeMillis()
-        val type = template.type
-                ?: throw IllegalArgumentException("Template type is not specified")
         val fields = items
                 .filter { !it.key.isNullOrEmpty() }
                 .map { item ->
@@ -43,7 +38,7 @@ class SaveFormPlugin(
                     }
                 }
                 .toMap()
-        val record = Record(id, groupId, time, type, fields)
+        val record = Record(id, groupId, time, template, fields)
         emitter.onSuccess(record)
     }
 
