@@ -6,7 +6,7 @@
     android:layout_height="40dp"
     android:background="@drawable/circle_back">
 
-    <com.caverock.androidsvg.SVGImageView
+    <ImageView
         android:id="@+id/icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
