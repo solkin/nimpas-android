@@ -4,20 +4,12 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="12dp">
 
-    <com.tomclaw.nimpas.util.ItemImageView
-        android:id="@+id/icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:scaleType="center"
-        android:src="@drawable/credit_card"
-        tools:background="@drawable/circle_back"
-        tools:ignore="ContentDescription"
-        tools:tint="@color/color_accent_light" />
+    <include layout="@layout/circle_icon" />
 
     <LinearLayout
         android:layout_width="match_parent"
