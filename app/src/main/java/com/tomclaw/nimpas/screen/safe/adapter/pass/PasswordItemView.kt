@@ -5,12 +5,13 @@ import android.widget.TextView
 import com.avito.konveyor.adapter.BaseViewHolder
 import com.avito.konveyor.blueprint.ItemView
 import com.tomclaw.nimpas.R
-import com.tomclaw.nimpas.util.ItemImageView
+import com.tomclaw.nimpas.util.CircleIconView
 import com.tomclaw.nimpas.util.bind
+import com.tomclaw.nimpas.util.randomColor
 
 interface PasswordItemView : ItemView {
 
-    fun setIcon(itemId: Long)
+    fun setIcon(svg: String, itemId: Long)
 
     fun setTitle(title: String)
 
@@ -22,7 +23,7 @@ interface PasswordItemView : ItemView {
 
 class PasswordItemViewHolder(view: View) : BaseViewHolder(view), PasswordItemView {
 
-    private val icon: ItemImageView = view.findViewById(R.id.icon)
+    private val icon: CircleIconView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
     private val subtitle: TextView = view.findViewById(R.id.subtitle)
 
@@ -32,8 +33,9 @@ class PasswordItemViewHolder(view: View) : BaseViewHolder(view), PasswordItemVie
         view.setOnClickListener { listener?.invoke() }
     }
 
-    override fun setIcon(itemId: Long) {
-        icon.setItemId(itemId)
+    override fun setIcon(svg: String, itemId: Long) {
+        val pair = randomColor(itemId)
+        icon.setIconColoredRes(svg, pair.second, pair.first)
     }
 
     override fun setTitle(title: String) {

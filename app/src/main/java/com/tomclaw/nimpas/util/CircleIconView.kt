@@ -3,6 +3,7 @@ package com.tomclaw.nimpas.util
 import android.content.Context
 import android.graphics.PorterDuff
 import android.support.annotation.ColorInt
+import android.support.annotation.ColorRes
 import android.support.v7.content.res.AppCompatResources
 import android.util.AttributeSet
 import android.view.View
@@ -35,7 +36,11 @@ class CircleIconView : FrameLayout {
         icon = findViewById(R.id.icon)
     }
 
-    fun setIcon(svg: String, @ColorInt color: Int? = null, background: Int) {
+    fun setIconColoredRes(svg: String, @ColorRes color: Int? = null, @ColorRes background: Int) {
+        setIconColored(svg, color?.let { resources.getColor(it) }, resources.getColor(background))
+    }
+
+    fun setIconColored(svg: String, @ColorInt color: Int? = null, @ColorInt background: Int) {
         val backDrawable = AppCompatResources.getDrawable(context, R.drawable.circle_back)
         if (backDrawable != null) {
             backDrawable.setColorFilter(background, PorterDuff.Mode.SRC_ATOP)

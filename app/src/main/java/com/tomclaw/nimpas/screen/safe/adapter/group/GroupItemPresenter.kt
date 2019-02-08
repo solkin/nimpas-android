@@ -8,7 +8,7 @@ class GroupItemPresenter(
 ) : ItemPresenter<GroupItemView, GroupItem> {
 
     override fun bindView(view: GroupItemView, item: GroupItem, position: Int) {
-        view.setIcon(item.id)
+        item.icon?.let { view.setIcon(item.icon, item.id) }
         view.setTitle(item.title)
         view.setOnClickListener { listener.onItemClick(item) }
     }

@@ -9,7 +9,10 @@
     android:orientation="horizontal"
     android:padding="12dp">
 
-    <include layout="@layout/circle_icon" />
+    <com.tomclaw.nimpas.util.CircleIconView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/title"

@@ -7,13 +7,15 @@ import com.avito.konveyor.blueprint.Item
 class PasswordItem(
         override val id: Long,
         val title: String,
-        val subtitle: String?
+        val subtitle: String?,
+        val icon: String?
 ) : Item, Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
         writeString(title)
         writeString(subtitle)
+        writeString(icon)
     }
 
     override fun describeContents(): Int = 0
@@ -23,7 +25,8 @@ class PasswordItem(
             val id = parcel.readLong()
             val title = parcel.readString().orEmpty()
             val subtitle = parcel.readString()
-            return PasswordItem(id, title, subtitle)
+            val icon = parcel.readString()
+            return PasswordItem(id, title, subtitle, icon)
         }
 
         override fun newArray(size: Int): Array<PasswordItem?> {

@@ -8,7 +8,7 @@ class PasswordItemPresenter(
 ) : ItemPresenter<PasswordItemView, PasswordItem> {
 
     override fun bindView(view: PasswordItemView, item: PasswordItem, position: Int) {
-        view.setIcon(item.id)
+        item.icon?.let { view.setIcon(item.icon, item.id) }
         view.setTitle(item.title)
         view.setSubtitle(item.subtitle)
         view.setOnClickListener { listener.onItemClick(item) }

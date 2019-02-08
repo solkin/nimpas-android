@@ -8,7 +8,7 @@ class NoteItemPresenter(
 ) : ItemPresenter<NoteItemView, NoteItem> {
 
     override fun bindView(view: NoteItemView, item: NoteItem, position: Int) {
-        view.setIcon(item.id)
+        item.icon?.let { view.setIcon(item.icon, item.id) }
         view.setTitle(item.title)
         view.setText(item.text)
         view.setOnClickListener { listener.onItemClick(item) }

@@ -8,7 +8,7 @@ class CardItemPresenter(
 ) : ItemPresenter<CardItemView, CardItem> {
 
     override fun bindView(view: CardItemView, item: CardItem, position: Int) {
-        view.setIcon(item.id)
+        item.icon?.let { view.setIcon(item.icon, item.id) }
         view.setTitle(item.title)
         view.setNumber(item.number)
         view.setOnClickListener { listener.onItemClick(item) }

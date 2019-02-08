@@ -5,12 +5,13 @@ import android.widget.TextView
 import com.avito.konveyor.adapter.BaseViewHolder
 import com.avito.konveyor.blueprint.ItemView
 import com.tomclaw.nimpas.R
-import com.tomclaw.nimpas.util.ItemImageView
+import com.tomclaw.nimpas.util.CircleIconView
 import com.tomclaw.nimpas.util.bind
+import com.tomclaw.nimpas.util.randomColor
 
 interface GroupItemView : ItemView {
 
-    fun setIcon(itemId: Long)
+    fun setIcon(svg: String, itemId: Long)
 
     fun setTitle(title: String)
 
@@ -20,7 +21,7 @@ interface GroupItemView : ItemView {
 
 class GroupItemViewHolder(view: View) : BaseViewHolder(view), GroupItemView {
 
-    private val icon: ItemImageView = view.findViewById(R.id.icon)
+    private val icon: CircleIconView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)
 
     private var listener: (() -> Unit)? = null
@@ -29,8 +30,9 @@ class GroupItemViewHolder(view: View) : BaseViewHolder(view), GroupItemView {
         view.setOnClickListener { listener?.invoke() }
     }
 
-    override fun setIcon(itemId: Long) {
-        this.icon.setItemId(itemId)
+    override fun setIcon(svg: String, itemId: Long) {
+        val pair = randomColor(itemId)
+        icon.setIconColoredRes(svg, pair.second, pair.first)
     }
 
     override fun setTitle(title: String) {

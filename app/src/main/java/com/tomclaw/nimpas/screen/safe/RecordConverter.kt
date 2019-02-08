@@ -20,10 +20,29 @@ interface RecordConverter {
 class RecordConverterImpl : RecordConverter {
 
     override fun convert(record: Record): Item = when (record.template.type) {
-        TYPE_GROUP -> GroupItem(record.id, record.getField("title"))
-        TYPE_PASSWORD -> PasswordItem(record.id, record.getField("title"), record.getField("username"))
-        TYPE_CARD -> CardItem(record.id, record.getField("title"), record.getField("number"))
-        TYPE_NOTE -> NoteItem(record.id, record.getField("title"), record.getField("text"))
+        TYPE_GROUP -> GroupItem(
+                id = record.id,
+                title = record.getField("title"),
+                icon = record.template.icon
+        )
+        TYPE_PASSWORD -> PasswordItem(
+                id = record.id,
+                title = record.getField("title"),
+                subtitle = record.getField("username"),
+                icon = record.template.icon
+        )
+        TYPE_CARD -> CardItem(
+                id = record.id,
+                title = record.getField("title"),
+                number = record.getField("number"),
+                icon = record.template.icon
+        )
+        TYPE_NOTE -> NoteItem(
+                id = record.id,
+                title = record.getField("title"),
+                text = record.getField("text"),
+                icon = record.template.icon
+        )
         else -> throw IllegalArgumentException("Unknown record type!")
     }
 

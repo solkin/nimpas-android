@@ -7,13 +7,15 @@ import com.avito.konveyor.blueprint.Item
 class CardItem(
         override val id: Long,
         val title: String,
-        val number: String
+        val number: String,
+        val icon: String?
 ) : Item, Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
         writeString(title)
         writeString(number)
+        writeString(icon)
     }
 
     override fun describeContents(): Int = 0
@@ -23,7 +25,8 @@ class CardItem(
             val id = parcel.readLong()
             val title = parcel.readString().orEmpty()
             val number = parcel.readString().orEmpty()
-            return CardItem(id, title, number)
+            val icon = parcel.readString()
+            return CardItem(id, title, number, icon)
         }
 
         override fun newArray(size: Int): Array<CardItem?> {
