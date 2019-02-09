@@ -2,6 +2,7 @@ package com.tomclaw.nimpas.util
 
 import android.content.Context
 import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.support.annotation.ColorInt
 import android.support.annotation.ColorRes
 import android.support.v7.content.res.AppCompatResources
@@ -49,7 +50,7 @@ class CircleIconView : FrameLayout {
         val bitmap = SVG.getFromString(svg)
                 .renderToPicture()
                 .toBitmap()
-                .apply { if (color != null) tint(color) }
+        color?.let { icon?.colorFilter = PorterDuffColorFilter(it, PorterDuff.Mode.SRC_ATOP) }
         icon?.setImageBitmap(bitmap)
     }
 
