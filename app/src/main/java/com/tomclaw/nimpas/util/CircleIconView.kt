@@ -33,7 +33,7 @@ class CircleIconView : FrameLayout {
     private fun init() {
         View.inflate(context, R.layout.circle_icon, this)
         circle = findViewById(R.id.circle)
-        icon = findViewById(R.id.icon)
+        icon = findViewById(R.id.image)
     }
 
     fun setIconColoredRes(svg: String, @ColorRes color: Int? = null, @ColorRes background: Int) {
