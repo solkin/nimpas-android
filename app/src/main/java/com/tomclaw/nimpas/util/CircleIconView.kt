@@ -47,9 +47,11 @@ class CircleIconView : FrameLayout {
             backDrawable.setColorFilter(background, PorterDuff.Mode.SRC_ATOP)
             circle?.setBackgroundDrawable(backDrawable)
         }
-        val bitmap = SVG.getFromString(svg)
-                .renderToPicture()
-                .toBitmap()
+        val picture = SVG.getFromString(svg).renderToPicture()
+        val bitmap = picture.toBitmap(
+                bitmapWidth = dpToPx(picture.width, resources),
+                bitmapHeight = dpToPx(picture.height, resources)
+        )
         color?.let { icon?.colorFilter = PorterDuffColorFilter(it, PorterDuff.Mode.SRC_ATOP) }
         icon?.setImageBitmap(bitmap)
     }

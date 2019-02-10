@@ -3,11 +3,17 @@ package com.tomclaw.nimpas.util
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Picture
+import android.graphics.Rect
 
-fun Picture.toBitmap(config: Bitmap.Config = Bitmap.Config.ARGB_8888): Bitmap {
-    val bitmap = Bitmap.createBitmap(width, height, config)
+fun Picture.toBitmap(
+        config: Bitmap.Config = Bitmap.Config.ARGB_8888,
+        bitmapWidth: Int = width,
+        bitmapHeight: Int = height
+): Bitmap {
+    val bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, config)
     val canvas = Canvas(bitmap)
-    canvas.drawPicture(this)
+    val rect = Rect(0, 0, bitmapWidth, bitmapHeight)
+    canvas.drawPicture(this, rect)
     canvas.setBitmap(null)
     return bitmap
 }
