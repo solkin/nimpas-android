@@ -1,15 +1,14 @@
-package com.tomclaw.nimpas.screen.form.adapter.header
+package com.tomclaw.nimpas.screen.info.adapter.header
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.tomclaw.nimpas.screen.form.adapter.FormItem
-import com.tomclaw.nimpas.screen.info.adapter.header.HeaderItem
+import com.tomclaw.nimpas.screen.info.adapter.InfoItem
 
 class HeaderItem(
         override val id: Long,
         override val key: String?,
         val title: String
-) : FormItem {
+) : InfoItem {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
