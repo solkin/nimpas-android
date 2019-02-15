@@ -116,7 +116,7 @@ class FormPresenterImpl(
     override fun saveState() = Bundle().apply {
         putLongArray(KEY_NAVIGATION, navigation.toLongArray())
         putParcelable(KEY_TEMPLATE, template)
-        putParcelableArrayList(KEY_ITEMS, ArrayList(items.orEmpty()))
+        putParcelableArrayList(KEY_ITEMS, items?.let { ArrayList(items.orEmpty()) })
     }
 
     private fun loadTemplate() {

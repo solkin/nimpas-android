@@ -7,8 +7,9 @@ import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.journal.GROUP_DEFAULT
 import com.tomclaw.nimpas.journal.JournalImpl
 import com.tomclaw.nimpas.journal.Record
-import com.tomclaw.nimpas.templates.TYPE_GROUP
 import com.tomclaw.nimpas.screen.safe.adapter.ItemClickListener
+import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItem
+import com.tomclaw.nimpas.templates.TYPE_GROUP
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
@@ -37,6 +38,8 @@ interface SafePresenter : ItemClickListener {
 
         fun showLockScreen()
 
+        fun showInfo(record: Record)
+
         fun leaveScreen()
 
     }
@@ -60,6 +63,7 @@ class SafePresenterImpl(
 
     private var navigation: Set<Long> = state?.getLongArray(KEY_NAVIGATION)?.toMutableSet()
             ?: mutableSetOf()
+    private var records: List<Record>? = state?.getParcelableArrayList(KEY_RECORDS)
 
     override fun attachView(view: SafeView) {
         this.view = view
@@ -106,6 +110,7 @@ class SafePresenterImpl(
 
     override fun saveState() = Bundle().apply {
         putLongArray(KEY_NAVIGATION, navigation.toLongArray())
+        putParcelableArrayList(KEY_RECORDS, records?.let { ArrayList(records.orEmpty()) })
     }
 
     private fun loadRecords(groupId: Long = GROUP_DEFAULT) {
@@ -120,6 +125,7 @@ class SafePresenterImpl(
     }
 
     private fun onLoaded(records: List<Record>) {
+        this.records = records
         val items = records.asSequence()
                 .sortedWith(compareBy({ it.template.type == TYPE_GROUP }, { it.time }))
                 .map { recordConverter.convert(it) }
@@ -150,8 +156,15 @@ class SafePresenterImpl(
     }
 
     override fun onItemClick(item: Item) {
-        navigation += item.id
-        loadRecords(item.id)
+        when (item) {
+            is GroupItem -> {
+                navigation += item.id
+                loadRecords(item.id)
+            }
+            else -> {
+                records?.firstOrNull { it.id == item.id }?.let { router?.showInfo(it) }
+            }
+        }
     }
 
     private fun getGroupId() = navigation.lastOrNull() ?: GROUP_DEFAULT
@@ -159,3 +172,4 @@ class SafePresenterImpl(
 }
 
 private const val KEY_NAVIGATION = "navigation"
+private const val KEY_RECORDS = "records"

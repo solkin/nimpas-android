@@ -77,9 +77,8 @@ class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
 fun createInfoActivityIntent(
         context: Context,
         record: Record
-): Intent =
-        Intent(context, InfoActivity::class.java)
-                .putExtra(EXTRA_RECORD, record)
+): Intent = Intent(context, InfoActivity::class.java)
+        .putExtra(EXTRA_RECORD, record)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
 

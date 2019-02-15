@@ -7,8 +7,10 @@ import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.form.createFormActivityIntent
+import com.tomclaw.nimpas.screen.info.createInfoActivityIntent
 import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
 import com.tomclaw.nimpas.screen.safe.di.SafeModule
 import javax.inject.Inject
@@ -87,6 +89,11 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
     override fun showLockScreen() {
         val intent = createLockActivityIntent(context = this)
         startActivityForResult(intent, REQUEST_UNLOCK)
+    }
+
+    override fun showInfo(record: Record) {
+        val intent = createInfoActivityIntent(context = this, record = record)
+        startActivity(intent)
     }
 
     override fun leaveScreen() {
