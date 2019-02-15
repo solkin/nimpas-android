@@ -32,7 +32,7 @@ class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.form_activity)
+        setContentView(R.layout.info_activity)
 
 
         val adapter = SimpleRecyclerAdapter(adapterPresenter, binder)
