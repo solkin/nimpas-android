@@ -34,7 +34,6 @@ class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.info_activity)
 
-
         val adapter = SimpleRecyclerAdapter(adapterPresenter, binder)
         val view = InfoViewImpl(window.decorView, adapter)
 

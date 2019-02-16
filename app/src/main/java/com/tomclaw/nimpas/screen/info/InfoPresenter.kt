@@ -90,6 +90,7 @@ class InfoPresenterImpl(
         val dataSource = ListDataSource(items)
         adapterPresenter.get().onDataSourceChanged(dataSource)
         view?.contentUpdated()
+        view?.setTitle(record.template.title.orEmpty())
     }
 
     override fun onBackPressed() {
