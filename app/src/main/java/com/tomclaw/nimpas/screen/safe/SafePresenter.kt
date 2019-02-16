@@ -127,7 +127,7 @@ class SafePresenterImpl(
     private fun onLoaded(records: List<Record>) {
         this.records = records
         val items = records.asSequence()
-                .sortedWith(compareBy({ it.template.type == TYPE_GROUP }, { it.time }))
+                .sortedWith(compareBy({ it.template.type != TYPE_GROUP }, { it.time }))
                 .map { recordConverter.convert(it) }
                 .toList()
         val dataSource = ListDataSource(items)
