@@ -1,8 +1,6 @@
 package com.tomclaw.nimpas.screen.form.adapter.header
 
 import com.avito.konveyor.blueprint.ItemPresenter
-import com.tomclaw.nimpas.screen.info.adapter.header.HeaderItem
-import com.tomclaw.nimpas.screen.info.adapter.header.HeaderItemView
 
 class HeaderItemPresenter : ItemPresenter<HeaderItemView, HeaderItem> {
 

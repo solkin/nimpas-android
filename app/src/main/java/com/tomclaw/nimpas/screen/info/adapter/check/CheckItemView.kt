@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.form.adapter.check
+package com.tomclaw.nimpas.screen.info.adapter.check
 
 import android.view.View
 import android.widget.CheckBox
@@ -12,17 +12,14 @@ interface CheckItemView : ItemView {
 
     fun setChecked(checked: Boolean)
 
-    fun setOnCheckedChangeListener(listener: (Boolean) -> Unit)
-
 }
 
 class CheckItemViewHolder(view: View) : BaseViewHolder(view), CheckItemView {
 
     private val check: CheckBox = view.findViewById(R.id.check)
-    private var listener: ((Boolean) -> Unit)? = null
 
     init {
-        check.setOnCheckedChangeListener { _, isChecked -> listener?.invoke(isChecked) }
+        check.isEnabled = false
     }
 
     override fun setText(text: String) {
@@ -31,10 +28,6 @@ class CheckItemViewHolder(view: View) : BaseViewHolder(view), CheckItemView {
 
     override fun setChecked(checked: Boolean) {
         check.isChecked = checked
-    }
-
-    override fun setOnCheckedChangeListener(listener: (Boolean) -> Unit) {
-        this.listener = listener
     }
 
 }

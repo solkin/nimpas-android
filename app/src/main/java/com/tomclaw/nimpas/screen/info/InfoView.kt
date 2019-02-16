@@ -35,7 +35,7 @@ class InfoViewImpl(
     private val navigationRelay = PublishRelay.create<Unit>()
 
     init {
-        toolbar.setTitle(R.string.create)
+        toolbar.setTitle(R.string.info)
         toolbar.setNavigationOnClickListener {
             navigationRelay.accept(Unit)
         }

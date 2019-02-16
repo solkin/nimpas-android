@@ -2,7 +2,10 @@ package com.tomclaw.nimpas.screen.info
 
 import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
+import com.avito.konveyor.data_source.ListDataSource
+import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.screen.info.adapter.InfoItem
+import com.tomclaw.nimpas.screen.info.converter.FieldConverter
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
 import io.reactivex.disposables.CompositeDisposable
@@ -31,8 +34,10 @@ interface InfoPresenter {
 }
 
 class InfoPresenterImpl(
+        private val record: Record,
         private val interactor: InfoInteractor,
         private val adapterPresenter: Lazy<AdapterPresenter>,
+        private val fieldConverter: FieldConverter,
         private val schedulers: SchedulersFactory,
         state: Bundle?
 ) : InfoPresenter {
@@ -50,6 +55,8 @@ class InfoPresenterImpl(
         subscriptions += view.navigationClicks().subscribe {
             onBackPressed()
         }
+
+        prepare()
     }
 
     override fun detachView() {
@@ -67,6 +74,22 @@ class InfoPresenterImpl(
 
     override fun saveState(): Bundle = Bundle().apply {
         putParcelableArrayList(KEY_ITEMS, ArrayList(items.orEmpty()))
+    }
+
+    private fun prepare() {
+        val template = record.template
+        val items = when {
+            template.fields != null -> template.fields.asSequence()
+                    .filter { it.key.isNullOrEmpty() || !record.fields[it.key].isNullOrBlank() }
+                    .map { fieldConverter.convert(field = it, params = record.fields) }
+                    .filterNotNull()
+                    .toList()
+            else -> throw IllegalStateException("Template has no fields")
+        }
+        this.items = items
+        val dataSource = ListDataSource(items)
+        adapterPresenter.get().onDataSourceChanged(dataSource)
+        view?.contentUpdated()
     }
 
     override fun onBackPressed() {
