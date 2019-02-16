@@ -2,15 +2,16 @@ package com.tomclaw.nimpas.templates
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 class Template(
-        val id: Long,
-        val type: Int? = null,
-        val title: String? = null,
-        val icon: String? = null,
-        val color: String? = null,
-        val fields: List<Field>? = null,
-        val nested: List<Template>? = null
+        @SerializedName("id") val id: Long,
+        @SerializedName("type") val type: Int? = null,
+        @SerializedName("title") val title: String? = null,
+        @SerializedName("icon") val icon: String? = null,
+        @SerializedName("color") val color: String? = null,
+        @SerializedName("fields") val fields: List<Field>? = null,
+        @SerializedName("nested") val nested: List<Template>? = null
 ) : Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {

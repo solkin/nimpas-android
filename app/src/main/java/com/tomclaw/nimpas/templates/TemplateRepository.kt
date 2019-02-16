@@ -8,7 +8,6 @@ import io.reactivex.Single
 import java.io.InputStream
 import java.io.InputStreamReader
 
-
 interface TemplateRepository {
 
     fun getTemplates(): Observable<List<Template>>

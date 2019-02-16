@@ -2,12 +2,13 @@ package com.tomclaw.nimpas.templates
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import java.util.HashMap
 
 class Field(
-        val type: String,
-        val key: String?,
-        val params: Map<String, String>?
+        @SerializedName("type") val type: String,
+        @SerializedName("key") val key: String?,
+        @SerializedName("params") val params: Map<String, String>?
 ) : Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int): Unit = with(dest) {
