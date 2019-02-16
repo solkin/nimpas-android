@@ -8,6 +8,7 @@ import com.tomclaw.nimpas.screen.info.adapter.InfoItem
 import com.tomclaw.nimpas.screen.info.converter.FieldConverter
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 
@@ -77,21 +78,39 @@ class InfoPresenterImpl(
     }
 
     private fun prepare() {
-        val template = record.template
-        val items = when {
-            template.fields != null -> template.fields.asSequence()
-                    .filter { it.key.isNullOrEmpty() || !record.fields[it.key].isNullOrBlank() }
-                    .map { fieldConverter.convert(field = it, params = record.fields) }
-                    .filterNotNull()
-                    .toList()
-            else -> throw IllegalStateException("Template has no fields")
-        }
+        subscriptions += Single
+                .create<List<InfoItem>> { emitter ->
+                    val template = record.template
+                    val items = when {
+                        template.fields != null -> template.fields.asSequence()
+                                .filter { it.key.isNullOrEmpty() || !record.fields[it.key].isNullOrBlank() }
+                                .map { fieldConverter.convert(field = it, params = record.fields) }
+                                .filterNotNull()
+                                .toList()
+                        else -> {
+                            emitter.onError(IllegalStateException("Template has no fields"))
+                            return@create
+                        }
+                    }
+                    emitter.onSuccess(items)
+                }
+                .subscribeOn(schedulers.io())
+                .observeOn(schedulers.mainThread())
+                .subscribe(
+                        { onReady(it) },
+                        { onError(it) }
+                )
+    }
+
+    private fun onReady(items: List<InfoItem>) {
         this.items = items
         val dataSource = ListDataSource(items)
         adapterPresenter.get().onDataSourceChanged(dataSource)
         view?.contentUpdated()
         view?.setTitle(record.template.title.orEmpty())
     }
+
+    private fun onError(it: Throwable) {}
 
     override fun onBackPressed() {
         router?.leaveScreen()

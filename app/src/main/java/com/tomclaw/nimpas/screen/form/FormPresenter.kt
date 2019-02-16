@@ -12,6 +12,7 @@ import com.tomclaw.nimpas.templates.Template
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 
@@ -132,16 +133,35 @@ class FormPresenterImpl(
 
     private fun onLoaded(template: Template?) {
         this.template = template
-        val items = when {
-            template == null -> throw IllegalStateException("Template not found")
-            template.nested != null -> template.nested.asSequence()
-                    .map { templateConverter.convert(it) }
-                    .toList()
-            template.fields != null -> template.fields.asSequence()
-                    .map { fieldConverter.convert(it) }
-                    .toList()
-            else -> throw IllegalStateException("Template has no neither nested items nor fields")
-        }
+        subscriptions += Single
+                .create<List<FormItem>> { emitter ->
+                    val items = when {
+                        template == null -> {
+                            emitter.onError(IllegalStateException("Template not found"))
+                            return@create
+                        }
+                        template.nested != null -> template.nested.asSequence()
+                                .map { templateConverter.convert(it) }
+                                .toList()
+                        template.fields != null -> template.fields.asSequence()
+                                .map { fieldConverter.convert(it) }
+                                .toList()
+                        else -> {
+                            emitter.onError(IllegalStateException("Template has no neither nested items nor fields"))
+                            return@create
+                        }
+                    }
+                    emitter.onSuccess(items)
+                }
+                .subscribeOn(schedulers.io())
+                .observeOn(schedulers.mainThread())
+                .subscribe(
+                        { onReady(it) },
+                        { onError(it) }
+                )
+    }
+
+    private fun onReady(items: List<FormItem>) {
         this.items = items
         val dataSource = ListDataSource(items)
         adapterPresenter.get().onDataSourceChanged(dataSource)
