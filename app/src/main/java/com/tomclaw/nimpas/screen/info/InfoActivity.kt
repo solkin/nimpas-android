@@ -10,6 +10,7 @@ import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.main.getComponent
+import com.tomclaw.nimpas.screen.form.createFormActivityIntent
 import com.tomclaw.nimpas.screen.info.di.InfoModule
 import javax.inject.Inject
 
@@ -64,12 +65,17 @@ class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
         outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
+    override fun showEditScreen(record: Record) {
+        val intent = createFormActivityIntent(context = this, record = record)
+        startActivityForResult(intent, REQUEST_EDIT)
+    }
+
     override fun leaveScreen() {
         setResult(RESULT_OK)
         finish()
     }
 
-    private fun Intent.getRecord() = this.getParcelableExtra<Record>(EXTRA_RECORD)
+    private fun Intent.getRecord() = getParcelableExtra<Record>(EXTRA_RECORD)
 
 }
 
@@ -80,5 +86,7 @@ fun createInfoActivityIntent(
         .putExtra(EXTRA_RECORD, record)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
+
+private const val REQUEST_EDIT = 1
 
 private const val EXTRA_RECORD = "record"

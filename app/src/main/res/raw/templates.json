@@ -17,7 +17,7 @@
         "type": "button",
         "params": {
           "action": "save",
-          "title": "Create group"
+          "title": "Save group"
         }
       }
     ]
@@ -87,7 +87,7 @@
         "type": "button",
         "params": {
           "action": "save",
-          "title": "Create password"
+          "title": "Save password"
         }
       }
     ]
@@ -166,7 +166,7 @@
         "type": "button",
         "params": {
           "action": "save",
-          "title": "Create card"
+          "title": "Save card"
         }
       }
     ]
@@ -197,7 +197,7 @@
         "type": "button",
         "params": {
           "action": "save",
-          "title": "Create note"
+          "title": "Save note"
         }
       }
     ]

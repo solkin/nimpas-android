@@ -28,6 +28,8 @@ interface InfoPresenter {
 
     interface InfoRouter {
 
+        fun showEditScreen(record: Record)
+
         fun leaveScreen()
 
     }
@@ -55,6 +57,11 @@ class InfoPresenterImpl(
 
         subscriptions += view.navigationClicks().subscribe {
             onBackPressed()
+        }
+        subscriptions += view.editClicks().subscribe {
+            router?.showEditScreen(record)
+        }
+        subscriptions += view.deleteClicks().subscribe {
         }
 
         prepare()

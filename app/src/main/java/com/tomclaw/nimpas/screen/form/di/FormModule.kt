@@ -7,6 +7,7 @@ import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
 import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.journal.Journal
+import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.screen.form.FormInteractor
 import com.tomclaw.nimpas.screen.form.FormInteractorImpl
 import com.tomclaw.nimpas.screen.form.FormPresenter
@@ -40,6 +41,7 @@ import dagger.multibindings.IntoSet
 class FormModule(
         private val templateId: Long,
         private val groupId: Long,
+        private val record: Record?,
         private val state: Bundle?
 ) {
 

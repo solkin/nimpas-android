@@ -21,6 +21,10 @@ interface InfoView {
 
     fun navigationClicks(): Observable<Unit>
 
+    fun editClicks(): Observable<Unit>
+
+    fun deleteClicks(): Observable<Unit>
+
 }
 
 class InfoViewImpl(
@@ -33,9 +37,19 @@ class InfoViewImpl(
     private val recycler: RecyclerView = view.findViewById(R.id.recycler)
 
     private val navigationRelay = PublishRelay.create<Unit>()
+    private val editRelay = PublishRelay.create<Unit>()
+    private val deleteRelay = PublishRelay.create<Unit>()
 
     init {
         toolbar.setTitle(R.string.info)
+        toolbar.inflateMenu(R.menu.info)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_edit -> editRelay.accept(Unit)
+                R.id.menu_delete -> deleteRelay.accept(Unit)
+            }
+            true
+        }
         toolbar.setNavigationOnClickListener {
             navigationRelay.accept(Unit)
         }
@@ -62,6 +76,10 @@ class InfoViewImpl(
     }
 
     override fun navigationClicks(): Observable<Unit> = navigationRelay
+
+    override fun editClicks(): Observable<Unit> = editRelay
+
+    override fun deleteClicks(): Observable<Unit> = deleteRelay
 
 }
 

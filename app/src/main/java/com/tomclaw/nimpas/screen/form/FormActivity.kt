@@ -9,6 +9,7 @@ import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.journal.GROUP_DEFAULT
+import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.form.di.FormModule
 import javax.inject.Inject
@@ -27,14 +28,14 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
     override fun onCreate(savedInstanceState: Bundle?) {
         val templateId = intent.getTemplateId()
         val groupId = intent.getGroupId()
+        val record = intent.getRecord()
         val presenterState = savedInstanceState?.getBundle(KEY_PRESENTER_STATE)
         application.getComponent()
-                .formComponent(FormModule(templateId, groupId, presenterState))
+                .formComponent(FormModule(templateId, groupId, record, presenterState))
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.form_activity)
-
 
         val adapter = SimpleRecyclerAdapter(adapterPresenter, binder)
         val view = FormViewImpl(window.decorView, adapter)
@@ -71,20 +72,32 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
         finish()
     }
 
-    private fun Intent.getTemplateId() = getLongExtra(EXTRA_TEMPLATE_ID, ID_ROOT)
+    private fun Intent.getTemplateId(): Long = getLongExtra(EXTRA_TEMPLATE_ID, ID_ROOT)
 
-    private fun Intent.getGroupId() = this.getLongExtra(EXTRA_GROUP_ID, GROUP_DEFAULT)
+    private fun Intent.getGroupId(): Long = getLongExtra(EXTRA_GROUP_ID, GROUP_DEFAULT)
+
+    private fun Intent.getRecord(): Record? = getParcelableExtra<Record>(EXTRA_RECORD)
 
 }
 
-fun createFormActivityIntent(context: Context,
-                             templateId: Long = ID_ROOT,
-                             groupId: Long): Intent =
-        Intent(context, FormActivity::class.java)
-                .putExtra(EXTRA_TEMPLATE_ID, templateId)
-                .putExtra(EXTRA_GROUP_ID, groupId)
+fun createFormActivityIntent(
+        context: Context,
+        templateId: Long = ID_ROOT,
+        groupId: Long
+): Intent = Intent(context, FormActivity::class.java)
+        .putExtra(EXTRA_TEMPLATE_ID, templateId)
+        .putExtra(EXTRA_GROUP_ID, groupId)
+
+fun createFormActivityIntent(
+        context: Context,
+        record: Record
+): Intent = Intent(context, FormActivity::class.java)
+        .putExtra(EXTRA_TEMPLATE_ID, record.template.id)
+        .putExtra(EXTRA_GROUP_ID, record.groupId)
+        .putExtra(EXTRA_RECORD, record)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
 
 private const val EXTRA_TEMPLATE_ID = "record_type"
 private const val EXTRA_GROUP_ID = "group_id"
+private const val EXTRA_RECORD = "record"
