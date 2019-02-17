@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 
 class Template(
         @SerializedName("id") val id: Long,
+        @SerializedName("version") val version: Int = 0,
         @SerializedName("type") val type: Int? = null,
         @SerializedName("title") val title: String? = null,
         @SerializedName("icon") val icon: String? = null,
@@ -16,6 +17,7 @@ class Template(
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
+        writeInt(version)
         writeInt(type ?: -1)
         writeString(title)
         writeString(icon)
@@ -29,13 +31,14 @@ class Template(
     companion object CREATOR : Parcelable.Creator<Template> {
         override fun createFromParcel(parcel: Parcel): Template {
             val id = parcel.readLong()
+            val version = parcel.readInt()
             val type = parcel.readInt().takeIf { it != -1 }
             val title = parcel.readString()
             val icon = parcel.readString()
             val color = parcel.readString()
             val fields = parcel.createTypedArrayList(Field.CREATOR)
             val nested = parcel.createTypedArrayList(Template.CREATOR)
-            return Template(id, type, title, icon, color, fields, nested)
+            return Template(id, version, type, title, icon, color, fields, nested)
         }
 
         override fun newArray(size: Int): Array<Template?> {

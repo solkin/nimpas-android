@@ -149,6 +149,7 @@ class JournalImpl(private val file: File) : Journal {
                 writeInt(templates.size)
                 templates.values.forEach { template ->
                     writeLong(template.id)
+                    writeInt(template.version)
                     writeNullableInt(template.type)
                     writeNullableUTF(template.title)
                     writeNullableUTF(template.icon)
@@ -210,6 +211,7 @@ class JournalImpl(private val file: File) : Journal {
                         val templatesCount = readInt()
                         for (t in 0 until templatesCount) {
                             val id = readLong()
+                            val templateVersion = readInt()
                             val type = readNullableInt()
                             val title = readNullableUTF()
                             val icon = readNullableUTF()
@@ -228,7 +230,7 @@ class JournalImpl(private val file: File) : Journal {
                                 }
                                 fields += Field(fieldType, fieldKey, params)
                             }
-                            val template = Template(id, type, title, icon, color, fields)
+                            val template = Template(id, templateVersion, type, title, icon, color, fields)
                             templates += id to template
                         }
                         this@JournalImpl.templates = templates

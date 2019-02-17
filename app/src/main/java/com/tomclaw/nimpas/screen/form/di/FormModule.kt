@@ -79,13 +79,15 @@ class FormModule(
             journal: Journal,
             templateRepository: TemplateRepository,
             schedulers: SchedulersFactory
-    ): FormInteractor = FormInteractorImpl(
-            templateId,
-            groupId,
-            journal,
-            templateRepository,
-            schedulers
-    )
+    ): FormInteractor {
+        val override = record?.let { mapOf(record.template.id to record.template) } ?: emptyMap()
+        return FormInteractorImpl(
+                templateId,
+                override,
+                templateRepository,
+                schedulers
+        )
+    }
 
     @Provides
     @PerActivity
