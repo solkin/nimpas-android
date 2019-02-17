@@ -1,6 +1,7 @@
 package com.tomclaw.nimpas.util
 
 import android.content.Context
+import android.graphics.Color.TRANSPARENT
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.support.annotation.ColorInt
@@ -40,12 +41,12 @@ class CircleIconView : FrameLayout {
     fun setIconColoredRes(svg: String, @ColorRes color: Int? = null, @ColorRes background: Int) {
         setIconColored(
                 svg = svg,
-                color = color?.let { resources.getColor(it) } ?: 0x000,
+                color = color?.let { resources.getColor(it) } ?: TRANSPARENT,
                 background = resources.getColor(background)
         )
     }
 
-    fun setIconColored(svg: String, @ColorInt color: Int = 0x000, @ColorInt background: Int) {
+    fun setIconColored(svg: String, @ColorInt color: Int = TRANSPARENT, @ColorInt background: Int) {
         val backDrawable = AppCompatResources.getDrawable(context, R.drawable.circle_back)
         if (backDrawable != null) {
             backDrawable.setColorFilter(background, PorterDuff.Mode.SRC_ATOP)
