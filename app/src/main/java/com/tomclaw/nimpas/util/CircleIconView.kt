@@ -38,10 +38,14 @@ class CircleIconView : FrameLayout {
     }
 
     fun setIconColoredRes(svg: String, @ColorRes color: Int? = null, @ColorRes background: Int) {
-        setIconColored(svg, color?.let { resources.getColor(it) }, resources.getColor(background))
+        setIconColored(
+                svg = svg,
+                color = color?.let { resources.getColor(it) } ?: 0x000,
+                background = resources.getColor(background)
+        )
     }
 
-    fun setIconColored(svg: String, @ColorInt color: Int? = null, @ColorInt background: Int) {
+    fun setIconColored(svg: String, @ColorInt color: Int = 0x000, @ColorInt background: Int) {
         val backDrawable = AppCompatResources.getDrawable(context, R.drawable.circle_back)
         if (backDrawable != null) {
             backDrawable.setColorFilter(background, PorterDuff.Mode.SRC_ATOP)
@@ -52,7 +56,7 @@ class CircleIconView : FrameLayout {
                 bitmapWidth = dpToPx(picture.width, resources),
                 bitmapHeight = dpToPx(picture.height, resources)
         )
-        color?.let { icon?.colorFilter = PorterDuffColorFilter(it, PorterDuff.Mode.SRC_ATOP) }
+        icon?.colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP)
         icon?.setImageBitmap(bitmap)
     }
 
