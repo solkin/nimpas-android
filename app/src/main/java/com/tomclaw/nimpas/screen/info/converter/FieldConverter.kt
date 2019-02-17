@@ -20,7 +20,8 @@ class FieldConverterImpl : FieldConverter {
                 TextItem(
                         id = field.hashCode().toLong(),
                         key = field.key,
-                        text = params[field.key].orEmpty()
+                        text = params[field.key],
+                        hint = field.params?.get("hint").orEmpty()
                 )
             }
             FIELD_TYPE_HEADER -> HeaderItem(

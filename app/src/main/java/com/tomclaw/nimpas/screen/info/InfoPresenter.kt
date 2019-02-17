@@ -83,7 +83,6 @@ class InfoPresenterImpl(
                     val template = record.template
                     val items = when {
                         template.fields != null -> template.fields.asSequence()
-                                .filter { it.key.isNullOrEmpty() || !record.fields[it.key].isNullOrBlank() }
                                 .map { fieldConverter.convert(field = it, params = record.fields) }
                                 .filterNotNull()
                                 .toList()

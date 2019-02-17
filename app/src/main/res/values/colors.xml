@@ -12,8 +12,9 @@
     <color name="color_form_button_background">#EBEBEB</color>
     <color name="color_form_button_foreground">#808080</color>
     <color name="color_form_item_background">#FFFFFF</color>
-    <color name="color_form_item_hint">#BFBFBF</color>
-    <color name="color_form_item_text">#333333</color>
+    <color name="color_form_item_hint">#B7B7B7</color>
+    <color name="color_form_item_head">#757575</color>
+    <color name="color_form_item_text">#2D2D2D</color>
 
     <color name="color_yellow">#EB9736</color>
     <color name="color_yellow_light">#FEEFC3</color>
