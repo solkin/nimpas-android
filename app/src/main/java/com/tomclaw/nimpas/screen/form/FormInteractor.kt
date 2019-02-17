@@ -25,7 +25,7 @@ class FormInteractorImpl(
         return (rootTemplate ?: loadTemplate())
                 .map { templates ->
                     override[id]?.let { template ->
-                        templates[id]?.takeIf { it.version > template.version }
+                        templates[id]?.takeIf { it.version > template.version } ?: template
                     } ?: templates[id]
                 }
                 .subscribeOn(schedulers.io())
