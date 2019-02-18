@@ -61,17 +61,21 @@ class FormModule(
             events: PublishRelay<FormEvent>,
             plugins: Set<@JvmSuppressWildcards FormPlugin>,
             schedulers: SchedulersFactory
-    ): FormPresenter = FormPresenterImpl(
-            templateId,
-            interactor,
-            adapterPresenter,
-            templateConverter,
-            fieldConverter,
-            events,
-            plugins,
-            schedulers,
-            state
-    )
+    ): FormPresenter {
+        val fields = record?.fields ?: emptyMap()
+        return FormPresenterImpl(
+                templateId,
+                fields,
+                interactor,
+                adapterPresenter,
+                templateConverter,
+                fieldConverter,
+                events,
+                plugins,
+                schedulers,
+                state
+        )
+    }
 
     @Provides
     @PerActivity
@@ -179,7 +183,7 @@ class FormModule(
     @IntoSet
     @PerActivity
     internal fun provideSaveFormPlugin(journal: Journal): FormPlugin {
-        return SaveFormPlugin(groupId, journal)
+        return SaveFormPlugin(groupId, record?.id, journal)
     }
 
 }

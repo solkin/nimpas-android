@@ -42,6 +42,7 @@ interface FormPresenter {
 @Suppress("SuspiciousCollectionReassignment")
 class FormPresenterImpl(
         private val templateId: Long,
+        private val fields: Map<String, String>,
         private val interactor: FormInteractor,
         private val adapterPresenter: Lazy<AdapterPresenter>,
         private val templateConverter: TemplateConverter,
@@ -144,7 +145,7 @@ class FormPresenterImpl(
                                 .map { templateConverter.convert(it) }
                                 .toList()
                         template.fields != null -> template.fields.asSequence()
-                                .map { fieldConverter.convert(it) }
+                                .map { fieldConverter.convert(it, fields) }
                                 .toList()
                         else -> {
                             emitter.onError(IllegalStateException("Template has no neither nested items nor fields"))

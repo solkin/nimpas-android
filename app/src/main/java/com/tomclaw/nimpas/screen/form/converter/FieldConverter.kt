@@ -9,20 +9,20 @@ import com.tomclaw.nimpas.templates.Field
 
 interface FieldConverter {
 
-    fun convert(field: Field): FormItem
+    fun convert(field: Field, params: Map<String, String>): FormItem
 
 }
 
 class FieldConverterImpl : FieldConverter {
 
-    override fun convert(field: Field): FormItem {
+    override fun convert(field: Field, params: Map<String, String>): FormItem {
         // TODO: refactor this
         return when (field.type) {
             FIELD_TYPE_STRING -> EditItem(
                     id = field.hashCode().toLong(),
                     key = field.key,
                     hint = field.params?.get("hint").orEmpty(),
-                    text = field.params?.get("text").orEmpty()
+                    text = params[field.key] ?: field.params?.get("text").orEmpty()
             )
             FIELD_TYPE_HEADER -> HeaderItem(
                     id = field.hashCode().toLong(),
@@ -39,7 +39,8 @@ class FieldConverterImpl : FieldConverter {
                     id = field.hashCode().toLong(),
                     key = field.key,
                     text = field.params?.get("title").orEmpty(),
-                    checked = field.params?.get("checked").orEmpty().toBoolean()
+                    checked = (params[field.key] ?: field.params?.get("checked").orEmpty())
+                            .toBoolean()
             )
             else -> throw IllegalArgumentException("Unknown type of field ${field.type}")
         }

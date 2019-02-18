@@ -11,6 +11,7 @@ import io.reactivex.Single
 
 class SaveFormPlugin(
         private val groupId: Long,
+        private val recordId: Long?,
         private val journal: Journal
 ) : FormPlugin {
 
@@ -25,7 +26,7 @@ class SaveFormPlugin(
             template: Template,
             items: List<FormItem>
     ) = Single.create<Record> { emitter ->
-        val id = journal.nextId()
+        val id = recordId ?: journal.nextId()
         val time = System.currentTimeMillis()
         val fields = items
                 .filter { !it.key.isNullOrEmpty() }
