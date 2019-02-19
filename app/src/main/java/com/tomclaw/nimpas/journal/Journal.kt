@@ -1,7 +1,11 @@
 package com.tomclaw.nimpas.journal
 
 import android.annotation.SuppressLint
-import com.tomclaw.drawa.util.*
+import com.tomclaw.drawa.util.readNullableInt
+import com.tomclaw.drawa.util.readNullableUTF
+import com.tomclaw.drawa.util.safeClose
+import com.tomclaw.drawa.util.writeNullableInt
+import com.tomclaw.drawa.util.writeNullableUTF
 import com.tomclaw.nimpas.templates.Field
 import com.tomclaw.nimpas.templates.Template
 import io.reactivex.Completable
@@ -13,7 +17,6 @@ import java.io.DataOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.lang.IllegalStateException
 import java.util.HashMap
 import javax.crypto.Cipher
 import javax.crypto.CipherInputStream
@@ -30,6 +33,8 @@ interface Journal {
     fun lock()
 
     fun unlock(keyword: String): Completable
+
+    fun getRecord(recordId: Long): Single<Record>
 
     fun getRecords(groupId: Long = GROUP_DEFAULT): Single<List<Record>>
 
@@ -67,6 +72,16 @@ class JournalImpl(private val file: File) : Journal {
         this.keyword = keyword
         readJournal(keyword)
         emitter.onComplete()
+    }
+
+    override fun getRecord(recordId: Long): Single<Record> = Single.create { emitter ->
+        if (isUnlocked()) {
+            records?.get(recordId)?.let {
+                emitter.onSuccess(it)
+                return@create
+            }
+        }
+        emitter.onError(JournalLockedException())
     }
 
     override fun getRecords(groupId: Long): Single<List<Record>> = Single.create { emitter ->

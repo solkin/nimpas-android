@@ -92,7 +92,7 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
     }
 
     override fun showInfo(record: Record) {
-        val intent = createInfoActivityIntent(context = this, record = record)
+        val intent = createInfoActivityIntent(context = this, recordId = record.id)
         startActivity(intent)
     }
 

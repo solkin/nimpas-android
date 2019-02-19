@@ -26,10 +26,10 @@ class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
     lateinit var binder: ItemBinder
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val record = intent.getRecord()
+        val recordId = intent.getRecordId()
         val presenterState = savedInstanceState?.getBundle(KEY_PRESENTER_STATE)
         application.getComponent()
-                .infoComponent(InfoModule(record, presenterState))
+                .infoComponent(InfoModule(recordId, presenterState))
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
@@ -75,18 +75,18 @@ class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
         finish()
     }
 
-    private fun Intent.getRecord() = getParcelableExtra<Record>(EXTRA_RECORD)
+    private fun Intent.getRecordId() = getLongExtra(EXTRA_RECORD_ID, 0)
 
 }
 
 fun createInfoActivityIntent(
         context: Context,
-        record: Record
+        recordId: Long
 ): Intent = Intent(context, InfoActivity::class.java)
-        .putExtra(EXTRA_RECORD, record)
+        .putExtra(EXTRA_RECORD_ID, recordId)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
 
 private const val REQUEST_EDIT = 1
 
-private const val EXTRA_RECORD = "record"
+private const val EXTRA_RECORD_ID = "record_id"

@@ -37,7 +37,7 @@ interface InfoPresenter {
 }
 
 class InfoPresenterImpl(
-        private val record: Record,
+        private val recordId: Long,
         private val interactor: InfoInteractor,
         private val adapterPresenter: Lazy<AdapterPresenter>,
         private val fieldConverter: FieldConverter,
@@ -50,6 +50,7 @@ class InfoPresenterImpl(
 
     private val subscriptions = CompositeDisposable()
 
+    private var record: Record? = state?.getParcelable(KEY_RECORD)
     private var items: List<InfoItem>? = state?.getParcelableArrayList(KEY_ITEMS)
 
     override fun attachView(view: InfoView) {
@@ -59,12 +60,12 @@ class InfoPresenterImpl(
             onBackPressed()
         }
         subscriptions += view.editClicks().subscribe {
-            router?.showEditScreen(record)
+            record?.let { router?.showEditScreen(it) }
         }
         subscriptions += view.deleteClicks().subscribe {
         }
 
-        prepare()
+        record?.let { onLoaded(it) } ?: loadRecord()
     }
 
     override fun detachView() {
@@ -84,7 +85,18 @@ class InfoPresenterImpl(
         putParcelableArrayList(KEY_ITEMS, ArrayList(items.orEmpty()))
     }
 
-    private fun prepare() {
+    private fun loadRecord() {
+        subscriptions += interactor.getRecord(recordId)
+                .subscribeOn(schedulers.io())
+                .observeOn(schedulers.mainThread())
+                .subscribe(
+                        { onLoaded(it) },
+                        { onError(it) }
+                )
+    }
+
+    private fun onLoaded(record: Record) {
+        this.record = record
         subscriptions += Single
                 .create<List<InfoItem>> { emitter ->
                     val template = record.template
@@ -113,7 +125,7 @@ class InfoPresenterImpl(
         val dataSource = ListDataSource(items)
         adapterPresenter.get().onDataSourceChanged(dataSource)
         view?.contentUpdated()
-        view?.setTitle(record.template.title.orEmpty())
+        view?.setTitle(record?.template?.title.orEmpty())
     }
 
     private fun onError(it: Throwable) {}
@@ -124,4 +136,5 @@ class InfoPresenterImpl(
 
 }
 
+private const val KEY_RECORD = "record"
 private const val KEY_ITEMS = "items"
