@@ -18,6 +18,7 @@ class InfoInteractorImpl(
 
     override fun getRecord(recordId: Long): Single<Record> {
         return journal.getRecord(recordId)
+                .subscribeOn(schedulers.io())
     }
 
 }

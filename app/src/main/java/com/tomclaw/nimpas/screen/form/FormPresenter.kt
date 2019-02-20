@@ -33,7 +33,7 @@ interface FormPresenter {
 
     interface FormRouter {
 
-        fun leaveScreen()
+        fun leaveScreen(changed: Boolean)
 
     }
 
@@ -170,7 +170,7 @@ class FormPresenterImpl(
     }
 
     private fun onCompleted() {
-        router?.leaveScreen()
+        router?.leaveScreen(changed = true)
     }
 
     private fun onError(it: Throwable) {
@@ -182,7 +182,7 @@ class FormPresenterImpl(
         if (navigation.isNotEmpty()) {
             loadTemplate()
         } else {
-            router?.leaveScreen()
+            router?.leaveScreen(changed = false)
         }
     }
 

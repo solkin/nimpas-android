@@ -67,7 +67,7 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
         outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
-    override fun leaveScreen() {
+    override fun leaveScreen(changed: Boolean) {
         setResult(RESULT_OK)
         finish()
     }
@@ -76,7 +76,7 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
 
     private fun Intent.getGroupId(): Long = getLongExtra(EXTRA_GROUP_ID, GROUP_DEFAULT)
 
-    private fun Intent.getRecord(): Record? = getParcelableExtra<Record>(EXTRA_RECORD)
+    private fun Intent.getRecord(): Record? = getParcelableExtra(EXTRA_RECORD)
 
 }
 

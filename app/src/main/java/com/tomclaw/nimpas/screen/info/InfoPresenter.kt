@@ -26,11 +26,13 @@ interface InfoPresenter {
 
     fun onBackPressed()
 
+    fun onUpdate()
+
     interface InfoRouter {
 
         fun showEditScreen(record: Record)
 
-        fun leaveScreen()
+        fun leaveScreen(changed: Boolean)
 
     }
 
@@ -52,6 +54,7 @@ class InfoPresenterImpl(
 
     private var record: Record? = state?.getParcelable(KEY_RECORD)
     private var items: List<InfoItem>? = state?.getParcelableArrayList(KEY_ITEMS)
+    private var changed: Boolean = state?.getBoolean(KEY_CHANGED) ?: false
 
     override fun attachView(view: InfoView) {
         this.view = view
@@ -87,7 +90,6 @@ class InfoPresenterImpl(
 
     private fun loadRecord() {
         subscriptions += interactor.getRecord(recordId)
-                .subscribeOn(schedulers.io())
                 .observeOn(schedulers.mainThread())
                 .subscribe(
                         { onLoaded(it) },
@@ -96,6 +98,7 @@ class InfoPresenterImpl(
     }
 
     private fun onLoaded(record: Record) {
+        changed = this.record?.let { it.time == record.time }?.takeIf { true }  ?: changed
         this.record = record
         subscriptions += Single
                 .create<List<InfoItem>> { emitter ->
@@ -131,10 +134,16 @@ class InfoPresenterImpl(
     private fun onError(it: Throwable) {}
 
     override fun onBackPressed() {
-        router?.leaveScreen()
+        router?.leaveScreen(changed)
+    }
+
+    override fun onUpdate() {
+        loadRecord()
+        view?.contentUpdated()
     }
 
 }
 
 private const val KEY_RECORD = "record"
 private const val KEY_ITEMS = "items"
+private const val KEY_CHANGED = "changed"

@@ -65,12 +65,23 @@ class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
         outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            REQUEST_EDIT -> {
+                if (resultCode == RESULT_OK) {
+                    presenter.onUpdate()
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun showEditScreen(record: Record) {
         val intent = createFormActivityIntent(context = this, record = record)
         startActivityForResult(intent, REQUEST_EDIT)
     }
 
-    override fun leaveScreen() {
+    override fun leaveScreen(changed: Boolean) {
         setResult(RESULT_OK)
         finish()
     }
