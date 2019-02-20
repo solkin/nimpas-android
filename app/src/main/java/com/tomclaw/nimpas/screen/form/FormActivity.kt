@@ -68,7 +68,8 @@ class FormActivity : AppCompatActivity(), FormPresenter.FormRouter {
     }
 
     override fun leaveScreen(changed: Boolean) {
-        setResult(RESULT_OK)
+        val result = if (changed) RESULT_OK else RESULT_CANCELED
+        setResult(result)
         finish()
     }
 
