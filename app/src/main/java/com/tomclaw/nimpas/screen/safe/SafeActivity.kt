@@ -93,7 +93,7 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
 
     override fun showInfo(record: Record) {
         val intent = createInfoActivityIntent(context = this, recordId = record.id)
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_INFO)
     }
 
     override fun leaveScreen() {
@@ -106,3 +106,4 @@ private const val KEY_PRESENTER_STATE = "presenter_state"
 
 private const val REQUEST_ADD = 1
 private const val REQUEST_UNLOCK = 2
+private const val REQUEST_INFO = 3
