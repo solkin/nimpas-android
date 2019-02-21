@@ -77,7 +77,7 @@ class FormPresenterImpl(
             }
         }
 
-        loadTemplate()
+        items?.let { onReady(it) } ?: loadTemplate()
     }
 
     private fun navigate(id: Long) {
