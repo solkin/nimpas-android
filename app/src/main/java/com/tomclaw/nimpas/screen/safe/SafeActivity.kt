@@ -68,7 +68,8 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_ADD,
-            REQUEST_UNLOCK -> {
+            REQUEST_UNLOCK,
+            REQUEST_INFO -> {
                 if (resultCode == RESULT_OK) {
                     presenter.onUpdate()
                 }

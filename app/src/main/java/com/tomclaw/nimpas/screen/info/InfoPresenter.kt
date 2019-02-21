@@ -98,7 +98,7 @@ class InfoPresenterImpl(
     }
 
     private fun onLoaded(record: Record) {
-        changed = this.record?.let { it.time == record.time }?.takeIf { true }  ?: changed
+        changed = this.record?.let { it.time != record.time }?.takeIf { true }  ?: changed
         this.record = record
         subscriptions += Single
                 .create<List<InfoItem>> { emitter ->
