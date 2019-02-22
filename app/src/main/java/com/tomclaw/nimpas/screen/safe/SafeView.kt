@@ -1,6 +1,7 @@
 package com.tomclaw.nimpas.screen.safe
 
 import android.graphics.drawable.BitmapDrawable
+import android.support.design.widget.CoordinatorLayout
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.DefaultItemAnimator
@@ -48,6 +49,7 @@ class SafeViewImpl(
 
     private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
     private val recycler: RecyclerView = view.findViewById(R.id.recycler)
+    private val coordinator: CoordinatorLayout = view.findViewById(R.id.coordinator)
     private val createButton: FloatingActionButton = view.findViewById(R.id.create_button)
 
     private val buttonRelay = PublishRelay.create<Unit>()
@@ -111,7 +113,7 @@ class SafeViewImpl(
     }
 
     override fun showUndoMessage(id: Long, delay: Long, message: String) {
-        Snackbar.make(recycler, message, delay.toInt())
+        Snackbar.make(coordinator, message, delay.toInt())
                 .setAction(R.string.undo) { undoRelay.accept(id) }
                 .show()
     }
