@@ -11,6 +11,8 @@ import com.tomclaw.nimpas.screen.safe.adapter.ItemClickListener
 import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItem
 import com.tomclaw.nimpas.templates.TYPE_GROUP
 import com.tomclaw.nimpas.templates.TemplateRepository
+import com.tomclaw.nimpas.undo.Undo
+import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
 import io.reactivex.disposables.CompositeDisposable
@@ -32,6 +34,8 @@ interface SafePresenter : ItemClickListener {
 
     fun onUpdate()
 
+    fun onShowUndo(undo: Undo)
+
     interface SafeRouter {
 
         fun showFormScreen(templateId: Long, groupId: Long)
@@ -52,6 +56,7 @@ class SafePresenterImpl(
         private val adapterPresenter: Lazy<AdapterPresenter>,
         private val recordConverter: RecordConverter,
         private val templateRepository: TemplateRepository,
+        private val undoer: Undoer,
         private val schedulers: SchedulersFactory,
         state: Bundle?
 ) : SafePresenter {
@@ -68,14 +73,12 @@ class SafePresenterImpl(
     override fun attachView(view: SafeView) {
         this.view = view
 
-        subscriptions += view.buttonClicks().subscribe {
-            onShowCreateMenu()
-        }
-
+        subscriptions += view.buttonClicks().subscribe { onShowCreateMenu() }
         subscriptions += view.createClicks().subscribe { templateId ->
             val groupId = getGroupId()
             router?.showFormScreen(templateId, groupId)
         }
+        subscriptions += view.undoClicks().subscribe { undoer.invokeUndo(it) }
 
         loadRecords(groupId = getGroupId())
     }
@@ -165,6 +168,10 @@ class SafePresenterImpl(
                 records?.firstOrNull { it.id == item.id }?.let { router?.showInfo(it) }
             }
         }
+    }
+
+    override fun onShowUndo(undo: Undo) {
+        view?.showUndoMessage(undo.id, undo.timeout, undo.message)
     }
 
     private fun getGroupId() = navigation.lastOrNull() ?: GROUP_DEFAULT

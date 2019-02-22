@@ -10,4 +10,6 @@
     <string name="info">Info</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="undo">Undo</string>
+    <string name="record_delete_undo_message">Record is deleted</string>
 </resources>

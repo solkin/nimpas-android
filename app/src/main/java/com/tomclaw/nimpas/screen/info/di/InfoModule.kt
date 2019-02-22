@@ -1,12 +1,14 @@
 package com.tomclaw.nimpas.screen.info.di
 
+import android.content.res.Resources
 import android.os.Bundle
 import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
+import com.tomclaw.nimpas.screen.info.InfoResourceProvider
+import com.tomclaw.nimpas.screen.info.InfoResourceProviderImpl
 import com.tomclaw.nimpas.journal.Journal
-import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.screen.info.InfoInteractor
 import com.tomclaw.nimpas.screen.info.InfoInteractorImpl
 import com.tomclaw.nimpas.screen.info.InfoPresenter
@@ -19,6 +21,7 @@ import com.tomclaw.nimpas.screen.info.adapter.text.TextItemBlueprint
 import com.tomclaw.nimpas.screen.info.adapter.text.TextItemPresenter
 import com.tomclaw.nimpas.screen.info.converter.FieldConverter
 import com.tomclaw.nimpas.screen.info.converter.FieldConverterImpl
+import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
@@ -29,6 +32,7 @@ import dagger.multibindings.IntoSet
 @Module
 class InfoModule(
         private val recordId: Long,
+        private val resources: Resources,
         private val state: Bundle?
 ) {
 
@@ -44,12 +48,16 @@ class InfoModule(
             interactor: InfoInteractor,
             adapterPresenter: Lazy<AdapterPresenter>,
             fieldConverter: FieldConverter,
+            resourceProvider: InfoResourceProvider,
+            undoer: Undoer,
             schedulers: SchedulersFactory
     ): InfoPresenter = InfoPresenterImpl(
             recordId,
             interactor,
             adapterPresenter,
             fieldConverter,
+            resourceProvider,
+            undoer,
             schedulers,
             state
     )
@@ -68,6 +76,12 @@ class InfoModule(
     @PerActivity
     internal fun provideFieldConverter(): FieldConverter {
         return FieldConverterImpl()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideResourceProvider(): InfoResourceProvider {
+        return InfoResourceProviderImpl(resources)
     }
 
     @Provides

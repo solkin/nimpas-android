@@ -9,6 +9,8 @@ import com.tomclaw.nimpas.journal.Journal
 import com.tomclaw.nimpas.journal.JournalImpl
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.templates.TemplateRepositoryImpl
+import com.tomclaw.nimpas.undo.Undoer
+import com.tomclaw.nimpas.undo.UndoerImpl
 import com.tomclaw.nimpas.util.SchedulersFactory
 import com.tomclaw.nimpas.util.SchedulersFactoryImpl
 import dagger.Module
@@ -47,5 +49,11 @@ class AppModule(private val app: Application) {
         val stream = app.resources.openRawResource(R.raw.templates)
         return TemplateRepositoryImpl(stream, gson, schedulersFactory)
     }
+
+    @Provides
+    @Singleton
+    internal fun provideUndoer(
+            schedulersFactory: SchedulersFactory
+    ): Undoer = UndoerImpl(schedulersFactory)
 
 }

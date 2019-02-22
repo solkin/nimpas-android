@@ -2,6 +2,7 @@ package com.tomclaw.nimpas.screen.safe
 
 import android.graphics.drawable.BitmapDrawable
 import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -32,6 +33,10 @@ interface SafeView {
 
     fun createClicks(): Observable<Long>
 
+    fun undoClicks(): Observable<Long>
+
+    fun showUndoMessage(id: Long, delay: Long, message: String)
+
 }
 
 class SafeViewImpl(
@@ -47,6 +52,7 @@ class SafeViewImpl(
 
     private val buttonRelay = PublishRelay.create<Unit>()
     private val createRelay = PublishRelay.create<Long>()
+    private val undoRelay = PublishRelay.create<Long>()
 
     init {
         toolbar.setTitle(R.string.app_name)
@@ -77,6 +83,10 @@ class SafeViewImpl(
         return createRelay
     }
 
+    override fun undoClicks(): Observable<Long> {
+        return undoRelay
+    }
+
     override fun showCreateDialog(items: List<MenuItem>) {
         BottomSheetBuilder(view.context, R.style.AppTheme_BottomSheetDialog)
                 .setMode(BottomSheetBuilder.MODE_LIST)
@@ -97,6 +107,12 @@ class SafeViewImpl(
                     createRelay.accept(menuItem.id)
                 }
                 .createDialog()
+                .show()
+    }
+
+    override fun showUndoMessage(id: Long, delay: Long, message: String) {
+        Snackbar.make(recycler, message, delay.toInt())
+                .setAction(R.string.undo) { undoRelay.accept(id) }
                 .show()
     }
 

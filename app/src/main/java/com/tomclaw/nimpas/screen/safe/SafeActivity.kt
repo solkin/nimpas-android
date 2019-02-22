@@ -13,6 +13,7 @@ import com.tomclaw.nimpas.screen.form.createFormActivityIntent
 import com.tomclaw.nimpas.screen.info.createInfoActivityIntent
 import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
 import com.tomclaw.nimpas.screen.safe.di.SafeModule
+import com.tomclaw.nimpas.util.getUndo
 import javax.inject.Inject
 
 class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
@@ -75,6 +76,7 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
                 }
             }
         }
+        data?.getUndo()?.let { presenter.onShowUndo(it) }
         super.onActivityResult(requestCode, resultCode, data)
     }
 

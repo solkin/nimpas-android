@@ -22,6 +22,7 @@ import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItemPresenter
 import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemPresenter
 import com.tomclaw.nimpas.templates.TemplateRepository
+import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
@@ -48,12 +49,14 @@ class SafeModule(
             adapterPresenter: Lazy<AdapterPresenter>,
             recordConverter: RecordConverter,
             templateRepository: TemplateRepository,
+            undoer: Undoer,
             schedulers: SchedulersFactory
     ): SafePresenter = SafePresenterImpl(
             interactor,
             adapterPresenter,
             recordConverter,
             templateRepository,
+            undoer,
             schedulers,
             state
     )

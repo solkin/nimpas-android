@@ -12,6 +12,8 @@ import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.form.createFormActivityIntent
 import com.tomclaw.nimpas.screen.info.di.InfoModule
+import com.tomclaw.nimpas.undo.Undo
+import com.tomclaw.nimpas.util.putUndo
 import javax.inject.Inject
 
 class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
@@ -29,7 +31,7 @@ class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
         val recordId = intent.getRecordId()
         val presenterState = savedInstanceState?.getBundle(KEY_PRESENTER_STATE)
         application.getComponent()
-                .infoComponent(InfoModule(recordId, presenterState))
+                .infoComponent(InfoModule(recordId, resources, presenterState))
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
@@ -81,9 +83,12 @@ class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
         startActivityForResult(intent, REQUEST_EDIT)
     }
 
-    override fun leaveScreen(changed: Boolean) {
+    override fun leaveScreen(changed: Boolean, undo: Undo?) {
+        val intent = Intent().apply {
+            undo?.let { putUndo(it) }
+        }
         val result = if (changed) RESULT_OK else RESULT_CANCELED
-        setResult(result)
+        setResult(result, intent)
         finish()
     }
 

@@ -6,6 +6,9 @@ import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.screen.info.adapter.InfoItem
 import com.tomclaw.nimpas.screen.info.converter.FieldConverter
+import com.tomclaw.nimpas.undo.Undo
+import com.tomclaw.nimpas.undo.UndoAction
+import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
 import io.reactivex.Single
@@ -32,7 +35,7 @@ interface InfoPresenter {
 
         fun showEditScreen(record: Record)
 
-        fun leaveScreen(changed: Boolean)
+        fun leaveScreen(changed: Boolean, undo: Undo? = null)
 
     }
 
@@ -43,6 +46,8 @@ class InfoPresenterImpl(
         private val interactor: InfoInteractor,
         private val adapterPresenter: Lazy<AdapterPresenter>,
         private val fieldConverter: FieldConverter,
+        private val resourceProvider: InfoResourceProvider,
+        private val undoer: Undoer,
         private val schedulers: SchedulersFactory,
         state: Bundle?
 ) : InfoPresenter {
@@ -66,6 +71,7 @@ class InfoPresenterImpl(
             record?.let { router?.showEditScreen(it) }
         }
         subscriptions += view.deleteClicks().subscribe {
+            deleteRecord()
         }
 
         record?.let { onLoaded(it) } ?: loadRecord()
@@ -97,8 +103,17 @@ class InfoPresenterImpl(
                 )
     }
 
+    private fun deleteRecord() {
+        subscriptions += interactor.deleteRecord(recordId)
+                .observeOn(schedulers.mainThread())
+                .subscribe(
+                        { onDeleted() },
+                        { onError(it) }
+                )
+    }
+
     private fun onLoaded(record: Record) {
-        changed = this.record?.let { it.time != record.time }?.takeIf { true }  ?: changed
+        changed = this.record?.let { it.time != record.time }?.takeIf { true } ?: changed
         this.record = record
         subscriptions += Single
                 .create<List<InfoItem>> { emitter ->
@@ -131,6 +146,29 @@ class InfoPresenterImpl(
         view?.setTitle(record?.template?.title.orEmpty())
     }
 
+    private fun onDeleted() {
+        record?.let { record ->
+            val action = object : UndoAction {
+
+                override val timeout: Long
+                    get() = UNDO_TIMEOUT
+
+                override operator fun invoke() = interactor.addRecord(record)
+
+            }
+            val undoId = undoer.handleAction(action)
+            val undo = Undo(
+                    id = undoId,
+                    timeout = UNDO_TIMEOUT,
+                    message = resourceProvider.undoMessage
+            )
+            router?.leaveScreen(
+                    changed = true,
+                    undo = undo
+            )
+        }
+    }
+
     private fun onError(it: Throwable) {}
 
     override fun onBackPressed() {
@@ -143,6 +181,8 @@ class InfoPresenterImpl(
     }
 
 }
+
+private const val UNDO_TIMEOUT = 3_000L
 
 private const val KEY_RECORD = "record"
 private const val KEY_ITEMS = "items"
