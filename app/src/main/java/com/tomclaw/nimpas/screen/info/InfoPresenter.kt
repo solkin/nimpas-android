@@ -7,7 +7,6 @@ import com.tomclaw.nimpas.journal.Record
 import com.tomclaw.nimpas.screen.info.adapter.InfoItem
 import com.tomclaw.nimpas.screen.info.converter.FieldConverter
 import com.tomclaw.nimpas.undo.Undo
-import com.tomclaw.nimpas.undo.UndoAction
 import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
@@ -148,25 +147,16 @@ class InfoPresenterImpl(
 
     private fun onDeleted() {
         record?.let { record ->
-            val action = object : UndoAction {
-
-                override val timeout: Long
-                    get() = UNDO_TIMEOUT
-
-                override operator fun invoke() = interactor.addRecord(record)
-                        .subscribeOn(schedulers.io())
-
-            }
-            val undoId = undoer.handleAction(action)
+            val undoId = undoer.handleAction(
+                    timeout = UNDO_TIMEOUT,
+                    action = interactor.addRecord(record).subscribeOn(schedulers.io())
+            )
             val undo = Undo(
                     id = undoId,
                     timeout = UNDO_TIMEOUT,
                     message = resourceProvider.undoMessage
             )
-            router?.leaveScreen(
-                    changed = true,
-                    undo = undo
-            )
+            router?.leaveScreen(changed = true, undo = undo)
         }
     }
 
