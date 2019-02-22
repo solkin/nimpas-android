@@ -52,8 +52,6 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    internal fun provideUndoer(
-            schedulersFactory: SchedulersFactory
-    ): Undoer = UndoerImpl(schedulersFactory)
+    internal fun provideUndoer(): Undoer = UndoerImpl()
 
 }

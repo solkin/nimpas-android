@@ -1,8 +1,6 @@
 package com.tomclaw.nimpas.undo
 
-import com.tomclaw.nimpas.util.SchedulersFactory
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.Completable
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 import java.util.concurrent.TimeUnit.SECONDS
@@ -12,36 +10,29 @@ interface Undoer {
 
     fun handleAction(action: UndoAction): Long
 
-    fun invokeUndo(id: Long)
+    fun invokeUndo(id: Long): Completable?
 
 }
 
-class UndoerImpl(private val schedulers: SchedulersFactory) : Undoer {
+class UndoerImpl : Undoer {
 
     private val executor = Executors.newScheduledThreadPool(0)
 
-    private val undoCords = HashMap<Long, Pair<UndoAction, Future<*>>>()
+    private val undoCords = HashMap<Long, UndoAction>()
 
     private val counter = AtomicLong()
-    private val subscriptions = CompositeDisposable()
 
     override fun handleAction(action: UndoAction): Long {
         return counter.incrementAndGet().also { id ->
-            undoCords += id to (action to executor.schedule({
+            executor.schedule({
                 undoCords.remove(id)
-            }, action.timeout, SECONDS))
+            }, action.timeout, SECONDS)
+            undoCords += id to action
         }
     }
 
-    override fun invokeUndo(id: Long) {
-        undoCords[id]?.let { pair ->
-            val undo = pair.first
-            val future = pair.second
-            future.cancel(true)
-            subscriptions += undo.invoke()
-                    .observeOn(schedulers.mainThread())
-                    .subscribe()
-        }
+    override fun invokeUndo(id: Long): Completable? {
+        return undoCords.remove(id)?.invoke()
     }
 
 }

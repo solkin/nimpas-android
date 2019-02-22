@@ -154,6 +154,7 @@ class InfoPresenterImpl(
                     get() = UNDO_TIMEOUT
 
                 override operator fun invoke() = interactor.addRecord(record)
+                        .subscribeOn(schedulers.io())
 
             }
             val undoId = undoer.handleAction(action)

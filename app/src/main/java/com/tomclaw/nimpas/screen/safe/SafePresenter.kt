@@ -78,9 +78,17 @@ class SafePresenterImpl(
             val groupId = getGroupId()
             router?.showFormScreen(templateId, groupId)
         }
-        subscriptions += view.undoClicks().subscribe { undoer.invokeUndo(it) }
+        subscriptions += view.undoClicks().subscribe { onUndo(it) }
 
         loadRecords(groupId = getGroupId())
+    }
+
+    private fun onUndo(undoId: Long) {
+        undoer.invokeUndo(undoId)?.run {
+            observeOn(schedulers.mainThread()).subscribe(
+                    { onUpdate() },
+                    { onError(it) })
+        }
     }
 
     private fun onShowCreateMenu() {
