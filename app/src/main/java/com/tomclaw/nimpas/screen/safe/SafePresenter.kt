@@ -15,8 +15,10 @@ import com.tomclaw.nimpas.undo.Undo
 import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
+import java.util.concurrent.TimeUnit
 
 interface SafePresenter : ItemClickListener {
 
@@ -179,7 +181,9 @@ class SafePresenterImpl(
     }
 
     override fun onShowUndo(undo: Undo) {
-        view?.showUndoMessage(undo.id, undo.timeout, undo.message)
+        subscriptions += Observable.timer(250, TimeUnit.MILLISECONDS)
+                .observeOn(schedulers.mainThread())
+                .subscribe { view?.showUndoMessage(undo.id, undo.timeout, undo.message) }
     }
 
     private fun getGroupId() = navigation.lastOrNull() ?: GROUP_DEFAULT

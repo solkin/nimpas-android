@@ -148,7 +148,7 @@ class InfoPresenterImpl(
     private fun onDeleted() {
         record?.let { record ->
             val undoId = undoer.handleAction(
-                    timeout = UNDO_TIMEOUT,
+                    timeout = UNDO_TIMEOUT + UNDO_DELAY,
                     action = interactor.addRecord(record).subscribeOn(schedulers.io())
             )
             val undo = Undo(
@@ -174,6 +174,7 @@ class InfoPresenterImpl(
 }
 
 private const val UNDO_TIMEOUT = 3_000L
+private const val UNDO_DELAY = 1_000L
 
 private const val KEY_RECORD = "record"
 private const val KEY_ITEMS = "items"
