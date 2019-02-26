@@ -1,6 +1,7 @@
 package com.tomclaw.nimpas.journal
 
 import android.annotation.SuppressLint
+import com.tomclaw.crypto.AesCbcWithIntegrity
 import com.tomclaw.drawa.util.readNullableInt
 import com.tomclaw.drawa.util.readNullableUTF
 import com.tomclaw.drawa.util.safeClose
@@ -12,11 +13,14 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.OutputStream
 import java.util.HashMap
 import javax.crypto.Cipher
 import javax.crypto.CipherInputStream
@@ -146,21 +150,18 @@ class JournalImpl(private val file: File) : Journal {
             templates: Map<Long, Template>,
             records: Map<Long, Record>
     ) {
-        var stream: DataOutputStream? = null
+        var memoryStream: DataOutputStream? = null
+        var directStream: DataOutputStream? = null
         try {
             writeTime = System.currentTimeMillis()
-            val cipher = Cipher.getInstance("Blowfish").apply {
-                val key = SecretKeySpec(keyword.toByteArray(), "Blowfish")
-                init(Cipher.ENCRYPT_MODE, key)
-            }
             val fileStream = BufferedOutputStream(FileOutputStream(file))
-            stream = DataOutputStream(fileStream)
-            with(stream) {
+            directStream = DataOutputStream(fileStream)
+            with(directStream) {
                 writeShort(JOURNAL_VERSION)
                 writeLong(writeTime)
                 flush()
             }
-            with(stream) {
+            with(directStream) {
                 writeInt(templates.size)
                 templates.values.forEach { template ->
                     writeLong(template.id)
@@ -182,8 +183,9 @@ class JournalImpl(private val file: File) : Journal {
                 }
                 flush()
             }
-            stream = DataOutputStream(CipherOutputStream(fileStream, cipher))
-            with(stream) {
+            val byteStream = ByteArrayOutputStream()
+            memoryStream = DataOutputStream(byteStream)
+            with(memoryStream) {
                 writeLong(nextId)
                 writeInt(records.size)
                 records.values.forEach { record ->
@@ -199,8 +201,23 @@ class JournalImpl(private val file: File) : Journal {
                 }
                 flush()
             }
+            val data = byteStream.toByteArray()
+
+            val keys = AesCbcWithIntegrity.generateKeyFromPassword(keyword, SALT)
+            val encrypted = AesCbcWithIntegrity.encrypt(data, keys)
+
+            with(directStream) {
+                writeInt(encrypted.cipherText.size)
+                write(encrypted.cipherText)
+                writeInt(encrypted.iv.size)
+                write(encrypted.iv)
+                writeInt(encrypted.mac.size)
+                write(encrypted.mac)
+                flush()
+            }
         } finally {
-            stream.safeClose()
+            memoryStream.safeClose()
+            directStream.safeClose()
         }
     }
 
@@ -209,18 +226,15 @@ class JournalImpl(private val file: File) : Journal {
         if (!file.exists()) {
             initJournal(keyword)
         }
-        var stream: DataInputStream? = null
+        var memoryStream: DataInputStream? = null
+        var directStream: DataInputStream? = null
         try {
-            val cipher = Cipher.getInstance("Blowfish").apply {
-                val key = SecretKeySpec(keyword.toByteArray(), "Blowfish")
-                init(Cipher.DECRYPT_MODE, key)
-            }
             val fileStream = BufferedInputStream(FileInputStream(file))
-            stream = DataInputStream(fileStream)
-            val version = stream.readShort()
-            val writeTime = stream.readLong()
+            directStream = DataInputStream(fileStream)
+            val version = directStream.readShort()
+            val writeTime = directStream.readLong()
             val templates = HashMap<Long, Template>()
-            with(stream) {
+            with(directStream) {
                 when (version) {
                     VERSION_1 -> {
                         val templatesCount = readInt()
@@ -253,8 +267,17 @@ class JournalImpl(private val file: File) : Journal {
                     else -> throw UnknownFormatException()
                 }
             }
-            stream = DataInputStream(CipherInputStream(fileStream, cipher))
-            with(stream) {
+            val encrypted = with(directStream) {
+                val cipherText = ByteArray(size = readInt()).apply { readFully(this) }
+                val iv = ByteArray(size = readInt()).apply { readFully(this) }
+                val mac = ByteArray(size = readInt()).apply { readFully(this) }
+                AesCbcWithIntegrity.CipherTextIvMac(cipherText, iv, mac)
+            }
+
+            val keys = AesCbcWithIntegrity.generateKeyFromPassword(keyword, SALT)
+            val data = AesCbcWithIntegrity.decrypt(encrypted, keys)
+            memoryStream = DataInputStream(ByteArrayInputStream(data))
+            with(memoryStream) {
                 when (version) {
                     VERSION_1 -> {
                         val nextId = readLong()
@@ -284,7 +307,8 @@ class JournalImpl(private val file: File) : Journal {
                 }
             }
         } finally {
-            stream.safeClose()
+            memoryStream.safeClose()
+            directStream.safeClose()
         }
     }
 
@@ -299,3 +323,7 @@ class JournalImpl(private val file: File) : Journal {
 private const val JOURNAL_VERSION = 1
 
 private const val VERSION_1: Short = 1
+
+private const val SALT = "4v9YzypE7CtHzhI/nmrOHxc6qogp8ASaChn7Bc6/VU41wd" +
+        "7uZc3fyAeuIInwa9nAwBCZA7Di3FQvSXa1msz7UEwrcZojh8NWGsbNo6Zb73+Os" +
+        "4c3TinCVq+8q+95V8/KM0gGy0CTc8HJsfouOGP9GbGyrDD08/rSoY10plYxN8k="

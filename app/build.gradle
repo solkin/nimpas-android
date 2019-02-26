@@ -51,4 +51,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     kapt 'com.google.dagger:dagger-compiler:2.13'
     kapt 'com.google.dagger:dagger-android-processor:2.16'
+    compile project(path: ':crypto')
 }
