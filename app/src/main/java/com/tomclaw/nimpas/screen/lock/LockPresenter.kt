@@ -73,7 +73,7 @@ class LockPresenterImpl(
                 .observeOn(schedulers.mainThread())
                 .subscribe(
                         { onJournalUnlocked() },
-                        { onUnlockFailed() }
+                        { onUnlockFailed(it) }
                 )
     }
 
@@ -82,8 +82,10 @@ class LockPresenterImpl(
         router?.leaveScreen(isUnlocked = true)
     }
 
-    private fun onUnlockFailed() {
+    private fun onUnlockFailed(ex: Throwable) {
         // TODO: show animation
+        ex.printStackTrace()
+        view?.showUnlockError()
     }
 
 }

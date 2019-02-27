@@ -12,4 +12,5 @@
     <string name="delete">Delete</string>
     <string name="undo">Undo</string>
     <string name="record_delete_undo_message">Record is deleted</string>
+    <string name="unlock_failed">Dictionary unlock failed</string>
 </resources>

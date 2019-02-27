@@ -1,5 +1,6 @@
 package com.tomclaw.nimpas.screen.lock
 
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,11 +17,14 @@ interface LockView {
 
     fun unlockClicks(): Observable<Unit>
 
+    fun showUnlockError()
+
 }
 
 class LockViewImpl(view: View) : LockView {
 
     private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+    private val formContainer: View = view.findViewById(R.id.form_container)
     private val keywordView: EditText = view.findViewById(R.id.keyword_view)
     private val unlockButton: Button = view.findViewById(R.id.unlock_button)
 
@@ -47,6 +51,10 @@ class LockViewImpl(view: View) : LockView {
 
     override fun unlockClicks(): Observable<Unit> {
         return unlockClicksRelay
+    }
+
+    override fun showUnlockError() {
+        Snackbar.make(formContainer, R.string.unlock_failed, Snackbar.LENGTH_SHORT).show()
     }
 
 }
