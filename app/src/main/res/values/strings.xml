@@ -1,11 +1,5 @@
 <resources>
     <string name="app_name">Nimpas</string>
-    <string name="group">Group</string>
-    <string name="password">Password</string>
-    <string name="card">Credit card</string>
-    <string name="note">Note</string>
-    <string name="enter_keyword">Enter a master keyword</string>
-    <string name="unlock">Unlock</string>
     <string name="create">Create</string>
     <string name="info">Info</string>
     <string name="edit">Edit</string>
@@ -13,4 +7,8 @@
     <string name="undo">Undo</string>
     <string name="record_delete_undo_message">Record is deleted</string>
     <string name="unlock_failed">Dictionary unlock failed</string>
+    <string name="password">Password</string>
+    <string name="enter_password">Enter password</string>
+    <string name="login">Login</string>
+    <string name="switch_user">Switch User</string>
 </resources>
