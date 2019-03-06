@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.journal
+package com.tomclaw.nimpas.storage
 
 import android.annotation.SuppressLint
 import com.tomclaw.crypto.AesCbcWithIntegrity
@@ -53,7 +53,7 @@ class JournalImpl(private val file: File) : Journal {
     private var writeTime: Long = 0
     private var nextId: Long = 0
 
-    override fun init(keyword: String) = Completable.create { emitter ->
+    override fun init(keyword: String): Completable = Completable.create { emitter ->
         initJournal(keyword)
         emitter.onComplete()
     }

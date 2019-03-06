@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.journal
+package com.tomclaw.nimpas.storage
 
 import android.os.Parcel
 import android.os.Parcelable

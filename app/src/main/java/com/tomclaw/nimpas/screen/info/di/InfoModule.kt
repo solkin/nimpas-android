@@ -8,7 +8,7 @@ import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
 import com.tomclaw.nimpas.screen.info.InfoResourceProvider
 import com.tomclaw.nimpas.screen.info.InfoResourceProviderImpl
-import com.tomclaw.nimpas.journal.Journal
+import com.tomclaw.nimpas.storage.Journal
 import com.tomclaw.nimpas.screen.info.InfoInteractor
 import com.tomclaw.nimpas.screen.info.InfoInteractorImpl
 import com.tomclaw.nimpas.screen.info.InfoPresenter

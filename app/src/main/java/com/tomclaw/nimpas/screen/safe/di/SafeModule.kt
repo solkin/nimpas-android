@@ -6,7 +6,7 @@ import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
-import com.tomclaw.nimpas.journal.Journal
+import com.tomclaw.nimpas.storage.Journal
 import com.tomclaw.nimpas.screen.safe.RecordConverter
 import com.tomclaw.nimpas.screen.safe.RecordConverterImpl
 import com.tomclaw.nimpas.screen.safe.SafeInteractor

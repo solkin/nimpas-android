@@ -5,8 +5,8 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tomclaw.nimpas.R
-import com.tomclaw.nimpas.journal.Journal
-import com.tomclaw.nimpas.journal.JournalImpl
+import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.JournalImpl
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.templates.TemplateRepositoryImpl
 import com.tomclaw.nimpas.undo.Undoer

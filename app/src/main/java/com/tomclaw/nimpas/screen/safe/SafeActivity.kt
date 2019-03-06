@@ -7,7 +7,7 @@ import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
-import com.tomclaw.nimpas.journal.Record
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.form.createFormActivityIntent
 import com.tomclaw.nimpas.screen.info.createInfoActivityIntent

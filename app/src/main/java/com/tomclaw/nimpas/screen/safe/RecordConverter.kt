@@ -1,7 +1,7 @@
 package com.tomclaw.nimpas.screen.safe
 
 import com.avito.konveyor.blueprint.Item
-import com.tomclaw.nimpas.journal.Record
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.screen.safe.adapter.card.CardItem
 import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItem
 import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItem

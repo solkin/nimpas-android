@@ -1,8 +1,8 @@
 package com.tomclaw.nimpas.screen.safe
 
-import com.tomclaw.nimpas.journal.GROUP_DEFAULT
-import com.tomclaw.nimpas.journal.Journal
-import com.tomclaw.nimpas.journal.Record
+import com.tomclaw.nimpas.storage.GROUP_DEFAULT
+import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.Observable
 

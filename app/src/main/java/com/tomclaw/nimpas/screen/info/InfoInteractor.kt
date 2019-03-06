@@ -1,7 +1,7 @@
 package com.tomclaw.nimpas.screen.info
 
-import com.tomclaw.nimpas.journal.Journal
-import com.tomclaw.nimpas.journal.Record
+import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.Completable
 import io.reactivex.Single

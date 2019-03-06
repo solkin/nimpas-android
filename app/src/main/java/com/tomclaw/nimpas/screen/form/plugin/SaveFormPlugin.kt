@@ -1,7 +1,7 @@
 package com.tomclaw.nimpas.screen.form.plugin
 
-import com.tomclaw.nimpas.journal.Journal
-import com.tomclaw.nimpas.journal.Record
+import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.screen.form.adapter.FormItem
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItem
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItem

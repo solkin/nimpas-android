@@ -12,13 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".screen.safe.SafeActivity">
+        <activity android:name=".screen.start.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".screen.safe.SafeActivity" />
         <activity android:name=".screen.form.FormActivity" />
         <activity android:name=".screen.info.InfoActivity" />
         <activity android:name=".screen.lock.LockActivity" />

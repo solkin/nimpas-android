@@ -8,8 +8,8 @@ import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
-import com.tomclaw.nimpas.journal.GROUP_DEFAULT
-import com.tomclaw.nimpas.journal.Record
+import com.tomclaw.nimpas.storage.GROUP_DEFAULT
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.form.di.FormModule
 import javax.inject.Inject
