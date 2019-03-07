@@ -59,12 +59,13 @@ class BookImpl(private val file: File) : Book {
     }
 
     override fun isUnlocked(): Boolean {
-        return keyword != null && records != null
+        return keyword != null && records != null && templates != null
     }
 
     override fun lock() {
         keyword = null
         records = null
+        templates = null
     }
 
     override fun unlock(keyword: String): Completable = Completable.create { emitter ->
