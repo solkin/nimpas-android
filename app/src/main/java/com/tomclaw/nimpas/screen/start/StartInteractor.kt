@@ -1,6 +1,6 @@
 package com.tomclaw.nimpas.screen.start
 
-import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.Completable
 
@@ -11,7 +11,7 @@ interface StartInteractor {
 }
 
 class StartInteractorImpl(
-        private val journal: Journal,
+        private val book: Book,
         private val schedulers: SchedulersFactory
 ) : StartInteractor {
 

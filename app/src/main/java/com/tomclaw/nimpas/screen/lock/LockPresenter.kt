@@ -44,7 +44,7 @@ class LockPresenterImpl(
         this.view = view
 
         subscriptions += view.keywordChanges().subscribe { keyword = it }
-        subscriptions += view.unlockClicks().subscribe { unlockJournal() }
+        subscriptions += view.unlockClicks().subscribe { unlockBook() }
     }
 
     override fun detachView() {
@@ -68,16 +68,16 @@ class LockPresenterImpl(
         router?.leaveScreen(isUnlocked = false)
     }
 
-    private fun unlockJournal() {
+    private fun unlockBook() {
         subscriptions += interactor.unlock(keyword)
                 .observeOn(schedulers.mainThread())
                 .subscribe(
-                        { onJournalUnlocked() },
+                        { onBookUnlocked() },
                         { onUnlockFailed(it) }
                 )
     }
 
-    private fun onJournalUnlocked() {
+    private fun onBookUnlocked() {
         // TODO: show animation
         router?.leaveScreen(isUnlocked = true)
     }

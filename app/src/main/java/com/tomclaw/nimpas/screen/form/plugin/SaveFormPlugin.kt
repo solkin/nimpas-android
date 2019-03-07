@@ -1,6 +1,6 @@
 package com.tomclaw.nimpas.screen.form.plugin
 
-import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.screen.form.adapter.FormItem
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItem
@@ -12,7 +12,7 @@ import io.reactivex.Single
 class SaveFormPlugin(
         private val groupId: Long,
         private val recordId: Long?,
-        private val journal: Journal
+        private val book: Book
 ) : FormPlugin {
 
     override val action: String = "save"
@@ -20,13 +20,13 @@ class SaveFormPlugin(
     override fun operation(
             template: Template,
             items: List<FormItem>
-    ): Completable = createRecord(template, items).flatMapCompletable { journal.addRecord(it) }
+    ): Completable = createRecord(template, items).flatMapCompletable { book.addRecord(it) }
 
     private fun createRecord(
             template: Template,
             items: List<FormItem>
     ) = Single.create<Record> { emitter ->
-        val id = recordId ?: journal.nextId()
+        val id = recordId ?: book.nextId()
         val time = System.currentTimeMillis()
         val fields = items
                 .filter { !it.key.isNullOrEmpty() }

@@ -6,7 +6,7 @@ import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
-import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.screen.safe.RecordConverter
 import com.tomclaw.nimpas.screen.safe.RecordConverterImpl
 import com.tomclaw.nimpas.screen.safe.SafeInteractor
@@ -64,10 +64,10 @@ class SafeModule(
     @Provides
     @PerActivity
     internal fun provideSafeInteractor(
-            journal: Journal,
+            book: Book,
             schedulers: SchedulersFactory
     ): SafeInteractor {
-        return SafeInteractorImpl(journal, schedulers)
+        return SafeInteractorImpl(book, schedulers)
     }
 
     @Provides

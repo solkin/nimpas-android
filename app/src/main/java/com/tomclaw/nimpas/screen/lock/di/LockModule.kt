@@ -2,7 +2,7 @@ package com.tomclaw.nimpas.screen.lock.di
 
 import android.content.Context
 import android.os.Bundle
-import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.screen.lock.LockInteractor
 import com.tomclaw.nimpas.screen.lock.LockInteractorImpl
 import com.tomclaw.nimpas.screen.lock.LockPresenter
@@ -28,8 +28,8 @@ class LockModule(
     @Provides
     @PerActivity
     internal fun provideInteractor(
-            journal: Journal,
+            book: Book,
             schedulers: SchedulersFactory
-    ): LockInteractor = LockInteractorImpl(journal, schedulers)
+    ): LockInteractor = LockInteractorImpl(book, schedulers)
 
 }

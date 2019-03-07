@@ -5,8 +5,8 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tomclaw.nimpas.R
-import com.tomclaw.nimpas.storage.Journal
-import com.tomclaw.nimpas.storage.JournalImpl
+import com.tomclaw.nimpas.storage.Book
+import com.tomclaw.nimpas.storage.BookImpl
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.templates.TemplateRepositoryImpl
 import com.tomclaw.nimpas.undo.Undoer
@@ -35,9 +35,9 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    internal fun provideJournal(): Journal {
-        val file = File(app.filesDir, "journal.dat")
-        return JournalImpl(file)
+    internal fun provideBook(): Book {
+        val file = File(app.filesDir, "default.nmb")
+        return BookImpl(file)
     }
 
     @Provides

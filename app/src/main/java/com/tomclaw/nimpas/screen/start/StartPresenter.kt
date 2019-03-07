@@ -41,7 +41,7 @@ class StartPresenterImpl(
     override fun attachView(view: StartView) {
         this.view = view
 
-        checkJournal()
+        checkBook()
     }
 
     override fun detachView() {
@@ -64,7 +64,7 @@ class StartPresenterImpl(
         router?.leaveScreen()
     }
 
-    private fun checkJournal() {
+    private fun checkBook() {
         subscriptions += interactor.check()
                 .observeOn(schedulers.mainThread())
                 .subscribe(

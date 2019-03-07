@@ -1,6 +1,6 @@
 package com.tomclaw.nimpas.screen.info
 
-import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.Completable
@@ -17,22 +17,22 @@ interface InfoInteractor {
 }
 
 class InfoInteractorImpl(
-        private val journal: Journal,
+        private val book: Book,
         private val schedulers: SchedulersFactory
 ) : InfoInteractor {
 
     override fun getRecord(recordId: Long): Single<Record> {
-        return journal.getRecord(recordId)
+        return book.getRecord(recordId)
                 .subscribeOn(schedulers.io())
     }
 
     override fun deleteRecord(recordId: Long): Completable {
-        return journal.deleteRecord(recordId)
+        return book.deleteRecord(recordId)
                 .subscribeOn(schedulers.io())
     }
 
     override fun addRecord(record: Record): Completable {
-        return journal.addRecord(record)
+        return book.addRecord(record)
                 .subscribeOn(schedulers.io())
     }
 

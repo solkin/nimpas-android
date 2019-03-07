@@ -6,7 +6,7 @@ import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
 import com.jakewharton.rxrelay2.PublishRelay
-import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.screen.form.FormInteractor
 import com.tomclaw.nimpas.screen.form.FormInteractorImpl
@@ -80,7 +80,7 @@ class FormModule(
     @Provides
     @PerActivity
     internal fun provideInteractor(
-            journal: Journal,
+            book: Book,
             templateRepository: TemplateRepository,
             schedulers: SchedulersFactory
     ): FormInteractor {
@@ -182,8 +182,8 @@ class FormModule(
     @Provides
     @IntoSet
     @PerActivity
-    internal fun provideSaveFormPlugin(journal: Journal): FormPlugin {
-        return SaveFormPlugin(groupId, record?.id, journal)
+    internal fun provideSaveFormPlugin(book: Book): FormPlugin {
+        return SaveFormPlugin(groupId, record?.id, book)
     }
 
 }

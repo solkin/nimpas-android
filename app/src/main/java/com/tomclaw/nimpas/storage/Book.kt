@@ -23,7 +23,7 @@ import java.io.FileOutputStream
 import java.util.HashMap
 
 
-interface Journal {
+interface Book {
 
     fun init(keyword: String): Completable
 
@@ -45,7 +45,7 @@ interface Journal {
 
 }
 
-class JournalImpl(private val file: File) : Journal {
+class BookImpl(private val file: File) : Book {
 
     private var keyword: String? = null
     private var templates: MutableMap<Long, Template>? = null
@@ -54,7 +54,7 @@ class JournalImpl(private val file: File) : Journal {
     private var nextId: Long = 0
 
     override fun init(keyword: String): Completable = Completable.create { emitter ->
-        initJournal(keyword)
+        createBook(keyword)
         emitter.onComplete()
     }
 
@@ -69,7 +69,7 @@ class JournalImpl(private val file: File) : Journal {
 
     override fun unlock(keyword: String): Completable = Completable.create { emitter ->
         this.keyword = keyword
-        readJournal(keyword)
+        readBook(keyword)
         emitter.onComplete()
     }
 
@@ -80,7 +80,7 @@ class JournalImpl(private val file: File) : Journal {
                 return@create
             }
         }
-        emitter.onError(JournalLockedException())
+        emitter.onError(BookLockedException())
     }
 
     override fun getRecords(groupId: Long): Single<List<Record>> = Single.create { emitter ->
@@ -95,7 +95,7 @@ class JournalImpl(private val file: File) : Journal {
                 return@create
             }
         }
-        emitter.onError(JournalLockedException())
+        emitter.onError(BookLockedException())
     }
 
     override fun addRecord(record: Record): Completable = Completable.create { emitter ->
@@ -105,10 +105,10 @@ class JournalImpl(private val file: File) : Journal {
         if (keyword != null && templates != null && records != null) {
             templates[record.template.id] = record.template
             records[record.id] = record
-            writeJournal(keyword, templates, records)
+            writeBook(keyword, templates, records)
             emitter.onComplete()
         } else {
-            emitter.onError(JournalLockedException())
+            emitter.onError(BookLockedException())
         }
     }
 
@@ -120,11 +120,11 @@ class JournalImpl(private val file: File) : Journal {
             records.remove(recordId)?.let { record ->
                 records.filterValues { it.template.id == record.template.id }
                         .takeIf { it.isNotEmpty() } ?: templates.remove(record.template.id)
-                writeJournal(keyword, templates, records)
+                writeBook(keyword, templates, records)
             }
             emitter.onComplete()
         } else {
-            emitter.onError(JournalLockedException())
+            emitter.onError(BookLockedException())
         }
     }
 
@@ -132,15 +132,15 @@ class JournalImpl(private val file: File) : Journal {
         return ++nextId
     }
 
-    private fun initJournal(keyword: String) {
+    private fun createBook(keyword: String) {
         val templates = mutableMapOf<Long, Template>()
         val records = mutableMapOf<Long, Record>()
         this.templates = templates
         this.records = records
-        writeJournal(keyword, templates, records)
+        writeBook(keyword, templates, records)
     }
 
-    private fun writeJournal(
+    private fun writeBook(
             keyword: String,
             templates: Map<Long, Template>,
             records: Map<Long, Record>
@@ -152,7 +152,7 @@ class JournalImpl(private val file: File) : Journal {
             val fileStream = BufferedOutputStream(FileOutputStream(file))
             directStream = DataOutputStream(fileStream)
             with(directStream) {
-                writeShort(JOURNAL_VERSION)
+                writeShort(BOOK_VERSION)
                 writeLong(writeTime)
                 flush()
             }
@@ -217,9 +217,9 @@ class JournalImpl(private val file: File) : Journal {
     }
 
     @SuppressLint("UseSparseArrays")
-    private fun readJournal(keyword: String) {
+    private fun readBook(keyword: String) {
         if (!file.exists()) {
-            initJournal(keyword)
+            createBook(keyword)
         }
         var memoryStream: DataInputStream? = null
         var directStream: DataInputStream? = null
@@ -257,7 +257,7 @@ class JournalImpl(private val file: File) : Journal {
                             val template = Template(id, templateVersion, type, title, icon, color, fields)
                             templates += id to template
                         }
-                        this@JournalImpl.templates = templates
+                        this@BookImpl.templates = templates
                     }
                     else -> throw UnknownFormatException()
                 }
@@ -294,9 +294,9 @@ class JournalImpl(private val file: File) : Journal {
                                     ?: throw TemplateNotFoundException()
                             records[id] = Record(id, groupId, time, template, fields)
                         }
-                        this@JournalImpl.records = records
-                        this@JournalImpl.writeTime = writeTime
-                        this@JournalImpl.nextId = nextId
+                        this@BookImpl.records = records
+                        this@BookImpl.writeTime = writeTime
+                        this@BookImpl.nextId = nextId
                     }
                     else -> throw UnknownFormatException()
                 }
@@ -309,13 +309,13 @@ class JournalImpl(private val file: File) : Journal {
 
     class UnknownFormatException : Exception()
 
-    class JournalLockedException : Exception()
+    class BookLockedException : Exception()
 
     class TemplateNotFoundException : Exception()
 
 }
 
-private const val JOURNAL_VERSION = 1
+private const val BOOK_VERSION = 1
 
 private const val VERSION_1: Short = 1
 

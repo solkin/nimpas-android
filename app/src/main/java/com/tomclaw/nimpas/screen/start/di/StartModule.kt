@@ -2,7 +2,7 @@ package com.tomclaw.nimpas.screen.start.di
 
 import android.content.Context
 import android.os.Bundle
-import com.tomclaw.nimpas.storage.Journal
+import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.screen.start.StartInteractor
 import com.tomclaw.nimpas.screen.start.StartInteractorImpl
 import com.tomclaw.nimpas.screen.start.StartPresenter
@@ -28,8 +28,8 @@ class StartModule(
     @Provides
     @PerActivity
     internal fun provideInteractor(
-            journal: Journal,
+            book: Book,
             schedulers: SchedulersFactory
-    ): StartInteractor = StartInteractorImpl(journal, schedulers)
+    ): StartInteractor = StartInteractorImpl(book, schedulers)
 
 }
