@@ -62,6 +62,10 @@ class BookImpl(private val file: File) : Book {
         return keyword != null && records != null && templates != null
     }
 
+    private fun isExists(): Boolean {
+        return file.exists()
+    }
+
     override fun lock() {
         keyword = null
         records = null
@@ -70,8 +74,16 @@ class BookImpl(private val file: File) : Book {
 
     override fun unlock(keyword: String): Completable = Completable.create { emitter ->
         this.keyword = keyword
-        readBook(keyword)
-        emitter.onComplete()
+        try {
+            if (isExists()) {
+                readBook()
+            } else {
+                createBook(keyword)
+            }
+            emitter.onComplete()
+        } catch (ex: Exception) {
+            emitter.onError(ex)
+        }
     }
 
     override fun getRecord(recordId: Long): Single<Record> = Single.create { emitter ->
@@ -100,13 +112,12 @@ class BookImpl(private val file: File) : Book {
     }
 
     override fun addRecord(record: Record): Completable = Completable.create { emitter ->
-        val keyword = keyword
         val templates = templates
         val records = records
         if (keyword != null && templates != null && records != null) {
             templates[record.template.id] = record.template
             records[record.id] = record
-            writeBook(keyword, templates, records)
+            writeBook(templates, records)
             emitter.onComplete()
         } else {
             emitter.onError(BookLockedException())
@@ -114,14 +125,13 @@ class BookImpl(private val file: File) : Book {
     }
 
     override fun deleteRecord(recordId: Long): Completable = Completable.create { emitter ->
-        val keyword = keyword
         val templates = templates
         val records = records
         if (keyword != null && templates != null && records != null) {
             records.remove(recordId)?.let { record ->
                 records.filterValues { it.template.id == record.template.id }
                         .takeIf { it.isNotEmpty() } ?: templates.remove(record.template.id)
-                writeBook(keyword, templates, records)
+                writeBook(templates, records)
             }
             emitter.onComplete()
         } else {
@@ -138,11 +148,11 @@ class BookImpl(private val file: File) : Book {
         val records = mutableMapOf<Long, Record>()
         this.templates = templates
         this.records = records
-        writeBook(keyword, templates, records)
+        this.keyword = keyword
+        writeBook(templates, records)
     }
 
     private fun writeBook(
-            keyword: String,
             templates: Map<Long, Template>,
             records: Map<Long, Record>
     ) {
@@ -218,10 +228,7 @@ class BookImpl(private val file: File) : Book {
     }
 
     @SuppressLint("UseSparseArrays")
-    private fun readBook(keyword: String) {
-        if (!file.exists()) {
-            createBook(keyword)
-        }
+    private fun readBook() {
         var memoryStream: DataInputStream? = null
         var directStream: DataInputStream? = null
         try {
