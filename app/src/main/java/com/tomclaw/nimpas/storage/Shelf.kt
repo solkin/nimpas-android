@@ -2,16 +2,15 @@ package com.tomclaw.nimpas.storage
 
 import com.tomclaw.drawa.util.safeClose
 import com.tomclaw.nimpas.util.SchedulersFactory
+import io.reactivex.Completable
 import io.reactivex.Single
-import java.io.DataInputStream
-import java.io.File
-import java.io.FileInputStream
+import java.io.*
 
 interface Shelf {
 
     fun createBook(): Single<Book>
 
-    fun listBooks(): Single<Book>
+    fun listBooks(): Single<Map<String, Book>>
 
     fun activeBook(): Single<Book>
 
@@ -31,8 +30,8 @@ class ShelfImpl(
         TODO("not implemented")
     }
 
-    override fun listBooks(): Single<Book> {
-        TODO("not implemented")
+    override fun listBooks(): Single<Map<String, Book>> {
+        return books()
     }
 
     override fun activeBook(): Single<Book> {
@@ -52,20 +51,47 @@ class ShelfImpl(
         }.doAfterSuccess { books = it }
     }
 
-    private fun active(): Single<String> {
+    private fun activeBookName(): Single<String> {
         return active?.let { Single.just(it) } ?: Single.create<String> { emitter ->
-            val shelf = File(dir, CONTENTS_FILE)
-            var stream: DataInputStream? = null
-            try {
-                stream = DataInputStream(FileInputStream(shelf))
-
-                val name = stream.readUTF()
-
-                emitter.onSuccess(name)
-            } finally {
-                stream.safeClose()
-            }
+            readActiveBookName()
+                    ?.let { emitter.onSuccess(it) }
+                    ?: emitter.onError(Exception("No active book"))
         }.doAfterSuccess { active = it }
+    }
+
+    private fun saveActiveBookName(name: String): Completable {
+        return Completable.create { emitter ->
+            writeActiveBookName(name).takeIf { true }
+                    ?.run { emitter.onComplete() }
+                    ?: emitter.onError(Exception("Failed to assign active book"))
+        }.doOnComplete { active = name }
+    }
+
+    private fun readActiveBookName(): String? {
+        val shelf = File(dir, CONTENTS_FILE)
+        var stream: DataInputStream? = null
+        return try {
+            stream = DataInputStream(FileInputStream(shelf))
+            stream.readUTF()
+        } catch (ex: Throwable) {
+            null
+        } finally {
+            stream.safeClose()
+        }
+    }
+
+    private fun writeActiveBookName(name: String): Boolean {
+        val shelf = File(dir, CONTENTS_FILE)
+        var stream: DataOutputStream? = null
+        return try {
+            stream = DataOutputStream(FileOutputStream(shelf))
+            stream.writeUTF(name)
+            true
+        } catch (ex: Throwable) {
+            false
+        } finally {
+            stream.safeClose()
+        }
     }
 
 }
