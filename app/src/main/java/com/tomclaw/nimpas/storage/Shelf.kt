@@ -24,19 +24,17 @@ class ShelfImpl(
 ) : Shelf {
 
     private var books: Map<String, Book>? = null
-    private var active: String? = null
+    private var activeId: String? = null
 
     override fun createBook(): Single<Book> {
         TODO("not implemented")
     }
 
-    override fun listBooks(): Single<Map<String, Book>> {
-        return books()
-    }
+    override fun listBooks(): Single<Map<String, Book>> = books()
 
-    override fun activeBook(): Single<Book> {
-        TODO("not implemented")
-    }
+    override fun activeBook(): Single<Book> = activeBookId()
+            .flatMap { books() }
+            .map { it[activeId] }
 
     override fun switchBook(book: Book) {
         TODO("not implemented")
@@ -51,23 +49,23 @@ class ShelfImpl(
         }.doAfterSuccess { books = it }
     }
 
-    private fun activeBookName(): Single<String> {
-        return active?.let { Single.just(it) } ?: Single.create<String> { emitter ->
-            readActiveBookName()
+    private fun activeBookId(): Single<String> {
+        return activeId?.let { Single.just(it) } ?: Single.create<String> { emitter ->
+            readActiveBookId()
                     ?.let { emitter.onSuccess(it) }
                     ?: emitter.onError(Exception("No active book"))
-        }.doAfterSuccess { active = it }
+        }.doAfterSuccess { activeId = it }
     }
 
-    private fun saveActiveBookName(name: String): Completable {
+    private fun saveActiveBookId(id: String): Completable {
         return Completable.create { emitter ->
-            writeActiveBookName(name).takeIf { true }
+            writeActiveBookId(id).takeIf { true }
                     ?.run { emitter.onComplete() }
                     ?: emitter.onError(Exception("Failed to assign active book"))
-        }.doOnComplete { active = name }
+        }.doOnComplete { activeId = id }
     }
 
-    private fun readActiveBookName(): String? {
+    private fun readActiveBookId(): String? {
         val shelf = File(dir, CONTENTS_FILE)
         var stream: DataInputStream? = null
         return try {
@@ -80,12 +78,12 @@ class ShelfImpl(
         }
     }
 
-    private fun writeActiveBookName(name: String): Boolean {
+    private fun writeActiveBookId(id: String): Boolean {
         val shelf = File(dir, CONTENTS_FILE)
         var stream: DataOutputStream? = null
         return try {
             stream = DataOutputStream(FileOutputStream(shelf))
-            stream.writeUTF(name)
+            stream.writeUTF(id)
             true
         } catch (ex: Throwable) {
             false
