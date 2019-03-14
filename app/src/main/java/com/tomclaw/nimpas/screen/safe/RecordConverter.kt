@@ -1,11 +1,11 @@
 package com.tomclaw.nimpas.screen.safe
 
 import com.avito.konveyor.blueprint.Item
-import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.screen.safe.adapter.card.CardItem
 import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItem
 import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItem
 import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItem
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.templates.TYPE_CARD
 import com.tomclaw.nimpas.templates.TYPE_GROUP
 import com.tomclaw.nimpas.templates.TYPE_NOTE

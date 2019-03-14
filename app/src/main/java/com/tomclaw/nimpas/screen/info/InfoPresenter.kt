@@ -3,9 +3,9 @@ package com.tomclaw.nimpas.screen.info
 import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.data_source.ListDataSource
-import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.screen.info.adapter.InfoItem
 import com.tomclaw.nimpas.screen.info.converter.FieldConverter
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.undo.Undo
 import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.SchedulersFactory

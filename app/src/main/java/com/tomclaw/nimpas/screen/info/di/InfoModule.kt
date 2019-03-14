@@ -6,13 +6,12 @@ import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
-import com.tomclaw.nimpas.screen.info.InfoResourceProvider
-import com.tomclaw.nimpas.screen.info.InfoResourceProviderImpl
-import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.screen.info.InfoInteractor
 import com.tomclaw.nimpas.screen.info.InfoInteractorImpl
 import com.tomclaw.nimpas.screen.info.InfoPresenter
 import com.tomclaw.nimpas.screen.info.InfoPresenterImpl
+import com.tomclaw.nimpas.screen.info.InfoResourceProvider
+import com.tomclaw.nimpas.screen.info.InfoResourceProviderImpl
 import com.tomclaw.nimpas.screen.info.adapter.check.CheckItemBlueprint
 import com.tomclaw.nimpas.screen.info.adapter.check.CheckItemPresenter
 import com.tomclaw.nimpas.screen.info.adapter.header.HeaderItemBlueprint
@@ -21,6 +20,7 @@ import com.tomclaw.nimpas.screen.info.adapter.text.TextItemBlueprint
 import com.tomclaw.nimpas.screen.info.adapter.text.TextItemPresenter
 import com.tomclaw.nimpas.screen.info.converter.FieldConverter
 import com.tomclaw.nimpas.screen.info.converter.FieldConverterImpl
+import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory

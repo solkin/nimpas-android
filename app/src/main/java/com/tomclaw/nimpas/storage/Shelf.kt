@@ -5,7 +5,11 @@ import com.tomclaw.nimpas.util.SchedulersFactory
 import com.tomclaw.nimpas.util.sha256
 import io.reactivex.Completable
 import io.reactivex.Single
-import java.io.*
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 interface Shelf {
 

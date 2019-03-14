@@ -4,11 +4,11 @@ import android.os.Bundle
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
-import com.tomclaw.nimpas.storage.GROUP_DEFAULT
-import com.tomclaw.nimpas.storage.BookImpl
-import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.screen.safe.adapter.ItemClickListener
 import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItem
+import com.tomclaw.nimpas.storage.BookImpl
+import com.tomclaw.nimpas.storage.GROUP_DEFAULT
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.templates.TYPE_GROUP
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.undo.Undo

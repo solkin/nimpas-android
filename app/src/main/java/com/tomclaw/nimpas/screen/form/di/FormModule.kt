@@ -6,8 +6,6 @@ import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
 import com.jakewharton.rxrelay2.PublishRelay
-import com.tomclaw.nimpas.storage.Book
-import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.screen.form.FormInteractor
 import com.tomclaw.nimpas.screen.form.FormInteractorImpl
 import com.tomclaw.nimpas.screen.form.FormPresenter
@@ -29,6 +27,8 @@ import com.tomclaw.nimpas.screen.form.converter.TemplateConverter
 import com.tomclaw.nimpas.screen.form.converter.TemplateConverterImpl
 import com.tomclaw.nimpas.screen.form.plugin.FormPlugin
 import com.tomclaw.nimpas.screen.form.plugin.SaveFormPlugin
+import com.tomclaw.nimpas.storage.Book
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory

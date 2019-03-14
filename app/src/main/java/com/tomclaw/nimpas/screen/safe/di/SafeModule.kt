@@ -6,7 +6,6 @@ import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
-import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.screen.safe.RecordConverter
 import com.tomclaw.nimpas.screen.safe.RecordConverterImpl
 import com.tomclaw.nimpas.screen.safe.SafeInteractor
@@ -21,6 +20,7 @@ import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItemPresenter
 import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemPresenter
+import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.PerActivity

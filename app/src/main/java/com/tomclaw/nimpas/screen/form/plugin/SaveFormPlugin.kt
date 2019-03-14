@@ -1,10 +1,10 @@
 package com.tomclaw.nimpas.screen.form.plugin
 
-import com.tomclaw.nimpas.storage.Book
-import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.screen.form.adapter.FormItem
 import com.tomclaw.nimpas.screen.form.adapter.check.CheckItem
 import com.tomclaw.nimpas.screen.form.adapter.edit.EditItem
+import com.tomclaw.nimpas.storage.Book
+import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.templates.Template
 import io.reactivex.Completable
 import io.reactivex.Single
