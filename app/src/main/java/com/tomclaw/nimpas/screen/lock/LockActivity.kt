@@ -55,12 +55,20 @@ class LockActivity : AppCompatActivity(), LockPresenter.LockRouter {
     override fun leaveScreen(isUnlocked: Boolean) {
         val result = if (isUnlocked) RESULT_OK else RESULT_CANCELED
         setResult(result)
+        intent.getTargetIntent()?.let { target ->
+            if (isUnlocked) startActivity(target)
+        }
         finish()
     }
 
+    private fun Intent.getTargetIntent() = getParcelableExtra<Intent>(EXTRA_TARGET_INTENT)
+
 }
 
-fun createLockActivityIntent(context: Context): Intent =
+fun createLockActivityIntent(context: Context, target: Intent? = null): Intent =
         Intent(context, LockActivity::class.java)
+                .putExtra(EXTRA_TARGET_INTENT, target)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
+
+private const val EXTRA_TARGET_INTENT = "target_intent"

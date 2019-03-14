@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
+import com.tomclaw.nimpas.screen.safe.createSafeActivityIntent
 import com.tomclaw.nimpas.screen.start.di.StartModule
 import javax.inject.Inject
 
@@ -54,7 +55,8 @@ class StartActivity : AppCompatActivity(), StartPresenter.StartRouter {
     }
 
     override fun showLockScreen() {
-        val intent = createLockActivityIntent(context = this)
+        val target = createSafeActivityIntent(context = this)
+        val intent = createLockActivityIntent(context = this, target = target)
         startActivity(intent)
         leaveScreen()
     }

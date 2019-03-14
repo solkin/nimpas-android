@@ -1,5 +1,6 @@
 package com.tomclaw.nimpas.screen.safe
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -104,6 +105,9 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
     }
 
 }
+
+fun createSafeActivityIntent(context: Context): Intent =
+        Intent(context, SafeActivity::class.java)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
 
