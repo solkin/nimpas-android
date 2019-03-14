@@ -6,7 +6,7 @@ import com.tomclaw.nimpas.screen.lock.LockInteractor
 import com.tomclaw.nimpas.screen.lock.LockInteractorImpl
 import com.tomclaw.nimpas.screen.lock.LockPresenter
 import com.tomclaw.nimpas.screen.lock.LockPresenterImpl
-import com.tomclaw.nimpas.storage.Book
+import com.tomclaw.nimpas.storage.Shelf
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Module
@@ -28,8 +28,8 @@ class LockModule(
     @Provides
     @PerActivity
     internal fun provideInteractor(
-            book: Book,
+            shelf: Shelf,
             schedulers: SchedulersFactory
-    ): LockInteractor = LockInteractorImpl(book, schedulers)
+    ): LockInteractor = LockInteractorImpl(shelf, schedulers)
 
 }

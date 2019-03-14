@@ -6,7 +6,7 @@ import com.tomclaw.nimpas.screen.start.StartInteractor
 import com.tomclaw.nimpas.screen.start.StartInteractorImpl
 import com.tomclaw.nimpas.screen.start.StartPresenter
 import com.tomclaw.nimpas.screen.start.StartPresenterImpl
-import com.tomclaw.nimpas.storage.Book
+import com.tomclaw.nimpas.storage.Shelf
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Module
@@ -28,8 +28,8 @@ class StartModule(
     @Provides
     @PerActivity
     internal fun provideInteractor(
-            book: Book,
+            shelf: Shelf,
             schedulers: SchedulersFactory
-    ): StartInteractor = StartInteractorImpl(book, schedulers)
+    ): StartInteractor = StartInteractorImpl(shelf, schedulers)
 
 }

@@ -20,7 +20,7 @@ import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.note.NoteItemPresenter
 import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemBlueprint
 import com.tomclaw.nimpas.screen.safe.adapter.pass.PasswordItemPresenter
-import com.tomclaw.nimpas.storage.Book
+import com.tomclaw.nimpas.storage.Shelf
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.PerActivity
@@ -64,10 +64,10 @@ class SafeModule(
     @Provides
     @PerActivity
     internal fun provideSafeInteractor(
-            book: Book,
+            shelf: Shelf,
             schedulers: SchedulersFactory
     ): SafeInteractor {
-        return SafeInteractorImpl(book, schedulers)
+        return SafeInteractorImpl(shelf, schedulers)
     }
 
     @Provides

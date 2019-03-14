@@ -20,7 +20,7 @@ import com.tomclaw.nimpas.screen.info.adapter.text.TextItemBlueprint
 import com.tomclaw.nimpas.screen.info.adapter.text.TextItemPresenter
 import com.tomclaw.nimpas.screen.info.converter.FieldConverter
 import com.tomclaw.nimpas.screen.info.converter.FieldConverterImpl
-import com.tomclaw.nimpas.storage.Book
+import com.tomclaw.nimpas.storage.Shelf
 import com.tomclaw.nimpas.undo.Undoer
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -65,10 +65,10 @@ class InfoModule(
     @Provides
     @PerActivity
     internal fun provideInteractor(
-            book: Book,
+            shelf: Shelf,
             schedulers: SchedulersFactory
     ): InfoInteractor = InfoInteractorImpl(
-            book,
+            shelf,
             schedulers
     )
 

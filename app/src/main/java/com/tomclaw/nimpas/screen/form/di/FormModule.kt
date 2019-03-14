@@ -27,8 +27,8 @@ import com.tomclaw.nimpas.screen.form.converter.TemplateConverter
 import com.tomclaw.nimpas.screen.form.converter.TemplateConverterImpl
 import com.tomclaw.nimpas.screen.form.plugin.FormPlugin
 import com.tomclaw.nimpas.screen.form.plugin.SaveFormPlugin
-import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.storage.Record
+import com.tomclaw.nimpas.storage.Shelf
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -80,7 +80,6 @@ class FormModule(
     @Provides
     @PerActivity
     internal fun provideInteractor(
-            book: Book,
             templateRepository: TemplateRepository,
             schedulers: SchedulersFactory
     ): FormInteractor {
@@ -182,8 +181,8 @@ class FormModule(
     @Provides
     @IntoSet
     @PerActivity
-    internal fun provideSaveFormPlugin(book: Book): FormPlugin {
-        return SaveFormPlugin(groupId, record?.id, book)
+    internal fun provideSaveFormPlugin(shelf: Shelf): FormPlugin {
+        return SaveFormPlugin(groupId, record?.id, shelf)
     }
 
 }

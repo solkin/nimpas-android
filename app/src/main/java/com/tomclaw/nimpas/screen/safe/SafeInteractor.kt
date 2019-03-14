@@ -1,8 +1,8 @@
 package com.tomclaw.nimpas.screen.safe
 
-import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.storage.GROUP_DEFAULT
 import com.tomclaw.nimpas.storage.Record
+import com.tomclaw.nimpas.storage.Shelf
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.Observable
 
@@ -13,12 +13,13 @@ interface SafeInteractor {
 }
 
 class SafeInteractorImpl(
-        private val book: Book,
+        private val shelf: Shelf,
         private val schedulers: SchedulersFactory
 ) : SafeInteractor {
 
     override fun getRecords(groupId: Long): Observable<List<Record>> {
-        return book.getRecords(groupId)
+        return shelf.activeBook()
+                .flatMap { it.getRecords(groupId) }
                 .toObservable()
                 .subscribeOn(schedulers.io())
     }
