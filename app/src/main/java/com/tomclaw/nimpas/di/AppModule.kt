@@ -7,6 +7,8 @@ import com.google.gson.GsonBuilder
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.storage.BookImpl
+import com.tomclaw.nimpas.storage.Shelf
+import com.tomclaw.nimpas.storage.ShelfImpl
 import com.tomclaw.nimpas.templates.TemplateRepository
 import com.tomclaw.nimpas.templates.TemplateRepositoryImpl
 import com.tomclaw.nimpas.undo.Undoer
@@ -32,6 +34,12 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     internal fun provideSchedulersFactory(): SchedulersFactory = SchedulersFactoryImpl()
+
+    @Provides
+    @Singleton
+    internal fun provideShelf(schedulers: SchedulersFactory): Shelf {
+        return ShelfImpl(app.filesDir, schedulers)
+    }
 
     @Provides
     @Singleton

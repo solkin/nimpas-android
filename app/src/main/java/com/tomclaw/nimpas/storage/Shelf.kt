@@ -10,6 +10,8 @@ import java.io.DataOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.IOException
+import java.lang.IllegalArgumentException
 
 interface Shelf {
 
@@ -31,35 +33,30 @@ class ShelfImpl(
     private var books: Map<String, Book>? = null
     private var activeId: String? = null
 
-    override fun createBook(): Single<Book> {
-        return books().map {
-            val id = generateId(it.keys)
-            val file = File(dir, id).apply {
-                if (exists()) delete()
-                createNewFile()
+    override fun createBook(): Single<Book> = books()
+            .map {
+                val id = generateId(it.keys)
+                val file = File(dir, id).apply {
+                    if (exists()) delete()
+                    createNewFile()
+                }
+                val book: Book = BookImpl(file)
+                books = it + (id to book)
+                book
             }
-            val book = BookImpl(file)
-            books = it + (id to book)
-            book
-        }
-    }
-
-    private fun generateId(ids: Set<String>): String {
-        var id: String
-        do {
-            id = sha256(ids.joinToString() + System.currentTimeMillis())
-        } while (ids.contains(id))
-        return id
-    }
+            .subscribeOn(schedulers.single())
 
     override fun listBooks(): Single<Map<String, Book>> = books()
+            .subscribeOn(schedulers.single())
 
     override fun activeBook(): Single<Book> = activeBookId()
             .flatMap { books() }
-            .map { it[activeId] }
+            .map { it[activeId] ?: throw NoActiveBookException() }
+            .subscribeOn(schedulers.single())
 
     override fun switchBook(id: String): Completable = saveActiveBookId(id)
             .andThen { activeId = id }
+            .subscribeOn(schedulers.single())
 
     private fun books(): Single<Map<String, Book>> {
         return books?.let { Single.just(it) } ?: Single.create<Map<String, Book>> { emitter ->
@@ -78,15 +75,23 @@ class ShelfImpl(
                         activeId = it
                         emitter.onSuccess(it)
                     }
-                    ?: emitter.onError(Exception("No active book"))
+                    ?: emitter.onError(NoActiveBookException())
         }
+    }
+
+    private fun generateId(ids: Set<String>): String {
+        var id: String
+        do {
+            id = sha256(ids.joinToString() + System.currentTimeMillis())
+        } while (ids.contains(id))
+        return id
     }
 
     private fun saveActiveBookId(id: String): Completable {
         return Completable.create { emitter ->
             writeActiveBookId(id).takeIf { true }
                     ?.run { emitter.onComplete() }
-                    ?: emitter.onError(Exception("Failed to assign active book"))
+                    ?: emitter.onError(IOException("Failed to assign active book"))
         }.doOnComplete { activeId = id }
     }
 
@@ -116,6 +121,8 @@ class ShelfImpl(
             stream.safeClose()
         }
     }
+
+    class NoActiveBookException : Exception()
 
 }
 
