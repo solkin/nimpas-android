@@ -16,7 +16,16 @@ class StartInteractorImpl(
 ) : StartInteractor {
 
     override fun check(): Completable {
-        return Completable.complete()
+        return shelf.activeBook()
+                .onErrorResumeNext {
+                    shelf.createBook().flatMap { shelf.switchBook(it).andThen(shelf.activeBook()) }
+                }
+                .flatMapCompletable {
+                    when {
+                        it.isUnlocked() -> Completable.complete()
+                        else -> Completable.error(Exception("Book is locked"))
+                    }
+                }
                 .subscribeOn(schedulers.io())
     }
 

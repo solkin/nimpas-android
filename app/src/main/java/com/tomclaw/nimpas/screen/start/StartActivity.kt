@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
+import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
 import com.tomclaw.nimpas.screen.start.di.StartModule
 import javax.inject.Inject
 
@@ -50,6 +51,12 @@ class StartActivity : AppCompatActivity(), StartPresenter.StartRouter {
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
+    }
+
+    override fun showLockScreen() {
+        val intent = createLockActivityIntent(context = this)
+        startActivity(intent)
+        leaveScreen()
     }
 
     override fun leaveScreen() {

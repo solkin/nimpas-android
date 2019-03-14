@@ -21,6 +21,8 @@ interface StartPresenter {
 
     interface StartRouter {
 
+        fun showLockScreen()
+
         fun leaveScreen()
 
     }
@@ -74,6 +76,7 @@ class StartPresenterImpl(
     }
 
     private fun onLocked() {
+        router?.showLockScreen()
     }
 
     private fun onUnlocked() {

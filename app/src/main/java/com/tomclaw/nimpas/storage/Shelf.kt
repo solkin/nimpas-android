@@ -14,7 +14,7 @@ import java.io.IOException
 
 interface Shelf {
 
-    fun createBook(): Single<Book>
+    fun createBook(): Single<String>
 
     fun listBooks(): Single<Map<String, Book>>
 
@@ -32,16 +32,13 @@ class ShelfImpl(
     private var books: Map<String, Book>? = null
     private var activeId: String? = null
 
-    override fun createBook(): Single<Book> = books()
+    override fun createBook(): Single<String> = books()
             .map {
                 val id = generateId(it.keys)
-                val file = File(dir, id).apply {
-                    if (exists()) delete()
-                    createNewFile()
-                }
+                val file = File(dir, id)
                 val book: Book = BookImpl(file)
                 books = it + (id to book)
-                book
+                id
             }
             .subscribeOn(schedulers.io())
 
@@ -54,7 +51,7 @@ class ShelfImpl(
             .subscribeOn(schedulers.io())
 
     override fun switchBook(id: String): Completable = saveActiveBookId(id)
-            .andThen { activeId = id }
+            .doOnComplete { activeId = id }
             .subscribeOn(schedulers.io())
 
     private fun books(): Single<Map<String, Book>> {
