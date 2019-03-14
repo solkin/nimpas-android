@@ -11,7 +11,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.IllegalArgumentException
 
 interface Shelf {
 
@@ -44,19 +43,19 @@ class ShelfImpl(
                 books = it + (id to book)
                 book
             }
-            .subscribeOn(schedulers.single())
+            .subscribeOn(schedulers.io())
 
     override fun listBooks(): Single<Map<String, Book>> = books()
-            .subscribeOn(schedulers.single())
+            .subscribeOn(schedulers.io())
 
     override fun activeBook(): Single<Book> = activeBookId()
             .flatMap { books() }
             .map { it[activeId] ?: throw NoActiveBookException() }
-            .subscribeOn(schedulers.single())
+            .subscribeOn(schedulers.io())
 
     override fun switchBook(id: String): Completable = saveActiveBookId(id)
             .andThen { activeId = id }
-            .subscribeOn(schedulers.single())
+            .subscribeOn(schedulers.io())
 
     private fun books(): Single<Map<String, Book>> {
         return books?.let { Single.just(it) } ?: Single.create<Map<String, Book>> { emitter ->
