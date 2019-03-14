@@ -34,7 +34,10 @@ class ShelfImpl(
     override fun createBook(): Single<Book> {
         return books().map {
             val id = generateId(it.keys)
-            val file = File(dir, id)
+            val file = File(dir, id).apply {
+                if (exists()) delete()
+                createNewFile()
+            }
             val book = BookImpl(file)
             books = it + (id to book)
             book
