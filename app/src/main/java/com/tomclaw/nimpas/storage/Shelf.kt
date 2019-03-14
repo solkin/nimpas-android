@@ -2,6 +2,7 @@ package com.tomclaw.nimpas.storage
 
 import com.tomclaw.drawa.util.safeClose
 import com.tomclaw.nimpas.util.SchedulersFactory
+import com.tomclaw.nimpas.util.sha256
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.*
@@ -14,7 +15,7 @@ interface Shelf {
 
     fun activeBook(): Single<Book>
 
-    fun switchBook(book: Book)
+    fun switchBook(id: String): Completable
 
 }
 
@@ -27,7 +28,21 @@ class ShelfImpl(
     private var activeId: String? = null
 
     override fun createBook(): Single<Book> {
-        TODO("not implemented")
+        return books().map {
+            val id = generateId(it.keys)
+            val file = File(dir, id)
+            val book = BookImpl(file)
+            books = it + (id to book)
+            book
+        }
+    }
+
+    private fun generateId(ids: Set<String>): String {
+        var id: String
+        do {
+            id = sha256(ids.joinToString() + System.currentTimeMillis())
+        } while (ids.contains(id))
+        return id
     }
 
     override fun listBooks(): Single<Map<String, Book>> = books()
@@ -36,25 +51,28 @@ class ShelfImpl(
             .flatMap { books() }
             .map { it[activeId] }
 
-    override fun switchBook(book: Book) {
-        TODO("not implemented")
-    }
+    override fun switchBook(id: String): Completable = saveActiveBookId(id)
+            .andThen { activeId = id }
 
     private fun books(): Single<Map<String, Book>> {
         return books?.let { Single.just(it) } ?: Single.create<Map<String, Book>> { emitter ->
             val books = dir.listFiles()
                     .filter { it.name != CONTENTS_FILE }
                     .associate { it.name to BookImpl(it) }
+            this.books = books
             emitter.onSuccess(books)
-        }.doAfterSuccess { books = it }
+        }
     }
 
     private fun activeBookId(): Single<String> {
         return activeId?.let { Single.just(it) } ?: Single.create<String> { emitter ->
             readActiveBookId()
-                    ?.let { emitter.onSuccess(it) }
+                    ?.let {
+                        activeId = it
+                        emitter.onSuccess(it)
+                    }
                     ?: emitter.onError(Exception("No active book"))
-        }.doAfterSuccess { activeId = it }
+        }
     }
 
     private fun saveActiveBookId(id: String): Completable {
