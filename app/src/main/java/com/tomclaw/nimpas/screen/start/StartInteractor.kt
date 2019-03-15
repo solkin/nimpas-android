@@ -16,6 +16,7 @@ class StartInteractorImpl(
 ) : StartInteractor {
 
     override fun check(): Completable {
+        // TODO: replace with checking-only logic
         return shelf.activeBook()
                 .onErrorResumeNext {
                     shelf.createBook().flatMap { shelf.switchBook(it).andThen(shelf.activeBook()) }

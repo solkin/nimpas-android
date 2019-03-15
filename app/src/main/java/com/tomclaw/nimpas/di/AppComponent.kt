@@ -10,6 +10,8 @@ import com.tomclaw.nimpas.screen.safe.di.SafeComponent
 import com.tomclaw.nimpas.screen.safe.di.SafeModule
 import com.tomclaw.nimpas.screen.start.di.StartComponent
 import com.tomclaw.nimpas.screen.start.di.StartModule
+import com.tomclaw.nimpas.screen.user.add.di.UserAddComponent
+import com.tomclaw.nimpas.screen.user.add.di.UserAddModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -26,5 +28,7 @@ interface AppComponent {
     fun lockComponent(module: LockModule): LockComponent
 
     fun startComponent(module: StartModule): StartComponent
+
+    fun userAddComponent(module: UserAddModule): UserAddComponent
 
 }

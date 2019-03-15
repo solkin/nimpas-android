@@ -25,7 +25,7 @@ import java.util.HashMap
 
 interface Book {
 
-    fun init(keyword: String): Completable
+    fun init(keyword: String, title: String): Completable
 
     fun isUnlocked(): Boolean
 
@@ -51,10 +51,11 @@ class BookImpl(private val file: File) : Book {
     private var templates: MutableMap<Long, Template>? = null
     private var records: MutableMap<Long, Record>? = null
     private var writeTime: Long = 0
+    private var title: String? = null
     private var nextId: Long = 0
 
-    override fun init(keyword: String): Completable = Completable.create { emitter ->
-        createBook(keyword)
+    override fun init(keyword: String, title: String): Completable = Completable.create { emitter ->
+        createBook(keyword, title)
         emitter.onComplete()
     }
 
@@ -78,7 +79,7 @@ class BookImpl(private val file: File) : Book {
             if (isExists()) {
                 readBook()
             } else {
-                createBook(keyword)
+                throw BookNotFoundException()
             }
             emitter.onComplete()
         } catch (ex: Exception) {
@@ -143,12 +144,13 @@ class BookImpl(private val file: File) : Book {
         return ++nextId
     }
 
-    private fun createBook(keyword: String) {
+    private fun createBook(keyword: String, title: String) {
         val templates = mutableMapOf<Long, Template>()
         val records = mutableMapOf<Long, Record>()
         this.templates = templates
         this.records = records
         this.keyword = keyword
+        this.title = title
         writeBook(templates, records)
     }
 
@@ -165,6 +167,7 @@ class BookImpl(private val file: File) : Book {
             with(directStream) {
                 writeShort(BOOK_VERSION)
                 writeLong(writeTime)
+                writeUTF(title.orEmpty())
                 flush()
             }
             with(directStream) {
@@ -236,6 +239,7 @@ class BookImpl(private val file: File) : Book {
             directStream = DataInputStream(fileStream)
             val version = directStream.readShort()
             val writeTime = directStream.readLong()
+            val title = directStream.readUTF()
             val templates = HashMap<Long, Template>()
             with(directStream) {
                 when (version) {
@@ -304,6 +308,7 @@ class BookImpl(private val file: File) : Book {
                         }
                         this@BookImpl.records = records
                         this@BookImpl.writeTime = writeTime
+                        this@BookImpl.title = title
                         this@BookImpl.nextId = nextId
                     }
                     else -> throw UnknownFormatException()
@@ -318,6 +323,8 @@ class BookImpl(private val file: File) : Book {
     class UnknownFormatException : Exception()
 
     class BookLockedException : Exception()
+
+    class BookNotFoundException : Exception()
 
     class TemplateNotFoundException : Exception()
 
