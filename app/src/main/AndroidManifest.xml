@@ -24,6 +24,7 @@
         <activity android:name=".screen.info.InfoActivity" />
         <activity android:name=".screen.lock.LockActivity" />
         <activity android:name=".screen.user.add.UserAddActivity" />
+        <activity android:name=".screen.user.switch.UserSwitchActivity" />
     </application>
 
 </manifest>
