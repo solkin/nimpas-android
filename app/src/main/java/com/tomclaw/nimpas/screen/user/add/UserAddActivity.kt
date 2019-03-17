@@ -21,7 +21,7 @@ class UserAddActivity : AppCompatActivity(), UserAddPresenter.UserAddRouter {
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.start_activity)
+        setContentView(R.layout.user_add_activity)
 
         val view = UserAddViewImpl(window.decorView)
 

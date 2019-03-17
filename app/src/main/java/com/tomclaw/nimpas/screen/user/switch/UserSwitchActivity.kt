@@ -21,7 +21,7 @@ class UserSwitchActivity : AppCompatActivity(), UserSwitchPresenter.UserSwitchRo
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.start_activity)
+        setContentView(R.layout.user_switch_activity)
 
         val view = UserSwitchViewImpl(window.decorView)
 
