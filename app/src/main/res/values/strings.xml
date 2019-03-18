@@ -11,4 +11,7 @@
     <string name="enter_password">Enter password</string>
     <string name="login">Login</string>
     <string name="switch_user">Switch User</string>
+    <string name="add_user">Add User</string>
+    <string name="book_title">User Name</string>
+    <string name="enter_book_title">Enter user name</string>
 </resources>

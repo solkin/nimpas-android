@@ -1,11 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center" />
+    <include layout="@layout/toolbar" />
+
+    <include layout="@layout/shadow_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize">
+
+        <LinearLayout
+            android:id="@+id/form_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingTop="24dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:text="@string/book_title"
+                android:textColor="@color/color_form_item_head"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/book_title_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:fontFamily="sans-serif-medium"
+                android:hint="@string/enter_book_title"
+                android:inputType="textCapWords"
+                android:textColor="@color/color_form_item_text"
+                android:textColorHint="@color/color_form_item_hint"
+                android:textSize="20sp"
+                tools:ignore="LabelFor" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="24dp"
+                android:paddingBottom="2dp"
+                android:text="@string/password"
+                android:textColor="@color/color_form_item_head"
+                android:textSize="12sp" />
+
+            <EditText
+                android:id="@+id/keyword_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:fontFamily="sans-serif-medium"
+                android:hint="@string/enter_password"
+                android:inputType="textPassword"
+                android:textColor="@color/color_form_item_text"
+                android:textColorHint="@color/color_form_item_hint"
+                android:textSize="20sp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <Button
+                android:id="@+id/user_add_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/add_user" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </FrameLayout>
