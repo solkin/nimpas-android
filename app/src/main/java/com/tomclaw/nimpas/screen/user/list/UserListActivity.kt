@@ -21,7 +21,7 @@ class UserListActivity : AppCompatActivity(), UserListPresenter.UserListRouter {
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.user_switch_activity)
+        setContentView(R.layout.user_list_activity)
 
         val view = UserListViewImpl(window.decorView)
 
