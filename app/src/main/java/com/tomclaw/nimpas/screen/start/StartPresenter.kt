@@ -21,6 +21,8 @@ interface StartPresenter {
 
     interface StartRouter {
 
+        fun showListScreen()
+
         fun showLockScreen()
 
         fun leaveScreen()
@@ -71,11 +73,12 @@ class StartPresenterImpl(
                 .observeOn(schedulers.mainThread())
                 .subscribe(
                         { onUnlocked() },
-                        { onLocked() }
+                        { onError(it) }
                 )
     }
 
-    private fun onLocked() {
+    private fun onError(ex: Throwable?) {
+        // TODO: check for error type and show lock or list screen
         router?.showLockScreen()
     }
 
