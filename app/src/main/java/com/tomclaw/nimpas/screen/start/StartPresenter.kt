@@ -21,7 +21,7 @@ interface StartPresenter {
 
     interface StartRouter {
 
-        fun showListScreen()
+        fun showSwitchUserScreen()
 
         fun showLockScreen()
 
