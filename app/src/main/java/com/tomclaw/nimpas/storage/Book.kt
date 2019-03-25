@@ -45,6 +45,14 @@ interface Book {
 
 }
 
+class UnknownFormatException : Exception()
+
+class BookLockedException : Exception()
+
+class BookNotFoundException : Exception()
+
+class TemplateNotFoundException : Exception()
+
 class BookImpl(private val file: File) : Book {
 
     private var keyword: String? = null
@@ -319,14 +327,6 @@ class BookImpl(private val file: File) : Book {
             directStream.safeClose()
         }
     }
-
-    class UnknownFormatException : Exception()
-
-    class BookLockedException : Exception()
-
-    class BookNotFoundException : Exception()
-
-    class TemplateNotFoundException : Exception()
 
 }
 

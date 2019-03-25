@@ -24,6 +24,8 @@ interface Shelf {
 
 }
 
+class NoActiveBookException : Exception()
+
 class ShelfImpl(
         private val dir: File,
         private val schedulers: SchedulersFactory
@@ -117,8 +119,6 @@ class ShelfImpl(
             stream.safeClose()
         }
     }
-
-    class NoActiveBookException : Exception()
 
 }
 

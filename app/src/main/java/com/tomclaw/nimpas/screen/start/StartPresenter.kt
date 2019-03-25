@@ -1,6 +1,8 @@
 package com.tomclaw.nimpas.screen.start
 
 import android.os.Bundle
+import com.tomclaw.nimpas.storage.BookLockedException
+import com.tomclaw.nimpas.storage.NoActiveBookException
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
@@ -78,8 +80,10 @@ class StartPresenterImpl(
     }
 
     private fun onError(ex: Throwable?) {
-        // TODO: check for error type and show lock or list screen
-        router?.showLockScreen()
+        when (ex) {
+            is BookLockedException -> router?.showLockScreen()
+            is NoActiveBookException -> router?.showSwitchUserScreen()
+        }
     }
 
     private fun onUnlocked() {

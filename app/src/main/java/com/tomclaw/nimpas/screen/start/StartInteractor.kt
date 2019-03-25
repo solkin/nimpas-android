@@ -1,5 +1,6 @@
 package com.tomclaw.nimpas.screen.start
 
+import com.tomclaw.nimpas.storage.BookLockedException
 import com.tomclaw.nimpas.storage.Shelf
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.Completable
@@ -16,15 +17,11 @@ class StartInteractorImpl(
 ) : StartInteractor {
 
     override fun check(): Completable {
-        // TODO: replace with checking-only logic
         return shelf.activeBook()
-                .onErrorResumeNext {
-                    shelf.createBook().flatMap { shelf.switchBook(it).andThen(shelf.activeBook()) }
-                }
                 .flatMapCompletable {
                     when {
                         it.isUnlocked() -> Completable.complete()
-                        else -> Completable.error(Exception("Book is locked"))
+                        else -> Completable.error(BookLockedException())
                     }
                 }
                 .subscribeOn(schedulers.io())
