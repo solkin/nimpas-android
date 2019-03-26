@@ -6,7 +6,7 @@ import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
 import com.tomclaw.nimpas.screen.safe.adapter.ItemClickListener
 import com.tomclaw.nimpas.screen.safe.adapter.group.GroupItem
-import com.tomclaw.nimpas.storage.BookImpl
+import com.tomclaw.nimpas.storage.BookLockedException
 import com.tomclaw.nimpas.storage.GROUP_DEFAULT
 import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.templates.TYPE_GROUP
@@ -150,7 +150,7 @@ class SafePresenterImpl(
 
     private fun onError(it: Throwable) {
         when (it) {
-            is BookImpl.BookLockedException -> router?.showLockScreen()
+            is BookLockedException -> router?.showLockScreen()
         }
     }
 
