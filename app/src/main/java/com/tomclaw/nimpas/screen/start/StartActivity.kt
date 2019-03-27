@@ -9,7 +9,7 @@ import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
 import com.tomclaw.nimpas.screen.safe.createSafeActivityIntent
 import com.tomclaw.nimpas.screen.start.di.StartModule
-import com.tomclaw.nimpas.screen.user.list.createSwitchUserActivityIntent
+import com.tomclaw.nimpas.screen.user.list.createUserListActivityIntent
 import javax.inject.Inject
 
 class StartActivity : AppCompatActivity(), StartPresenter.StartRouter {
@@ -62,8 +62,8 @@ class StartActivity : AppCompatActivity(), StartPresenter.StartRouter {
         leaveScreen()
     }
 
-    override fun showSwitchUserScreen() {
-        val intent = createSwitchUserActivityIntent(context = this)
+    override fun showUserListScreen() {
+        val intent = createUserListActivityIntent(context = this)
         startActivity(intent)
         leaveScreen()
     }

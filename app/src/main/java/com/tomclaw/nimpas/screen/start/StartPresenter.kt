@@ -23,7 +23,7 @@ interface StartPresenter {
 
     interface StartRouter {
 
-        fun showSwitchUserScreen()
+        fun showUserListScreen()
 
         fun showLockScreen()
 
@@ -82,7 +82,7 @@ class StartPresenterImpl(
     private fun onError(ex: Throwable?) {
         when (ex) {
             is BookLockedException -> router?.showLockScreen()
-            is NoActiveBookException -> router?.showSwitchUserScreen()
+            is NoActiveBookException -> router?.showUserListScreen()
         }
     }
 

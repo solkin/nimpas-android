@@ -18,7 +18,11 @@ interface UserListPresenter {
 
     fun onBackPressed()
 
+    fun onUpdate()
+
     interface UserListRouter {
+
+        fun showUserAddScreen()
 
         fun leaveScreen()
 
@@ -59,6 +63,10 @@ class UserListPresenterImpl(
 
     override fun onBackPressed() {
         router?.leaveScreen()
+    }
+
+    override fun onUpdate() {
+        TODO("not implemented")
     }
 
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
+import com.tomclaw.nimpas.screen.user.add.createUserAddActivityIntent
 import com.tomclaw.nimpas.screen.user.list.di.UserListModule
 import javax.inject.Inject
 
@@ -52,13 +53,31 @@ class UserListActivity : AppCompatActivity(), UserListPresenter.UserListRouter {
         outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            REQUEST_ADD -> {
+                if (resultCode == RESULT_OK) {
+                    presenter.onUpdate()
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun showUserAddScreen() {
+        val intent = createUserAddActivityIntent(context = this)
+        startActivityForResult(intent, REQUEST_ADD)
+    }
+
     override fun leaveScreen() {
         finish()
     }
 
 }
 
-fun createSwitchUserActivityIntent(context: Context): Intent =
+fun createUserListActivityIntent(context: Context): Intent =
         Intent(context, UserListActivity::class.java)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
+
+private const val REQUEST_ADD = 1
