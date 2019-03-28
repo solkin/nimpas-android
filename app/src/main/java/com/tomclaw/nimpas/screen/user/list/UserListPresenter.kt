@@ -1,10 +1,12 @@
 package com.tomclaw.nimpas.screen.user.list
 
 import android.os.Bundle
+import com.avito.konveyor.blueprint.Item
+import com.tomclaw.nimpas.screen.user.list.adapter.ItemClickListener
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.disposables.CompositeDisposable
 
-interface UserListPresenter {
+interface UserListPresenter: ItemClickListener {
 
     fun attachView(view: UserListView)
 
@@ -66,6 +68,10 @@ class UserListPresenterImpl(
     }
 
     override fun onUpdate() {
+        TODO("not implemented")
+    }
+
+    override fun onItemClick(item: Item) {
         TODO("not implemented")
     }
 
