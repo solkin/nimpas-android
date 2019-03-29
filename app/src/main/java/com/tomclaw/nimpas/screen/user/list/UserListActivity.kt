@@ -4,6 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.avito.konveyor.ItemBinder
+import com.avito.konveyor.adapter.AdapterPresenter
+import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.user.add.createUserAddActivityIntent
@@ -15,6 +18,12 @@ class UserListActivity : AppCompatActivity(), UserListPresenter.UserListRouter {
     @Inject
     lateinit var presenter: UserListPresenter
 
+    @Inject
+    lateinit var adapterPresenter: AdapterPresenter
+
+    @Inject
+    lateinit var binder: ItemBinder
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val presenterState = savedInstanceState?.getBundle(KEY_PRESENTER_STATE)
         application.getComponent()
@@ -24,7 +33,8 @@ class UserListActivity : AppCompatActivity(), UserListPresenter.UserListRouter {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_list_activity)
 
-        val view = UserListViewImpl(window.decorView)
+        val adapter = SimpleRecyclerAdapter(adapterPresenter, binder)
+        val view = UserListViewImpl(window.decorView, adapter)
 
         presenter.attachView(view)
     }

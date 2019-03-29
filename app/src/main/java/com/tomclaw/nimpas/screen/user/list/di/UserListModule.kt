@@ -3,6 +3,8 @@ package com.tomclaw.nimpas.screen.user.list.di
 import android.content.Context
 import android.os.Bundle
 import com.avito.konveyor.ItemBinder
+import com.avito.konveyor.adapter.AdapterPresenter
+import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
 import com.tomclaw.nimpas.screen.user.list.BookConverter
 import com.tomclaw.nimpas.screen.user.list.BookConverterImpl
@@ -43,6 +45,12 @@ class UserListModule(
     @PerActivity
     internal fun provideBookConverter(): BookConverter {
         return BookConverterImpl()
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideAdapterPresenter(binder: ItemBinder): AdapterPresenter {
+        return SimpleAdapterPresenter(binder, binder)
     }
 
     @Provides
