@@ -27,6 +27,10 @@ interface Book {
 
     fun init(keyword: String, title: String): Completable
 
+    fun getTitle(): String
+
+    fun getWriteTime(): Long
+
     fun isUnlocked(): Boolean
 
     fun lock()
@@ -70,6 +74,10 @@ class BookImpl(private val file: File) : Book {
     override fun isUnlocked(): Boolean {
         return keyword != null && records != null && templates != null
     }
+
+    override fun getTitle(): String = title.orEmpty()
+
+    override fun getWriteTime(): Long = writeTime
 
     private fun isExists(): Boolean {
         return file.exists()

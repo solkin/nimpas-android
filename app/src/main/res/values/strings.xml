@@ -15,4 +15,5 @@
     <string name="book_title">User Name</string>
     <string name="enter_book_title">Enter user name</string>
     <string name="select_user">Select User</string>
+    <string name="date_updated">Updated at %s</string>
 </resources>

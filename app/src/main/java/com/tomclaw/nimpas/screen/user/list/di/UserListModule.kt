@@ -12,6 +12,8 @@ import com.tomclaw.nimpas.screen.user.list.UserListInteractor
 import com.tomclaw.nimpas.screen.user.list.UserListInteractorImpl
 import com.tomclaw.nimpas.screen.user.list.UserListPresenter
 import com.tomclaw.nimpas.screen.user.list.UserListPresenterImpl
+import com.tomclaw.nimpas.screen.user.list.UserListResourceProvider
+import com.tomclaw.nimpas.screen.user.list.UserListResourceProviderImpl
 import com.tomclaw.nimpas.screen.user.list.adapter.user.UserItemBlueprint
 import com.tomclaw.nimpas.screen.user.list.adapter.user.UserItemPresenter
 import com.tomclaw.nimpas.storage.Shelf
@@ -43,8 +45,14 @@ class UserListModule(
 
     @Provides
     @PerActivity
-    internal fun provideBookConverter(): BookConverter {
-        return BookConverterImpl()
+    internal fun provideResourceProvider(): UserListResourceProvider {
+        return UserListResourceProviderImpl(context.resources)
+    }
+
+    @Provides
+    @PerActivity
+    internal fun provideBookConverter(resourceProvider: UserListResourceProvider): BookConverter {
+        return BookConverterImpl(resourceProvider)
     }
 
     @Provides
