@@ -19,6 +19,7 @@ import com.tomclaw.nimpas.screen.user.list.adapter.user.UserItemPresenter
 import com.tomclaw.nimpas.storage.Shelf
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
@@ -33,8 +34,16 @@ class UserListModule(
     @PerActivity
     internal fun providePresenter(
             interactor: UserListInteractor,
+            adapterPresenter: Lazy<AdapterPresenter>,
+            bookConverter: BookConverter,
             schedulers: SchedulersFactory
-    ): UserListPresenter = UserListPresenterImpl(interactor, schedulers, state)
+    ): UserListPresenter = UserListPresenterImpl(
+            interactor,
+            adapterPresenter,
+            bookConverter,
+            schedulers,
+            state
+    )
 
     @Provides
     @PerActivity
