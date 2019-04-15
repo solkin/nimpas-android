@@ -52,6 +52,8 @@ class UserListPresenterImpl(
 
     override fun attachView(view: UserListView) {
         this.view = view
+
+        loadEntries()
     }
 
     override fun detachView() {
