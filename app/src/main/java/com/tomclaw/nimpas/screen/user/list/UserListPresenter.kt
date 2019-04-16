@@ -1,6 +1,7 @@
 package com.tomclaw.nimpas.screen.user.list
 
 import android.os.Bundle
+import android.util.LongSparseArray
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
@@ -29,6 +30,8 @@ interface UserListPresenter : ItemClickListener {
 
     interface UserListRouter {
 
+        fun showLockScreen()
+
         fun showUserAddScreen()
 
         fun leaveScreen()
@@ -49,6 +52,8 @@ class UserListPresenterImpl(
     private var router: UserListPresenter.UserListRouter? = null
 
     private val subscriptions = CompositeDisposable()
+
+    private val bookIds = LongSparseArray<String>()
 
     override fun attachView(view: UserListView) {
         this.view = view
@@ -86,7 +91,11 @@ class UserListPresenterImpl(
     private fun onLoaded(books: Map<String, Book>) {
         val items = books.asSequence()
                 .sortedBy { it.value.getWriteTime() }
-                .map { bookConverter.convert(it.value) }
+                .map {
+                    val item = bookConverter.convert(it.value)
+                    bookIds.put(item.id, it.key)
+                    item
+                }
                 .toList()
         val dataSource = ListDataSource(items)
         adapterPresenter.get().onDataSourceChanged(dataSource)
@@ -104,7 +113,17 @@ class UserListPresenterImpl(
     }
 
     override fun onItemClick(item: Item) {
-        TODO("not implemented")
+        val bookId = bookIds[item.id] ?: return
+        subscriptions += interactor.switchBook(bookId)
+                .observeOn(schedulers.mainThread())
+                .subscribe(
+                        { onBookSwitched() },
+                        { onError(it) }
+                )
+    }
+
+    private fun onBookSwitched() {
+        router?.showLockScreen()
     }
 
 }

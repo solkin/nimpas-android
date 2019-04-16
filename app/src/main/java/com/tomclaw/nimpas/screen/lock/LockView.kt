@@ -17,6 +17,8 @@ interface LockView {
 
     fun unlockClicks(): Observable<Unit>
 
+    fun switchClicks(): Observable<Unit>
+
     fun showUnlockError()
 
 }
@@ -27,9 +29,11 @@ class LockViewImpl(view: View) : LockView {
     private val formContainer: View = view.findViewById(R.id.form_container)
     private val keywordView: EditText = view.findViewById(R.id.keyword_view)
     private val unlockButton: Button = view.findViewById(R.id.unlock_button)
+    private val switchButton: Button = view.findViewById(R.id.switch_button)
 
     private val keywordChangesRelay = PublishRelay.create<String>()
     private val unlockClicksRelay = PublishRelay.create<Unit>()
+    private val switchClicksRelay = PublishRelay.create<Unit>()
 
     init {
         toolbar.setTitle(R.string.app_name)
@@ -43,6 +47,7 @@ class LockViewImpl(view: View) : LockView {
             }
         })
         unlockButton.setOnClickListener { unlockClicksRelay.accept(Unit) }
+        switchButton.setOnClickListener { switchClicksRelay.accept(Unit) }
     }
 
     override fun keywordChanges(): Observable<String> {
@@ -51,6 +56,10 @@ class LockViewImpl(view: View) : LockView {
 
     override fun unlockClicks(): Observable<Unit> {
         return unlockClicksRelay
+    }
+
+    override fun switchClicks(): Observable<Unit> {
+        return switchClicksRelay
     }
 
     override fun showUnlockError() {

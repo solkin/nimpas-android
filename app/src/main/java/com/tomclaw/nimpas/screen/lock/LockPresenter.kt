@@ -21,6 +21,8 @@ interface LockPresenter {
 
     interface LockRouter {
 
+        fun showUserListScreen()
+
         fun leaveScreen(isUnlocked: Boolean)
 
     }
@@ -45,6 +47,7 @@ class LockPresenterImpl(
 
         subscriptions += view.keywordChanges().subscribe { keyword = it }
         subscriptions += view.unlockClicks().subscribe { unlockBook() }
+        subscriptions += view.switchClicks().subscribe { switchBook() }
     }
 
     override fun detachView() {
@@ -86,6 +89,10 @@ class LockPresenterImpl(
         // TODO: show animation
         ex.printStackTrace()
         view?.showUnlockError()
+    }
+
+    private fun switchBook() {
+        router?.showUserListScreen()
     }
 
 }

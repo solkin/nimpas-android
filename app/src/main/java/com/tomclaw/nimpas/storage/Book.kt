@@ -265,7 +265,7 @@ class BookImpl(private val file: File) : Book {
                             val id = readLong()
                             val templateVersion = readInt()
                             val type = readNullableInt()
-                            val title = readNullableUTF()
+                            val templateTitle = readNullableUTF()
                             val icon = readNullableUTF()
                             val color = readNullableUTF()
                             val fields = mutableListOf<Field>()
@@ -282,7 +282,15 @@ class BookImpl(private val file: File) : Book {
                                 }
                                 fields += Field(fieldType, fieldKey, params)
                             }
-                            val template = Template(id, templateVersion, type, title, icon, color, fields)
+                            val template = Template(
+                                    id,
+                                    templateVersion,
+                                    type,
+                                    templateTitle,
+                                    icon,
+                                    color,
+                                    fields
+                            )
                             templates += id to template
                         }
                         this@BookImpl.templates = templates
