@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.user.list
+package com.tomclaw.nimpas.screen.book.list
 
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -9,7 +9,7 @@ import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
 
-interface UserListView {
+interface BookListView {
 
     fun showProgress()
 
@@ -19,10 +19,10 @@ interface UserListView {
 
 }
 
-class UserListViewImpl(
+class BookListViewImpl(
         private val view: View,
         private val adapter: SimpleRecyclerAdapter
-) : UserListView {
+) : BookListView {
 
     private val resources = view.resources
 
@@ -30,7 +30,7 @@ class UserListViewImpl(
     private val recycler: RecyclerView = view.findViewById(R.id.recycler)
 
     init {
-        toolbar.setTitle(R.string.select_user)
+        toolbar.setTitle(R.string.select_book)
         val orientation = VERTICAL
         val layoutManager = LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)

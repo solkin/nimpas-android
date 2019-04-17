@@ -1,11 +1,11 @@
-package com.tomclaw.nimpas.screen.user.add.di
+package com.tomclaw.nimpas.screen.book.add.di
 
 import android.content.Context
 import android.os.Bundle
-import com.tomclaw.nimpas.screen.user.add.UserAddInteractor
-import com.tomclaw.nimpas.screen.user.add.UserAddInteractorImpl
-import com.tomclaw.nimpas.screen.user.add.UserAddPresenter
-import com.tomclaw.nimpas.screen.user.add.UserAddPresenterImpl
+import com.tomclaw.nimpas.screen.book.add.BookAddInteractor
+import com.tomclaw.nimpas.screen.book.add.BookAddInteractorImpl
+import com.tomclaw.nimpas.screen.book.add.BookAddPresenter
+import com.tomclaw.nimpas.screen.book.add.BookAddPresenterImpl
 import com.tomclaw.nimpas.storage.Shelf
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -13,7 +13,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class UserAddModule(
+class BookAddModule(
         private val context: Context,
         private val state: Bundle?
 ) {
@@ -21,15 +21,15 @@ class UserAddModule(
     @Provides
     @PerActivity
     internal fun providePresenter(
-            interactor: UserAddInteractor,
+            interactor: BookAddInteractor,
             schedulers: SchedulersFactory
-    ): UserAddPresenter = UserAddPresenterImpl(interactor, schedulers, state)
+    ): BookAddPresenter = BookAddPresenterImpl(interactor, schedulers, state)
 
     @Provides
     @PerActivity
     internal fun provideInteractor(
             shelf: Shelf,
             schedulers: SchedulersFactory
-    ): UserAddInteractor = UserAddInteractorImpl(shelf, schedulers)
+    ): BookAddInteractor = BookAddInteractorImpl(shelf, schedulers)
 
 }

@@ -7,8 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.lock.di.LockModule
-import com.tomclaw.nimpas.screen.user.list.UserListActivity
-import com.tomclaw.nimpas.screen.user.list.createUserListActivityIntent
+import com.tomclaw.nimpas.screen.book.list.createBookListActivityIntent
 import javax.inject.Inject
 
 class LockActivity : AppCompatActivity(), LockPresenter.LockRouter {
@@ -54,8 +53,8 @@ class LockActivity : AppCompatActivity(), LockPresenter.LockRouter {
         outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
-    override fun showUserListScreen() {
-        val intent = createUserListActivityIntent(this)
+    override fun showBookListScreen() {
+        val intent = createBookListActivityIntent(this)
         startActivity(intent)
         finish()
     }

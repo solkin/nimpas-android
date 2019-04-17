@@ -1,24 +1,24 @@
-package com.tomclaw.nimpas.screen.user.list
+package com.tomclaw.nimpas.screen.book.list
 
 import android.os.Bundle
 import android.util.LongSparseArray
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.blueprint.Item
 import com.avito.konveyor.data_source.ListDataSource
-import com.tomclaw.nimpas.screen.user.list.adapter.ItemClickListener
+import com.tomclaw.nimpas.screen.book.list.adapter.ItemClickListener
 import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.util.SchedulersFactory
 import dagger.Lazy
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 
-interface UserListPresenter : ItemClickListener {
+interface BookListPresenter : ItemClickListener {
 
-    fun attachView(view: UserListView)
+    fun attachView(view: BookListView)
 
     fun detachView()
 
-    fun attachRouter(router: UserListRouter)
+    fun attachRouter(router: BookListRouter)
 
     fun detachRouter()
 
@@ -28,11 +28,11 @@ interface UserListPresenter : ItemClickListener {
 
     fun onUpdate()
 
-    interface UserListRouter {
+    interface BookListRouter {
 
         fun showLockScreen()
 
-        fun showUserAddScreen()
+        fun showBookAddScreen()
 
         fun leaveScreen()
 
@@ -40,22 +40,22 @@ interface UserListPresenter : ItemClickListener {
 
 }
 
-class UserListPresenterImpl(
-        private val interactor: UserListInteractor,
+class BookListPresenterImpl(
+        private val interactor: BookListInteractor,
         private val adapterPresenter: Lazy<AdapterPresenter>,
         private val bookConverter: BookConverter,
         private val schedulers: SchedulersFactory,
         state: Bundle?
-) : UserListPresenter {
+) : BookListPresenter {
 
-    private var view: UserListView? = null
-    private var router: UserListPresenter.UserListRouter? = null
+    private var view: BookListView? = null
+    private var router: BookListPresenter.BookListRouter? = null
 
     private val subscriptions = CompositeDisposable()
 
     private val bookIds = LongSparseArray<String>()
 
-    override fun attachView(view: UserListView) {
+    override fun attachView(view: BookListView) {
         this.view = view
 
         loadEntries()
@@ -66,7 +66,7 @@ class UserListPresenterImpl(
         this.view = null
     }
 
-    override fun attachRouter(router: UserListPresenter.UserListRouter) {
+    override fun attachRouter(router: BookListPresenter.BookListRouter) {
         this.router = router
     }
 

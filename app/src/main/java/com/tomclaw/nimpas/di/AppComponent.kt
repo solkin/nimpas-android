@@ -10,10 +10,10 @@ import com.tomclaw.nimpas.screen.safe.di.SafeComponent
 import com.tomclaw.nimpas.screen.safe.di.SafeModule
 import com.tomclaw.nimpas.screen.start.di.StartComponent
 import com.tomclaw.nimpas.screen.start.di.StartModule
-import com.tomclaw.nimpas.screen.user.add.di.UserAddComponent
-import com.tomclaw.nimpas.screen.user.add.di.UserAddModule
-import com.tomclaw.nimpas.screen.user.list.di.UserListComponent
-import com.tomclaw.nimpas.screen.user.list.di.UserListModule
+import com.tomclaw.nimpas.screen.book.add.di.BookAddComponent
+import com.tomclaw.nimpas.screen.book.add.di.BookAddModule
+import com.tomclaw.nimpas.screen.book.list.di.BookListComponent
+import com.tomclaw.nimpas.screen.book.list.di.BookListModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -31,8 +31,8 @@ interface AppComponent {
 
     fun startComponent(module: StartModule): StartComponent
 
-    fun userAddComponent(module: UserAddModule): UserAddComponent
+    fun bookAddComponent(module: BookAddModule): BookAddComponent
 
-    fun userListComponent(module: UserListModule): UserListComponent
+    fun bookListComponent(module: BookListModule): BookListComponent
 
 }

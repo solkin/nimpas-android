@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.user.list.adapter
+package com.tomclaw.nimpas.screen.book.list.adapter
 
 import com.avito.konveyor.blueprint.Item
 

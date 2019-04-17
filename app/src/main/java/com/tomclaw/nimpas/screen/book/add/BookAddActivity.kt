@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.user.add
+package com.tomclaw.nimpas.screen.book.add
 
 import android.content.Context
 import android.content.Intent
@@ -6,24 +6,24 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
-import com.tomclaw.nimpas.screen.user.add.di.UserAddModule
+import com.tomclaw.nimpas.screen.book.add.di.BookAddModule
 import javax.inject.Inject
 
-class UserAddActivity : AppCompatActivity(), UserAddPresenter.UserAddRouter {
+class BookAddActivity : AppCompatActivity(), BookAddPresenter.BookAddRouter {
 
     @Inject
-    lateinit var presenter: UserAddPresenter
+    lateinit var presenter: BookAddPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val presenterState = savedInstanceState?.getBundle(KEY_PRESENTER_STATE)
         application.getComponent()
-                .userAddComponent(UserAddModule(this, presenterState))
+                .bookAddComponent(BookAddModule(this, presenterState))
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.user_add_activity)
+        setContentView(R.layout.book_add_activity)
 
-        val view = UserAddViewImpl(window.decorView)
+        val view = BookAddViewImpl(window.decorView)
 
         presenter.attachView(view)
     }
@@ -58,7 +58,7 @@ class UserAddActivity : AppCompatActivity(), UserAddPresenter.UserAddRouter {
 
 }
 
-fun createUserAddActivityIntent(context: Context): Intent =
-        Intent(context, UserAddActivity::class.java)
+fun createBookAddActivityIntent(context: Context): Intent =
+        Intent(context, BookAddActivity::class.java)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"

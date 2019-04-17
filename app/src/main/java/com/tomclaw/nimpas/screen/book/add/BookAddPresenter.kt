@@ -1,16 +1,16 @@
-package com.tomclaw.nimpas.screen.user.add
+package com.tomclaw.nimpas.screen.book.add
 
 import android.os.Bundle
 import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.disposables.CompositeDisposable
 
-interface UserAddPresenter {
+interface BookAddPresenter {
 
-    fun attachView(view: UserAddView)
+    fun attachView(view: BookAddView)
 
     fun detachView()
 
-    fun attachRouter(router: UserAddRouter)
+    fun attachRouter(router: BookAddRouter)
 
     fun detachRouter()
 
@@ -18,7 +18,7 @@ interface UserAddPresenter {
 
     fun onBackPressed()
 
-    interface UserAddRouter {
+    interface BookAddRouter {
 
         fun leaveScreen()
 
@@ -26,18 +26,18 @@ interface UserAddPresenter {
 
 }
 
-class UserAddPresenterImpl(
-        private val interactor: UserAddInteractor,
+class BookAddPresenterImpl(
+        private val interactor: BookAddInteractor,
         private val schedulers: SchedulersFactory,
         state: Bundle?
-) : UserAddPresenter {
+) : BookAddPresenter {
 
-    private var view: UserAddView? = null
-    private var router: UserAddPresenter.UserAddRouter? = null
+    private var view: BookAddView? = null
+    private var router: BookAddPresenter.BookAddRouter? = null
 
     private val subscriptions = CompositeDisposable()
 
-    override fun attachView(view: UserAddView) {
+    override fun attachView(view: BookAddView) {
         this.view = view
     }
 
@@ -46,7 +46,7 @@ class UserAddPresenterImpl(
         this.view = null
     }
 
-    override fun attachRouter(router: UserAddPresenter.UserAddRouter) {
+    override fun attachRouter(router: BookAddPresenter.BookAddRouter) {
         this.router = router
     }
 

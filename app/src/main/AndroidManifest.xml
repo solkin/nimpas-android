@@ -23,8 +23,8 @@
         <activity android:name=".screen.form.FormActivity" />
         <activity android:name=".screen.info.InfoActivity" />
         <activity android:name=".screen.lock.LockActivity" />
-        <activity android:name=".screen.user.add.UserAddActivity" />
-        <activity android:name=".screen.user.list.UserListActivity" />
+        <activity android:name=".screen.book.add.BookAddActivity" />
+        <activity android:name=".screen.book.list.BookListActivity" />
     </application>
 
 </manifest>

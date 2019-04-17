@@ -21,7 +21,7 @@ interface LockPresenter {
 
     interface LockRouter {
 
-        fun showUserListScreen()
+        fun showBookListScreen()
 
         fun leaveScreen(isUnlocked: Boolean)
 
@@ -92,7 +92,7 @@ class LockPresenterImpl(
     }
 
     private fun switchBook() {
-        router?.showUserListScreen()
+        router?.showBookListScreen()
     }
 
 }

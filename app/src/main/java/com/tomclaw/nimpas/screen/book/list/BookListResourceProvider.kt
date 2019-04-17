@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.user.list
+package com.tomclaw.nimpas.screen.book.list
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
@@ -6,13 +6,13 @@ import com.tomclaw.nimpas.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-interface UserListResourceProvider {
+interface BookListResourceProvider {
 
     fun formatDate(time: Long): String
 
 }
 
-class UserListResourceProviderImpl(val resources: Resources) : UserListResourceProvider {
+class BookListResourceProviderImpl(val resources: Resources) : BookListResourceProvider {
 
     @SuppressLint("ConstantLocale")
     private val simpleDateFormat = SimpleDateFormat("EEE, MMM d, ''yy", Locale.getDefault())

@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.user.list.di
+package com.tomclaw.nimpas.screen.book.list.di
 
 import android.content.Context
 import android.os.Bundle
@@ -6,16 +6,16 @@ import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleAdapterPresenter
 import com.avito.konveyor.blueprint.ItemBlueprint
-import com.tomclaw.nimpas.screen.user.list.BookConverter
-import com.tomclaw.nimpas.screen.user.list.BookConverterImpl
-import com.tomclaw.nimpas.screen.user.list.UserListInteractor
-import com.tomclaw.nimpas.screen.user.list.UserListInteractorImpl
-import com.tomclaw.nimpas.screen.user.list.UserListPresenter
-import com.tomclaw.nimpas.screen.user.list.UserListPresenterImpl
-import com.tomclaw.nimpas.screen.user.list.UserListResourceProvider
-import com.tomclaw.nimpas.screen.user.list.UserListResourceProviderImpl
-import com.tomclaw.nimpas.screen.user.list.adapter.user.UserItemBlueprint
-import com.tomclaw.nimpas.screen.user.list.adapter.user.UserItemPresenter
+import com.tomclaw.nimpas.screen.book.list.BookConverter
+import com.tomclaw.nimpas.screen.book.list.BookConverterImpl
+import com.tomclaw.nimpas.screen.book.list.BookListInteractor
+import com.tomclaw.nimpas.screen.book.list.BookListInteractorImpl
+import com.tomclaw.nimpas.screen.book.list.BookListPresenter
+import com.tomclaw.nimpas.screen.book.list.BookListPresenterImpl
+import com.tomclaw.nimpas.screen.book.list.BookListResourceProvider
+import com.tomclaw.nimpas.screen.book.list.BookListResourceProviderImpl
+import com.tomclaw.nimpas.screen.book.list.adapter.book.BookItemBlueprint
+import com.tomclaw.nimpas.screen.book.list.adapter.book.BookItemPresenter
 import com.tomclaw.nimpas.storage.Shelf
 import com.tomclaw.nimpas.util.PerActivity
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -25,7 +25,7 @@ import dagger.Provides
 import dagger.multibindings.IntoSet
 
 @Module
-class UserListModule(
+class BookListModule(
         private val context: Context,
         private val state: Bundle?
 ) {
@@ -33,11 +33,11 @@ class UserListModule(
     @Provides
     @PerActivity
     internal fun providePresenter(
-            interactor: UserListInteractor,
+            interactor: BookListInteractor,
             adapterPresenter: Lazy<AdapterPresenter>,
             bookConverter: BookConverter,
             schedulers: SchedulersFactory
-    ): UserListPresenter = UserListPresenterImpl(
+    ): BookListPresenter = BookListPresenterImpl(
             interactor,
             adapterPresenter,
             bookConverter,
@@ -50,17 +50,17 @@ class UserListModule(
     internal fun provideInteractor(
             shelf: Shelf,
             schedulers: SchedulersFactory
-    ): UserListInteractor = UserListInteractorImpl(shelf, schedulers)
+    ): BookListInteractor = BookListInteractorImpl(shelf, schedulers)
 
     @Provides
     @PerActivity
-    internal fun provideResourceProvider(): UserListResourceProvider {
-        return UserListResourceProviderImpl(context.resources)
+    internal fun provideResourceProvider(): BookListResourceProvider {
+        return BookListResourceProviderImpl(context.resources)
     }
 
     @Provides
     @PerActivity
-    internal fun provideBookConverter(resourceProvider: UserListResourceProvider): BookConverter {
+    internal fun provideBookConverter(resourceProvider: BookListResourceProvider): BookConverter {
         return BookConverterImpl(resourceProvider)
     }
 
@@ -83,13 +83,13 @@ class UserListModule(
     @Provides
     @IntoSet
     @PerActivity
-    internal fun provideUserItemBlueprint(
-            presenter: UserItemPresenter
-    ): ItemBlueprint<*, *> = UserItemBlueprint(presenter)
+    internal fun provideBookItemBlueprint(
+            presenter: BookItemPresenter
+    ): ItemBlueprint<*, *> = BookItemBlueprint(presenter)
 
     @Provides
     @PerActivity
-    internal fun provideUserItemPresenter(presenter: UserListPresenter) =
-            UserItemPresenter(presenter)
+    internal fun provideBookItemPresenter(presenter: BookListPresenter) =
+            BookItemPresenter(presenter)
 
 }

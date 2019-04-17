@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.user.list
+package com.tomclaw.nimpas.screen.book.list
 
 import android.content.Context
 import android.content.Intent
@@ -11,14 +11,14 @@ import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
 import com.tomclaw.nimpas.screen.safe.createSafeActivityIntent
-import com.tomclaw.nimpas.screen.user.add.createUserAddActivityIntent
-import com.tomclaw.nimpas.screen.user.list.di.UserListModule
+import com.tomclaw.nimpas.screen.book.add.createBookAddActivityIntent
+import com.tomclaw.nimpas.screen.book.list.di.BookListModule
 import javax.inject.Inject
 
-class UserListActivity : AppCompatActivity(), UserListPresenter.UserListRouter {
+class BookListActivity : AppCompatActivity(), BookListPresenter.BookListRouter {
 
     @Inject
-    lateinit var presenter: UserListPresenter
+    lateinit var presenter: BookListPresenter
 
     @Inject
     lateinit var adapterPresenter: AdapterPresenter
@@ -29,14 +29,14 @@ class UserListActivity : AppCompatActivity(), UserListPresenter.UserListRouter {
     override fun onCreate(savedInstanceState: Bundle?) {
         val presenterState = savedInstanceState?.getBundle(KEY_PRESENTER_STATE)
         application.getComponent()
-                .userListComponent(UserListModule(this, presenterState))
+                .bookListComponent(BookListModule(this, presenterState))
                 .inject(activity = this)
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.user_list_activity)
+        setContentView(R.layout.book_list_activity)
 
         val adapter = SimpleRecyclerAdapter(adapterPresenter, binder)
-        val view = UserListViewImpl(window.decorView, adapter)
+        val view = BookListViewImpl(window.decorView, adapter)
 
         presenter.attachView(view)
     }
@@ -83,8 +83,8 @@ class UserListActivity : AppCompatActivity(), UserListPresenter.UserListRouter {
         leaveScreen()
     }
 
-    override fun showUserAddScreen() {
-        val intent = createUserAddActivityIntent(context = this)
+    override fun showBookAddScreen() {
+        val intent = createBookAddActivityIntent(context = this)
         startActivityForResult(intent, REQUEST_ADD)
     }
 
@@ -94,8 +94,8 @@ class UserListActivity : AppCompatActivity(), UserListPresenter.UserListRouter {
 
 }
 
-fun createUserListActivityIntent(context: Context): Intent =
-        Intent(context, UserListActivity::class.java)
+fun createBookListActivityIntent(context: Context): Intent =
+        Intent(context, BookListActivity::class.java)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
 

@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.user.list.adapter.user
+package com.tomclaw.nimpas.screen.book.list.adapter.book
 
 import android.view.View
 import android.widget.TextView
@@ -8,7 +8,7 @@ import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.util.CircleIconView
 import com.tomclaw.nimpas.util.bind
 
-interface UserItemView : ItemView {
+interface BookItemView : ItemView {
 
     fun setTitle(title: String)
 
@@ -18,7 +18,7 @@ interface UserItemView : ItemView {
 
 }
 
-class UserItemViewHolder(view: View) : BaseViewHolder(view), UserItemView {
+class BookItemViewHolder(view: View) : BaseViewHolder(view), BookItemView {
 
     private val icon: CircleIconView = view.findViewById(R.id.icon)
     private val title: TextView = view.findViewById(R.id.title)

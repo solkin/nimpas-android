@@ -1,4 +1,4 @@
-package com.tomclaw.nimpas.screen.user.list
+package com.tomclaw.nimpas.screen.book.list
 
 import com.tomclaw.nimpas.storage.Book
 import com.tomclaw.nimpas.storage.Shelf
@@ -6,7 +6,7 @@ import com.tomclaw.nimpas.util.SchedulersFactory
 import io.reactivex.Completable
 import io.reactivex.Observable
 
-interface UserListInteractor {
+interface BookListInteractor {
 
     fun listBooks(): Observable<Map<String, Book>>
 
@@ -14,10 +14,10 @@ interface UserListInteractor {
 
 }
 
-class UserListInteractorImpl(
+class BookListInteractorImpl(
         private val shelf: Shelf,
         private val schedulers: SchedulersFactory
-) : UserListInteractor {
+) : BookListInteractor {
 
     override fun listBooks(): Observable<Map<String, Book>> {
         return shelf.listBooks()
