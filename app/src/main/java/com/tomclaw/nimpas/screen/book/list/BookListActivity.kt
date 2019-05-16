@@ -9,10 +9,10 @@ import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
-import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
-import com.tomclaw.nimpas.screen.safe.createSafeActivityIntent
 import com.tomclaw.nimpas.screen.book.add.createBookAddActivityIntent
 import com.tomclaw.nimpas.screen.book.list.di.BookListModule
+import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
+import com.tomclaw.nimpas.screen.safe.createSafeActivityIntent
 import javax.inject.Inject
 
 class BookListActivity : AppCompatActivity(), BookListPresenter.BookListRouter {
