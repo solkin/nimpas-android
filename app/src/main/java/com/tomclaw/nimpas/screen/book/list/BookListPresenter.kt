@@ -58,6 +58,10 @@ class BookListPresenterImpl(
     override fun attachView(view: BookListView) {
         this.view = view
 
+        subscriptions += view.bookAddClicks().subscribe {
+            router?.showBookAddScreen()
+        }
+
         loadEntries()
     }
 

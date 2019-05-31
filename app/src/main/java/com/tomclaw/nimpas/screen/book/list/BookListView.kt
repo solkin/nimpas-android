@@ -20,7 +20,7 @@ interface BookListView {
 
     fun contentUpdated()
 
-    fun createClicks(): Observable<Unit>
+    fun bookAddClicks(): Observable<Unit>
 
 }
 
@@ -33,9 +33,9 @@ class BookListViewImpl(
 
     private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
     private val recycler: RecyclerView = view.findViewById(R.id.recycler)
-    private val createButton: FloatingActionButton = view.findViewById(R.id.create_button)
+    private val bookAddButton: FloatingActionButton = view.findViewById(R.id.book_add_button)
 
-    private val createRelay = PublishRelay.create<Unit>()
+    private val bookAddRelay = PublishRelay.create<Unit>()
 
     init {
         toolbar.setTitle(R.string.select_book)
@@ -47,7 +47,7 @@ class BookListViewImpl(
         recycler.itemAnimator = DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
 
-        createButton.setOnClickListener { createRelay.accept(Unit) }
+        bookAddButton.setOnClickListener { bookAddRelay.accept(Unit) }
     }
 
     override fun showProgress() {}
@@ -58,8 +58,8 @@ class BookListViewImpl(
         adapter.notifyDataSetChanged()
     }
 
-    override fun createClicks(): Observable<Unit> {
-        return createRelay
+    override fun bookAddClicks(): Observable<Unit> {
+        return bookAddRelay
     }
 
 }
