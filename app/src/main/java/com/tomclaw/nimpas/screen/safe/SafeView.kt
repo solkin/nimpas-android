@@ -15,6 +15,7 @@ import com.caverock.androidsvg.SVG
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder
 import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.util.clicks
 import com.tomclaw.nimpas.util.dpToPx
 import com.tomclaw.nimpas.util.toBitmap
 import io.reactivex.Observable
@@ -66,7 +67,7 @@ class SafeViewImpl(
         recycler.itemAnimator = DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
 
-        createButton.setOnClickListener { buttonRelay.accept(Unit) }
+        createButton.clicks(buttonRelay)
     }
 
     override fun showProgress() {}

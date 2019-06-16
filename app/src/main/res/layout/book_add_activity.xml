@@ -68,12 +68,12 @@
                 tools:ignore="Autofill,LabelFor" />
 
             <Button
-                android:id="@+id/user_add_button"
+                android:id="@+id/book_add_button"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="@string/add_user" />
+                android:text="@string/add_book" />
 
         </LinearLayout>
 

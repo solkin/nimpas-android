@@ -10,6 +10,7 @@ import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.util.clicks
 import io.reactivex.Observable
 
 interface BookListView {
@@ -47,7 +48,7 @@ class BookListViewImpl(
         recycler.itemAnimator = DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
 
-        bookAddButton.setOnClickListener { bookAddRelay.accept(Unit) }
+        bookAddButton.clicks(bookAddRelay)
     }
 
     override fun showProgress() {}

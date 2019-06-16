@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.EditText
 import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.util.changes
+import com.tomclaw.nimpas.util.clicks
 import io.reactivex.Observable
 
 interface LockView {
@@ -37,17 +39,9 @@ class LockViewImpl(view: View) : LockView {
 
     init {
         toolbar.setTitle(R.string.app_name)
-        keywordView.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {}
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                keywordChangesRelay.accept(s.toString())
-            }
-        })
-        unlockButton.setOnClickListener { unlockClicksRelay.accept(Unit) }
-        switchButton.setOnClickListener { switchClicksRelay.accept(Unit) }
+        keywordView.changes { keywordChangesRelay.accept(it) }
+        unlockButton.clicks(unlockClicksRelay)
+        switchButton.clicks(switchClicksRelay)
     }
 
     override fun keywordChanges(): Observable<String> {

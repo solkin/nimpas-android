@@ -1,12 +1,11 @@
 package com.tomclaw.nimpas.screen.form.adapter.edit
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import com.avito.konveyor.adapter.BaseViewHolder
 import com.avito.konveyor.blueprint.ItemView
 import com.tomclaw.nimpas.R
+import com.tomclaw.nimpas.util.changes
 
 interface EditItemView : ItemView {
 
@@ -24,17 +23,7 @@ class EditItemViewHolder(view: View) : BaseViewHolder(view), EditItemView {
     private var listener: ((String) -> Unit)? = null
 
     init {
-        edit.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                listener?.invoke(s.toString())
-            }
-
-        })
+        edit.changes { listener?.invoke(it) }
     }
 
     override fun setHint(hint: String) {
