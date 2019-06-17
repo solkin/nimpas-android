@@ -6,10 +6,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
+import com.tomclaw.nimpas.screen.book.list.createBookListActivityIntent
 import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
 import com.tomclaw.nimpas.screen.safe.createSafeActivityIntent
 import com.tomclaw.nimpas.screen.start.di.StartModule
-import com.tomclaw.nimpas.screen.book.list.createBookListActivityIntent
 import javax.inject.Inject
 
 class StartActivity : AppCompatActivity(), StartPresenter.StartRouter {

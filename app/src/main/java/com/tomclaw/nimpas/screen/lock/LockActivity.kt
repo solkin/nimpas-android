@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
-import com.tomclaw.nimpas.screen.lock.di.LockModule
 import com.tomclaw.nimpas.screen.book.list.createBookListActivityIntent
+import com.tomclaw.nimpas.screen.lock.di.LockModule
 import javax.inject.Inject
 
 class LockActivity : AppCompatActivity(), LockPresenter.LockRouter {

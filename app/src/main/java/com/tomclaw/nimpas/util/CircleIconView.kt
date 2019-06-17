@@ -5,10 +5,8 @@ import android.graphics.Color.TRANSPARENT
 import android.graphics.Picture
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.graphics.drawable.PictureDrawable
 import android.support.annotation.ColorInt
 import android.support.annotation.ColorRes
-import android.support.annotation.DrawableRes
 import android.support.v7.content.res.AppCompatResources
 import android.util.AttributeSet
 import android.view.View
