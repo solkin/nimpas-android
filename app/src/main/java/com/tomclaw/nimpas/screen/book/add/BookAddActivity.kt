@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.book.add.di.BookAddModule
+import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
+import com.tomclaw.nimpas.screen.safe.createSafeActivityIntent
 import javax.inject.Inject
 
 class BookAddActivity : AppCompatActivity(), BookAddPresenter.BookAddRouter {
@@ -50,6 +52,13 @@ class BookAddActivity : AppCompatActivity(), BookAddPresenter.BookAddRouter {
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
+    }
+
+    override fun showLockScreen() {
+        val target = createSafeActivityIntent(context = this)
+        val intent = createLockActivityIntent(context = this, target = target)
+        startActivity(intent)
+        leaveScreen()
     }
 
     override fun leaveScreen() {

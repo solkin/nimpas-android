@@ -2,8 +2,6 @@ package com.tomclaw.nimpas.screen.lock
 
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.Toolbar
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -44,17 +42,11 @@ class LockViewImpl(view: View) : LockView {
         switchButton.clicks(switchClicksRelay)
     }
 
-    override fun keywordChanges(): Observable<String> {
-        return keywordChangesRelay
-    }
+    override fun keywordChanges() = keywordChangesRelay
 
-    override fun unlockClicks(): Observable<Unit> {
-        return unlockClicksRelay
-    }
+    override fun unlockClicks() = unlockClicksRelay
 
-    override fun switchClicks(): Observable<Unit> {
-        return switchClicksRelay
-    }
+    override fun switchClicks() = switchClicksRelay
 
     override fun showUnlockError() {
         Snackbar.make(formContainer, R.string.unlock_failed, Snackbar.LENGTH_SHORT).show()

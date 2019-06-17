@@ -8,8 +8,15 @@ import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.util.changes
 import com.tomclaw.nimpas.util.clicks
+import io.reactivex.Observable
 
 interface BookAddView {
+
+    fun titleChanges(): Observable<String>
+
+    fun keywordChanges(): Observable<String>
+
+    fun bookAddClicks(): Observable<Unit>
 
 }
 
@@ -30,5 +37,11 @@ class BookAddViewImpl(view: View) : BookAddView {
         keywordView.changes { keywordChangesRelay.accept(it) }
         bookAddButton.clicks(bookAddClicksRelay)
     }
+
+    override fun titleChanges() = titleChangesRelay
+
+    override fun keywordChanges() = keywordChangesRelay
+
+    override fun bookAddClicks() = bookAddClicksRelay
 
 }
