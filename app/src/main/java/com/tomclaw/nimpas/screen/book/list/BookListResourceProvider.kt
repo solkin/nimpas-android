@@ -15,7 +15,7 @@ interface BookListResourceProvider {
 class BookListResourceProviderImpl(val resources: Resources) : BookListResourceProvider {
 
     @SuppressLint("ConstantLocale")
-    private val simpleDateFormat = SimpleDateFormat("EEE, MMM d, ''yy", Locale.getDefault())
+    private val simpleDateFormat = SimpleDateFormat("HH:mm dd.MM.yy", Locale.getDefault())
 
     override fun formatDate(time: Long): String {
         val date = simpleDateFormat.format(time)
