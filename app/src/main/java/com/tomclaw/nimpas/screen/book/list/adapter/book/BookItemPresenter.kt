@@ -8,6 +8,7 @@ class BookItemPresenter(
 ) : ItemPresenter<BookItemView, BookItem> {
 
     override fun bindView(view: BookItemView, item: BookItem, position: Int) {
+        view.setIcon(item.id)
         view.setTitle(item.title)
         view.setSubtitle(item.subtitle)
         view.setOnClickListener { listener.onItemClick(item) }

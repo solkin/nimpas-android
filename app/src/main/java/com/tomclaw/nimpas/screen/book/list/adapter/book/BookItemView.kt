@@ -7,8 +7,11 @@ import com.avito.konveyor.blueprint.ItemView
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.util.CircleIconView
 import com.tomclaw.nimpas.util.bind
+import com.tomclaw.nimpas.util.randomColor
 
 interface BookItemView : ItemView {
+
+    fun setIcon(itemId: Long)
 
     fun setTitle(title: String)
 
@@ -28,6 +31,11 @@ class BookItemViewHolder(view: View) : BaseViewHolder(view), BookItemView {
 
     init {
         view.setOnClickListener { listener?.invoke() }
+    }
+
+    override fun setIcon(itemId: Long) {
+        val pair = randomColor(itemId)
+        icon.setIconColoredRes(R.drawable.lock, pair.second, pair.first)
     }
 
     override fun setTitle(title: String) {

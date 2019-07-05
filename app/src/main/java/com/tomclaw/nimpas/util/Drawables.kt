@@ -20,6 +20,6 @@ fun Drawable.toBitmap(
     val canvas = Canvas(result)
     setBounds(0, 0, canvas.width, canvas.height)
     draw(canvas)
-//    canvas.setBitmap(null)
+    canvas.setBitmap(null)
     return result
 }
