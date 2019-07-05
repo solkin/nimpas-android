@@ -57,7 +57,7 @@ class ShelfImpl(
             .subscribeOn(schedulers.io())
 
     private fun books(): Single<Map<String, Book>> {
-        return books?.let { Single.just(it) } ?: Single.create<Map<String, Book>> { emitter ->
+        return books?.let { Single.just(it) } ?: Single.create { emitter ->
             val books = dir.listFiles()
                     .filter { it.name != CONTENTS_FILE }
                     .associate { it.name to BookImpl(it) }
@@ -67,7 +67,7 @@ class ShelfImpl(
     }
 
     private fun activeBookId(): Single<String> {
-        return activeId?.let { Single.just(it) } ?: Single.create<String> { emitter ->
+        return activeId?.let { Single.just(it) } ?: Single.create { emitter ->
             readActiveBookId()
                     ?.let {
                         activeId = it
