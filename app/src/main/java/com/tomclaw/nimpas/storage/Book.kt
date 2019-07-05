@@ -246,6 +246,19 @@ class BookImpl(private val file: File) : Book {
         }
     }
 
+    fun openBook() {
+        var directStream: DataInputStream? = null
+        try {
+            val fileStream = BufferedInputStream(FileInputStream(file))
+            directStream = DataInputStream(fileStream)
+            directStream.readShort()
+            writeTime = directStream.readLong()
+            title = directStream.readUTF()
+        } finally {
+            directStream.safeClose()
+        }
+    }
+
     @SuppressLint("UseSparseArrays")
     private fun readBook() {
         var memoryStream: DataInputStream? = null

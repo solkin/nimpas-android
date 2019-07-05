@@ -60,7 +60,7 @@ class ShelfImpl(
         return books?.let { Single.just(it) } ?: Single.create { emitter ->
             val books = dir.listFiles()
                     .filter { it.name != CONTENTS_FILE }
-                    .associate { it.name to BookImpl(it) }
+                    .associate { it.name to BookImpl(it).apply { openBook() } }
             this.books = books
             emitter.onSuccess(books)
         }
