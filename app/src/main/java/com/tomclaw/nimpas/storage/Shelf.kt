@@ -10,7 +10,6 @@ import java.io.DataOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.IOException
 
 interface Shelf {
 
@@ -89,7 +88,7 @@ class ShelfImpl(
         return Completable.create { emitter ->
             writeActiveBookId(id).takeIf { true }
                     ?.run { emitter.onComplete() }
-                    ?: emitter.onError(IOException("Failed to assign active book"))
+                    ?: emitter.onError(Exception("Failed to assign active book"))
         }.doOnComplete { activeId = id }
     }
 
