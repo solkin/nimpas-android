@@ -35,7 +35,7 @@ class NoteItemViewHolder(view: View) : BaseViewHolder(view), NoteItemView {
 
     override fun setIcon(svg: String, itemId: Long) {
         val pair = randomColor(itemId)
-        icon.setIconColoredRes(svg, pair.second, pair.first)
+        icon.setIconColoredRes(svg, color = pair.second, background = pair.first)
     }
 
     override fun setTitle(title: String) {
