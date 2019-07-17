@@ -37,7 +37,7 @@ android {
 
 dependencies {
     implementation project(path: ':crypto')
-    implementation project(path: ':androidsvg')
+    implementation 'com.caverock:androidsvg-aar:1.4'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'

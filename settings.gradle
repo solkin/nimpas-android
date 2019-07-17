@@ -1,1 +1,1 @@
-include ':app', ':crypto', ':androidsvg'
+include ':app', ':crypto'
