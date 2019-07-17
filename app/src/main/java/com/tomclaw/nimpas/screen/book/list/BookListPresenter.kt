@@ -58,6 +58,9 @@ class BookListPresenterImpl(
     override fun attachView(view: BookListView) {
         this.view = view
 
+        subscriptions += view.navigationClicks().subscribe {
+            onBackPressed()
+        }
         subscriptions += view.bookAddClicks().subscribe {
             router?.showBookAddScreen()
         }

@@ -21,25 +21,29 @@ interface BookListView {
 
     fun contentUpdated()
 
+    fun navigationClicks(): Observable<Unit>
+
     fun bookAddClicks(): Observable<Unit>
 
 }
 
 class BookListViewImpl(
-        private val view: View,
+        view: View,
         private val adapter: SimpleRecyclerAdapter
 ) : BookListView {
-
-    private val resources = view.resources
 
     private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
     private val recycler: RecyclerView = view.findViewById(R.id.recycler)
     private val bookAddButton: FloatingActionButton = view.findViewById(R.id.book_add_button)
 
+    private val navigationRelay = PublishRelay.create<Unit>()
     private val bookAddRelay = PublishRelay.create<Unit>()
 
     init {
         toolbar.setTitle(R.string.select_book)
+        toolbar.setNavigationOnClickListener {
+            navigationRelay.accept(Unit)
+        }
         val orientation = VERTICAL
         val layoutManager = LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)
@@ -58,6 +62,8 @@ class BookListViewImpl(
     override fun contentUpdated() {
         adapter.notifyDataSetChanged()
     }
+
+    override fun navigationClicks(): Observable<Unit> = navigationRelay
 
     override fun bookAddClicks(): Observable<Unit> {
         return bookAddRelay
