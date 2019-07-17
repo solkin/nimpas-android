@@ -12,6 +12,8 @@ import io.reactivex.Observable
 
 interface BookAddView {
 
+    fun navigationClicks(): Observable<Unit>
+
     fun titleChanges(): Observable<String>
 
     fun keywordChanges(): Observable<String>
@@ -27,16 +29,22 @@ class BookAddViewImpl(view: View) : BookAddView {
     private val keywordView: EditText = view.findViewById(R.id.keyword_view)
     private val bookAddButton: Button = view.findViewById(R.id.book_add_button)
 
+    private val navigationRelay = PublishRelay.create<Unit>()
     private val titleChangesRelay = PublishRelay.create<String>()
     private val keywordChangesRelay = PublishRelay.create<String>()
     private val bookAddClicksRelay = PublishRelay.create<Unit>()
 
     init {
         toolbar.setTitle(R.string.add_book)
+        toolbar.setNavigationOnClickListener {
+            navigationRelay.accept(Unit)
+        }
         titleView.changes { titleChangesRelay.accept(it) }
         keywordView.changes { keywordChangesRelay.accept(it) }
         bookAddButton.clicks(bookAddClicksRelay)
     }
+
+    override fun navigationClicks(): Observable<Unit> = navigationRelay
 
     override fun titleChanges() = titleChangesRelay
 

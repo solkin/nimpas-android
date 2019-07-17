@@ -46,6 +46,7 @@ class BookAddPresenterImpl(
     override fun attachView(view: BookAddView) {
         this.view = view
 
+        subscriptions += view.navigationClicks().subscribe { onBackPressed() }
         subscriptions += view.titleChanges().subscribe { title = it }
         subscriptions += view.keywordChanges().subscribe { keyword = it }
         subscriptions += view.bookAddClicks().subscribe { addBook() }
