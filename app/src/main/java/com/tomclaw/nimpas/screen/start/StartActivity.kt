@@ -55,6 +55,12 @@ class StartActivity : AppCompatActivity(), StartPresenter.StartRouter {
         outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
+    override fun showSafeScreen() {
+        val intent = createSafeActivityIntent(context = this)
+        startActivity(intent)
+        leaveScreen()
+    }
+
     override fun showLockScreen() {
         val target = createSafeActivityIntent(context = this)
         val intent = createLockActivityIntent(context = this, target = target)

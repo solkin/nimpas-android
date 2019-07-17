@@ -23,6 +23,8 @@ interface StartPresenter {
 
     interface StartRouter {
 
+        fun showSafeScreen()
+
         fun showBookListScreen()
 
         fun showLockScreen()
@@ -87,6 +89,7 @@ class StartPresenterImpl(
     }
 
     private fun onUnlocked() {
+        router?.showSafeScreen()
     }
 
 }
