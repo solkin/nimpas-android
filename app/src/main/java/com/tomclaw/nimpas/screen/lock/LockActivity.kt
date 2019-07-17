@@ -2,6 +2,8 @@ package com.tomclaw.nimpas.screen.lock
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
+import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.tomclaw.nimpas.R
@@ -56,7 +58,6 @@ class LockActivity : AppCompatActivity(), LockPresenter.LockRouter {
     override fun showBookListScreen() {
         val intent = createBookListActivityIntent(this)
         startActivity(intent)
-        finish()
     }
 
     override fun leaveScreen(isUnlocked: Boolean) {
@@ -75,6 +76,7 @@ class LockActivity : AppCompatActivity(), LockPresenter.LockRouter {
 fun createLockActivityIntent(context: Context, target: Intent? = null): Intent =
         Intent(context, LockActivity::class.java)
                 .putExtra(EXTRA_TARGET_INTENT, target)
+                .setFlags(FLAG_ACTIVITY_CLEAR_TOP or FLAG_ACTIVITY_SINGLE_TOP)
 
 private const val KEY_PRESENTER_STATE = "presenter_state"
 
