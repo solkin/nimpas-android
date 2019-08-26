@@ -86,11 +86,12 @@ class SafePresenterImpl(
     }
 
     private fun onUndo(undoId: Long) {
-        undoer.invokeUndo(undoId)?.run {
-            observeOn(schedulers.mainThread()).subscribe(
-                    { onUpdate() },
-                    { onError(it) })
-        }
+        subscriptions += undoer.invokeUndo(undoId)
+                ?.observeOn(schedulers.mainThread())
+                ?.subscribe(
+                        { onUpdate() },
+                        { onError(it) }
+                ) ?: return
     }
 
     private fun onShowCreateMenu() {
