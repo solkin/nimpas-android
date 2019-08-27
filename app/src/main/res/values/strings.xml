@@ -16,4 +16,5 @@
     <string name="enter_book_title">Enter user name</string>
     <string name="select_book">Select User</string>
     <string name="date_updated">Updated at %s</string>
+    <string name="export">Export book</string>
 </resources>

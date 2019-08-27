@@ -31,6 +31,8 @@ interface SafeView {
 
     fun showCreateDialog(items: List<MenuItem>)
 
+    fun exportClicks(): Observable<Unit>
+
     fun buttonClicks(): Observable<Unit>
 
     fun createClicks(): Observable<Long>
@@ -53,12 +55,20 @@ class SafeViewImpl(
     private val coordinator: CoordinatorLayout = view.findViewById(R.id.coordinator)
     private val createButton: FloatingActionButton = view.findViewById(R.id.create_button)
 
+    private val exportRelay = PublishRelay.create<Unit>()
     private val buttonRelay = PublishRelay.create<Unit>()
     private val createRelay = PublishRelay.create<Long>()
     private val undoRelay = PublishRelay.create<Long>()
 
     init {
         toolbar.setTitle(R.string.app_name)
+        toolbar.inflateMenu(R.menu.safe)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_export -> exportRelay.accept(Unit)
+            }
+            true
+        }
         val orientation = VERTICAL
         val layoutManager = LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)
@@ -77,6 +87,8 @@ class SafeViewImpl(
     override fun contentUpdated() {
         adapter.notifyDataSetChanged()
     }
+
+    override fun exportClicks(): Observable<Unit> = exportRelay
 
     override fun buttonClicks(): Observable<Unit> {
         return buttonRelay
