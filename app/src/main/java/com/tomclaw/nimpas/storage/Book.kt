@@ -27,6 +27,8 @@ interface Book {
 
     fun init(keyword: String, title: String): Completable
 
+    fun getFile(): File
+
     fun getTitle(): String
 
     fun getWriteTime(): Long
@@ -71,6 +73,8 @@ class BookImpl(private val file: File) : Book {
         emitter.onComplete()
     }
 
+    override fun getFile(): File = file
+
     override fun isUnlocked(): Boolean {
         return keyword != null && records != null && templates != null
     }
@@ -79,9 +83,7 @@ class BookImpl(private val file: File) : Book {
 
     override fun getWriteTime(): Long = writeTime
 
-    private fun isExists(): Boolean {
-        return file.exists()
-    }
+    private fun isExists(): Boolean = file.exists()
 
     override fun lock() {
         keyword = null

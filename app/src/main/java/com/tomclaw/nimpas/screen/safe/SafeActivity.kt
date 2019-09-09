@@ -2,7 +2,10 @@ package com.tomclaw.nimpas.screen.safe
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager.MATCH_DEFAULT_ONLY
 import android.os.Bundle
+import android.support.v4.app.ShareCompat
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
@@ -15,7 +18,9 @@ import com.tomclaw.nimpas.screen.lock.createLockActivityIntent
 import com.tomclaw.nimpas.screen.safe.di.SafeModule
 import com.tomclaw.nimpas.storage.Record
 import com.tomclaw.nimpas.util.getUndo
+import java.io.File
 import javax.inject.Inject
+
 
 class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
 
@@ -100,6 +105,27 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
         startActivityForResult(intent, REQUEST_INFO)
     }
 
+    override fun showExportScreen(file: File) {
+        val uri = FileProvider.getUriForFile(this, packageName, file)
+        ShareCompat.IntentBuilder.from(this)
+                .setStream(uri)
+                .setType(MIME_TYPE)
+                .intent
+                .setAction(Intent.ACTION_SEND)
+                .setDataAndType(uri, MIME_TYPE)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .run {
+                    val list = packageManager.queryIntentActivities(this, MATCH_DEFAULT_ONLY)
+                    for (resolveInfo in list) {
+                        val packageName = resolveInfo.activityInfo.packageName
+                        grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                    if (resolveActivity(packageManager) != null) {
+                        startActivity(this)
+                    }
+                }
+    }
+
     override fun leaveScreen() {
         finish()
     }
@@ -114,3 +140,5 @@ private const val KEY_PRESENTER_STATE = "presenter_state"
 private const val REQUEST_ADD = 1
 private const val REQUEST_UNLOCK = 2
 private const val REQUEST_INFO = 3
+
+private const val MIME_TYPE = "application/nimpas-safe"

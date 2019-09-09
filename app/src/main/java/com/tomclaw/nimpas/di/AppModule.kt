@@ -15,6 +15,7 @@ import com.tomclaw.nimpas.util.SchedulersFactory
 import com.tomclaw.nimpas.util.SchedulersFactoryImpl
 import dagger.Module
 import dagger.Provides
+import java.io.File
 import javax.inject.Singleton
 
 @Module
@@ -35,7 +36,7 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     internal fun provideShelf(schedulers: SchedulersFactory): Shelf {
-        return ShelfImpl(app.filesDir, schedulers)
+        return ShelfImpl(File(app.filesDir, SAFE_DIR), schedulers)
     }
 
     @Provides
@@ -53,3 +54,5 @@ class AppModule(private val app: Application) {
     internal fun provideUndoer(): Undoer = UndoerImpl()
 
 }
+
+private const val SAFE_DIR = "safe"

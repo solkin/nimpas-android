@@ -18,6 +18,7 @@ import dagger.Lazy
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 interface SafePresenter : ItemClickListener {
@@ -45,6 +46,8 @@ interface SafePresenter : ItemClickListener {
         fun showLockScreen()
 
         fun showInfo(record: Record)
+
+        fun showExportScreen(file: File)
 
         fun leaveScreen()
 
@@ -81,6 +84,7 @@ class SafePresenterImpl(
             router?.showFormScreen(templateId, groupId)
         }
         subscriptions += view.undoClicks().subscribe { onUndo(it) }
+        subscriptions += view.exportClicks().subscribe { onExport() }
 
         loadRecords(groupId = getGroupId())
     }
@@ -107,6 +111,15 @@ class SafePresenterImpl(
                     }
                     view?.showCreateDialog(items)
                 }
+    }
+
+    private fun onExport() {
+        subscriptions += interactor.getBookFile()
+                .observeOn(schedulers.mainThread())
+                .subscribe(
+                        { router?.showExportScreen(it) },
+                        { throw it }
+                )
     }
 
     override fun detachView() {

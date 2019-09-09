@@ -36,7 +36,7 @@ class ShelfImpl(
     override fun createBook(): Single<String> = books()
             .map {
                 val id = generateId(it.keys)
-                val file = File(dir, id)
+                val file = File(directory(), "$id.nmp")
                 val book: Book = BookImpl(file)
                 books = it + (id to book)
                 id
@@ -57,7 +57,8 @@ class ShelfImpl(
 
     private fun books(): Single<Map<String, Book>> {
         return books?.let { Single.just(it) } ?: Single.create { emitter ->
-            val books = dir.listFiles()
+            val books = directory()
+                    .listFiles()
                     .filter { it.name != CONTENTS_FILE }
                     .associate { it.name to BookImpl(it).apply { openBook() } }
             this.books = books
@@ -93,7 +94,7 @@ class ShelfImpl(
     }
 
     private fun readActiveBookId(): String? {
-        val shelf = File(dir, CONTENTS_FILE)
+        val shelf = File(directory(), CONTENTS_FILE)
         var stream: DataInputStream? = null
         return try {
             stream = DataInputStream(FileInputStream(shelf))
@@ -106,7 +107,7 @@ class ShelfImpl(
     }
 
     private fun writeActiveBookId(id: String): Boolean {
-        val shelf = File(dir, CONTENTS_FILE)
+        val shelf = File(directory(), CONTENTS_FILE)
         var stream: DataOutputStream? = null
         return try {
             stream = DataOutputStream(FileOutputStream(shelf))
@@ -117,6 +118,10 @@ class ShelfImpl(
         } finally {
             stream.safeClose()
         }
+    }
+
+    private fun directory(): File {
+        return dir.takeIf { it.exists() } ?: dir.apply { mkdirs() }
     }
 
 }
