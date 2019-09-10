@@ -47,7 +47,7 @@ interface SafePresenter : ItemClickListener {
 
         fun showInfo(record: Record)
 
-        fun showExportScreen(file: File)
+        fun showExportScreen(file: File, title: String)
 
         fun leaveScreen()
 
@@ -117,7 +117,7 @@ class SafePresenterImpl(
         subscriptions += interactor.getBookFile()
                 .observeOn(schedulers.mainThread())
                 .subscribe(
-                        { router?.showExportScreen(it) },
+                        { router?.showExportScreen(it.first, it.second) },
                         { throw it }
                 )
     }

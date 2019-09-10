@@ -105,14 +105,17 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
         startActivityForResult(intent, REQUEST_INFO)
     }
 
-    override fun showExportScreen(file: File) {
+    override fun showExportScreen(file: File, title: String) {
+        val subject = getString(R.string.export_subject, title)
+        val text = getString(R.string.export_text)
         val uri = FileProvider.getUriForFile(this, packageName, file)
         ShareCompat.IntentBuilder.from(this)
                 .setStream(uri)
                 .setType(MIME_TYPE)
+                .setSubject(subject)
+                .setText(text)
                 .intent
                 .setAction(Intent.ACTION_SEND)
-                .setDataAndType(uri, MIME_TYPE)
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .run {
                     val list = packageManager.queryIntentActivities(this, MATCH_DEFAULT_ONLY)

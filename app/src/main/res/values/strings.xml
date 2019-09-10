@@ -17,4 +17,6 @@
     <string name="select_book">Select User</string>
     <string name="date_updated">Updated at %s</string>
     <string name="export">Export book</string>
+    <string name="export_subject">%s Book</string>
+    <string name="export_text">Download Nimpas at Google Play to use this encrypted book</string>
 </resources>

@@ -11,7 +11,7 @@ interface SafeInteractor {
 
     fun getRecords(groupId: Long = GROUP_DEFAULT): Observable<List<Record>>
 
-    fun getBookFile(): Observable<File>
+    fun getBookFile(): Observable<Pair<File, String>>
 
 }
 
@@ -27,9 +27,9 @@ class SafeInteractorImpl(
                 .subscribeOn(schedulers.io())
     }
 
-    override fun getBookFile(): Observable<File> {
+    override fun getBookFile(): Observable<Pair<File, String>> {
         return shelf.activeBook()
-                .map { it.getFile() }
+                .map { Pair(it.getFile(), it.getTitle()) }
                 .toObservable()
                 .subscribeOn(schedulers.io())
     }
