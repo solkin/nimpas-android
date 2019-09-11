@@ -15,7 +15,6 @@
         <activity android:name=".screen.start.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -25,6 +24,20 @@
         <activity android:name=".screen.lock.LockActivity" />
         <activity android:name=".screen.book.add.BookAddActivity" />
         <activity android:name=".screen.book.list.BookListActivity" />
+        <activity android:name=".screen.book.importing.BookImportActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="*"
+                    android:mimeType="application/nimpas-safe"
+                    android:pathPattern=".*\\.nmp"
+                    android:scheme="*" />
+            </intent-filter>
+        </activity>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.tomclaw.nimpas"

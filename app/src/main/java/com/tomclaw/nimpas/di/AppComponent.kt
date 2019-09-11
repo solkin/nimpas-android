@@ -2,6 +2,8 @@ package com.tomclaw.nimpas.di
 
 import com.tomclaw.nimpas.screen.book.add.di.BookAddComponent
 import com.tomclaw.nimpas.screen.book.add.di.BookAddModule
+import com.tomclaw.nimpas.screen.book.importing.di.BookImportComponent
+import com.tomclaw.nimpas.screen.book.importing.di.BookImportModule
 import com.tomclaw.nimpas.screen.book.list.di.BookListComponent
 import com.tomclaw.nimpas.screen.book.list.di.BookListModule
 import com.tomclaw.nimpas.screen.form.di.FormComponent
@@ -34,5 +36,7 @@ interface AppComponent {
     fun bookAddComponent(module: BookAddModule): BookAddComponent
 
     fun bookListComponent(module: BookListModule): BookListComponent
+
+    fun bookImportComponent(module: BookImportModule): BookImportComponent
 
 }

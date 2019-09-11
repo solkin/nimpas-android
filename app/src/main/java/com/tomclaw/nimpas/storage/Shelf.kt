@@ -1,5 +1,6 @@
 package com.tomclaw.nimpas.storage
 
+import android.net.Uri
 import com.tomclaw.drawa.util.safeClose
 import com.tomclaw.nimpas.util.SchedulersFactory
 import com.tomclaw.nimpas.util.sha256
@@ -14,6 +15,8 @@ import java.io.FileOutputStream
 interface Shelf {
 
     fun createBook(): Single<String>
+
+    fun importBook(uri: Uri): Single<String>
 
     fun listBooks(): Single<Map<String, Book>>
 
@@ -42,6 +45,10 @@ class ShelfImpl(
                 id
             }
             .subscribeOn(schedulers.io())
+
+    override fun importBook(uri: Uri): Single<String> {
+        TODO("not implemented")
+    }
 
     override fun listBooks(): Single<Map<String, Book>> = books()
             .subscribeOn(schedulers.io())
