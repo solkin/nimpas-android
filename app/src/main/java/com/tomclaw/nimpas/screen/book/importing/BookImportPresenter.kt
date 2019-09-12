@@ -52,7 +52,6 @@ class BookImportPresenterImpl(
         subscriptions += view.navigationClicks().subscribe { onBackPressed() }
         subscriptions += view.titleChanges().subscribe { title = it }
         subscriptions += view.keywordChanges().subscribe { keyword = it }
-        subscriptions += view.bookAddClicks().subscribe { addBook() }
     }
 
     override fun detachView() {
@@ -77,16 +76,6 @@ class BookImportPresenterImpl(
 
     override fun onImportBook(uri: Uri) {
         importBook(uri)
-    }
-
-    private fun addBook() {
-        // TODO: check for field filled correctly
-        subscriptions += interactor.createBook(title, keyword)
-                .observeOn(schedulers.mainThread())
-                .subscribe(
-                        { onBookCreated() },
-                        { onBookCreationFailed(it) }
-                )
     }
 
     private fun importBook(uri: Uri) {
