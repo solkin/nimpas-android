@@ -41,17 +41,12 @@ class BookImportPresenterImpl(
     private var view: BookImportView? = null
     private var router: BookImportPresenter.BookImportRouter? = null
 
-    private var title: String = state?.getString(KEY_TITLE).orEmpty()
-    private var keyword: String = state?.getString(KEY_KEYWORD).orEmpty()
-
     private val subscriptions = CompositeDisposable()
 
     override fun attachView(view: BookImportView) {
         this.view = view
 
         subscriptions += view.navigationClicks().subscribe { onBackPressed() }
-        subscriptions += view.titleChanges().subscribe { title = it }
-        subscriptions += view.keywordChanges().subscribe { keyword = it }
     }
 
     override fun detachView() {
