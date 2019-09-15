@@ -78,11 +78,11 @@ class BookImportPresenterImpl(
                 .observeOn(schedulers.mainThread())
                 .subscribe(
                         { onBookCreated() },
-                        { onBookCreationFailed(it) }
+                        { onBookImportFailed(it) }
                 )
     }
 
-    private fun onBookCreationFailed(ex: Throwable) {
+    private fun onBookImportFailed(ex: Throwable) {
         // TODO: handle error
     }
 
@@ -91,6 +91,3 @@ class BookImportPresenterImpl(
     }
 
 }
-
-private const val KEY_TITLE = "title"
-private const val KEY_KEYWORD = "keyword"
