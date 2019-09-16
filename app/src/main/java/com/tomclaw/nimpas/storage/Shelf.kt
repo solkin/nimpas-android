@@ -46,9 +46,16 @@ class ShelfImpl(
             }
             .subscribeOn(schedulers.io())
 
-    override fun importBook(uri: Uri): Single<String> {
-        TODO("not implemented")
-    }
+    override fun importBook(uri: Uri): Single<String> = books()
+            .map {
+                val id = generateId(it.keys)
+                val file = File(directory(), "$id.nmp")
+                // TODO: copy uri to file here
+                val book: Book = BookImpl(file).apply { openBook() }
+                books = it + (id to book)
+                id
+            }
+            .subscribeOn(schedulers.io())
 
     override fun listBooks(): Single<Map<String, Book>> = books()
             .subscribeOn(schedulers.io())
