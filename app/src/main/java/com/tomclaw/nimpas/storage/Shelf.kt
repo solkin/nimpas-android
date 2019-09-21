@@ -1,5 +1,6 @@
 package com.tomclaw.nimpas.storage
 
+import android.content.ContentResolver
 import android.net.Uri
 import com.tomclaw.drawa.util.safeClose
 import com.tomclaw.nimpas.util.SchedulersFactory
@@ -11,6 +12,7 @@ import java.io.DataOutputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.IOException
 
 interface Shelf {
 
@@ -30,6 +32,7 @@ class NoActiveBookException : Exception()
 
 class ShelfImpl(
         private val dir: File,
+        private val contentResolver: ContentResolver,
         private val schedulers: SchedulersFactory
 ) : Shelf {
 
@@ -50,7 +53,12 @@ class ShelfImpl(
             .map {
                 val id = generateId(it.keys)
                 val file = File(directory(), "$id.nmp")
-                // TODO: copy uri to file here
+                val input = contentResolver.openInputStream(uri)
+                        ?: throw IOException("unable to read uri")
+                val output = FileOutputStream(file)
+                input.copyTo(output)
+                input.safeClose()
+                output.safeClose()
                 val book: Book = BookImpl(file).apply { openBook() }
                 books = it + (id to book)
                 id

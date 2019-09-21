@@ -36,7 +36,7 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     internal fun provideShelf(schedulers: SchedulersFactory): Shelf {
-        return ShelfImpl(File(app.filesDir, SAFE_DIR), schedulers)
+        return ShelfImpl(File(app.filesDir, SAFE_DIR), app.contentResolver, schedulers)
     }
 
     @Provides
