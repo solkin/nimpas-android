@@ -77,7 +77,7 @@ class BookImportPresenterImpl(
         subscriptions += interactor.importBook(uri)
                 .observeOn(schedulers.mainThread())
                 .subscribe(
-                        { onBookCreated() },
+                        { onBookImported() },
                         { onBookImportFailed(it) }
                 )
     }
@@ -86,7 +86,7 @@ class BookImportPresenterImpl(
         // TODO: handle error
     }
 
-    private fun onBookCreated() {
+    private fun onBookImported() {
         router?.showLockScreen()
     }
 

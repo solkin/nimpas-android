@@ -4,7 +4,7 @@ import android.content.ContentResolver
 import android.net.Uri
 import com.tomclaw.drawa.util.safeClose
 import com.tomclaw.nimpas.util.SchedulersFactory
-import com.tomclaw.nimpas.util.sha256
+import com.tomclaw.nimpas.util.sha1
 import io.reactivex.Completable
 import io.reactivex.Single
 import java.io.DataInputStream
@@ -102,7 +102,7 @@ class ShelfImpl(
     private fun generateId(ids: Set<String>): String {
         var id: String
         do {
-            id = sha256(ids.joinToString() + System.currentTimeMillis())
+            id = sha1(ids.joinToString() + System.currentTimeMillis())
         } while (ids.contains(id))
         return id
     }
