@@ -33,6 +33,8 @@ interface SafeView {
 
     fun exportClicks(): Observable<Unit>
 
+    fun lockClicks(): Observable<Unit>
+
     fun buttonClicks(): Observable<Unit>
 
     fun createClicks(): Observable<Long>
@@ -56,6 +58,7 @@ class SafeViewImpl(
     private val createButton: FloatingActionButton = view.findViewById(R.id.create_button)
 
     private val exportRelay = PublishRelay.create<Unit>()
+    private val lockRelay = PublishRelay.create<Unit>()
     private val buttonRelay = PublishRelay.create<Unit>()
     private val createRelay = PublishRelay.create<Long>()
     private val undoRelay = PublishRelay.create<Long>()
@@ -66,6 +69,7 @@ class SafeViewImpl(
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_export -> exportRelay.accept(Unit)
+                R.id.menu_lock -> lockRelay.accept(Unit)
             }
             true
         }
@@ -89,6 +93,8 @@ class SafeViewImpl(
     }
 
     override fun exportClicks(): Observable<Unit> = exportRelay
+
+    override fun lockClicks(): Observable<Unit> = lockRelay
 
     override fun buttonClicks(): Observable<Unit> {
         return buttonRelay

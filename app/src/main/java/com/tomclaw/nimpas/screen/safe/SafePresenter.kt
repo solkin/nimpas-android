@@ -85,6 +85,7 @@ class SafePresenterImpl(
         }
         subscriptions += view.undoClicks().subscribe { onUndo(it) }
         subscriptions += view.exportClicks().subscribe { onExport() }
+        subscriptions += view.lockClicks().subscribe { onLock() }
 
         loadRecords(groupId = getGroupId())
     }
@@ -118,6 +119,15 @@ class SafePresenterImpl(
                 .observeOn(schedulers.mainThread())
                 .subscribe(
                         { router?.showExportScreen(it.first, it.second) },
+                        { throw it }
+                )
+    }
+
+    private fun onLock() {
+        subscriptions += interactor.lockActiveBook()
+                .observeOn(schedulers.mainThread())
+                .subscribe(
+                        { router?.showLockScreen() },
                         { throw it }
                 )
     }
