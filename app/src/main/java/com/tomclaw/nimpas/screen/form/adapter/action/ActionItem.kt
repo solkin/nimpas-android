@@ -2,7 +2,7 @@ package com.tomclaw.nimpas.screen.form.adapter.action
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import com.tomclaw.nimpas.screen.form.adapter.FormItem
 
 class ActionItem(

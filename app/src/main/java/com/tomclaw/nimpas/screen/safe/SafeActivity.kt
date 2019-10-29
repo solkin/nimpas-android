@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager.MATCH_DEFAULT_ONLY
 import android.os.Bundle
-import android.support.v4.app.ShareCompat
-import android.support.v4.content.FileProvider
-import android.support.v7.app.AppCompatActivity
+import androidx.core.app.ShareCompat
+import androidx.core.content.FileProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
@@ -67,9 +67,9 @@ class SafeActivity : AppCompatActivity(), SafePresenter.SafeRouter {
         super.onDestroy()
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
+        outState.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

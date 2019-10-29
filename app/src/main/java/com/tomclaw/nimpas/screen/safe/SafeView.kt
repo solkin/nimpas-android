@@ -1,14 +1,14 @@
 package com.tomclaw.nimpas.screen.safe
 
 import android.graphics.drawable.BitmapDrawable
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.VERTICAL
-import android.support.v7.widget.Toolbar
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import androidx.appcompat.widget.Toolbar
 import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.caverock.androidsvg.SVG
@@ -53,8 +53,8 @@ class SafeViewImpl(
     private val resources = view.resources
 
     private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-    private val recycler: RecyclerView = view.findViewById(R.id.recycler)
-    private val coordinator: CoordinatorLayout = view.findViewById(R.id.coordinator)
+    private val recycler: androidx.recyclerview.widget.RecyclerView = view.findViewById(R.id.recycler)
+    private val coordinator: androidx.coordinatorlayout.widget.CoordinatorLayout = view.findViewById(R.id.coordinator)
     private val createButton: FloatingActionButton = view.findViewById(R.id.create_button)
 
     private val exportRelay = PublishRelay.create<Unit>()
@@ -74,11 +74,11 @@ class SafeViewImpl(
             true
         }
         val orientation = VERTICAL
-        val layoutManager = LinearLayoutManager(view.context, orientation, false)
+        val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)
         recycler.adapter = adapter
         recycler.layoutManager = layoutManager
-        recycler.itemAnimator = DefaultItemAnimator()
+        recycler.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
 
         createButton.clicks(buttonRelay)

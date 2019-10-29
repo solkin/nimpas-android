@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.tomclaw.nimpas.R
 import com.tomclaw.nimpas.main.getComponent
 import com.tomclaw.nimpas.screen.book.list.createBookListActivityIntent
@@ -50,9 +50,9 @@ class LockActivity : AppCompatActivity(), LockPresenter.LockRouter {
         super.onDestroy()
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
+        outState.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
     override fun showBookListScreen() {

@@ -1,12 +1,12 @@
 package com.tomclaw.nimpas.screen.info
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.widget.Toolbar
 import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.jakewharton.rxrelay2.PublishRelay
@@ -34,7 +34,7 @@ class InfoViewImpl(
 
     private val context: Context = view.context
     private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-    private val recycler: RecyclerView = view.findViewById(R.id.recycler)
+    private val recycler: androidx.recyclerview.widget.RecyclerView = view.findViewById(R.id.recycler)
 
     private val navigationRelay = PublishRelay.create<Unit>()
     private val editRelay = PublishRelay.create<Unit>()
@@ -53,15 +53,15 @@ class InfoViewImpl(
         toolbar.setNavigationOnClickListener {
             navigationRelay.accept(Unit)
         }
-        val orientation = RecyclerView.VERTICAL
-        val layoutManager = LinearLayoutManager(view.context, orientation, false)
+        val orientation = androidx.recyclerview.widget.RecyclerView.VERTICAL
+        val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)
         recycler.adapter = adapter
         recycler.layoutManager = layoutManager
-        recycler.itemAnimator = DefaultItemAnimator()
+        recycler.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
         ContextCompat.getDrawable(context, R.drawable.form_divider)?.let {
-            val dividerDecoration = DividerItemDecoration(recycler.context, layoutManager.orientation)
+            val dividerDecoration = androidx.recyclerview.widget.DividerItemDecoration(recycler.context, layoutManager.orientation)
             dividerDecoration.setDrawable(it)
             recycler.addItemDecoration(dividerDecoration)
         }

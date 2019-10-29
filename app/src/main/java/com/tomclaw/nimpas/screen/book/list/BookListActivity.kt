@@ -3,7 +3,8 @@ package com.tomclaw.nimpas.screen.book.list
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.os.PersistableBundle
+import androidx.appcompat.app.AppCompatActivity
 import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
@@ -60,9 +61,9 @@ class BookListActivity : AppCompatActivity(), BookListPresenter.BookListRouter {
         super.onDestroy()
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
+        outState.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

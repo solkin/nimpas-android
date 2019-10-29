@@ -1,6 +1,6 @@
 package com.tomclaw.nimpas.screen.book.importing
 
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import android.view.View
 import com.jakewharton.rxrelay2.PublishRelay
 import com.tomclaw.nimpas.R

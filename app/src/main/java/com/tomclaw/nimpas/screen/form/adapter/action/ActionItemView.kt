@@ -1,6 +1,6 @@
 package com.tomclaw.nimpas.screen.form.adapter.action
 
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import android.view.View
 import android.widget.TextView
 import com.avito.konveyor.adapter.BaseViewHolder

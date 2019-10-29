@@ -3,7 +3,7 @@ package com.tomclaw.nimpas.screen.info
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.avito.konveyor.ItemBinder
 import com.avito.konveyor.adapter.AdapterPresenter
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
@@ -62,9 +62,9 @@ class InfoActivity : AppCompatActivity(), InfoPresenter.InfoRouter {
         super.onDestroy()
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
+        outState.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

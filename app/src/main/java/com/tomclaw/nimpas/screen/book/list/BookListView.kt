@@ -1,11 +1,11 @@
 package com.tomclaw.nimpas.screen.book.list
 
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.RecyclerView.VERTICAL
-import android.support.v7.widget.Toolbar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import androidx.appcompat.widget.Toolbar
 import android.view.View
 import com.avito.konveyor.adapter.SimpleRecyclerAdapter
 import com.jakewharton.rxrelay2.PublishRelay
@@ -33,7 +33,7 @@ class BookListViewImpl(
 ) : BookListView {
 
     private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-    private val recycler: RecyclerView = view.findViewById(R.id.recycler)
+    private val recycler: androidx.recyclerview.widget.RecyclerView = view.findViewById(R.id.recycler)
     private val bookAddButton: FloatingActionButton = view.findViewById(R.id.book_add_button)
 
     private val navigationRelay = PublishRelay.create<Unit>()
@@ -45,11 +45,11 @@ class BookListViewImpl(
             navigationRelay.accept(Unit)
         }
         val orientation = VERTICAL
-        val layoutManager = LinearLayoutManager(view.context, orientation, false)
+        val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)
         recycler.adapter = adapter
         recycler.layoutManager = layoutManager
-        recycler.itemAnimator = DefaultItemAnimator()
+        recycler.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
 
         bookAddButton.clicks(bookAddRelay)

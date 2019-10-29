@@ -1,6 +1,6 @@
 package com.tomclaw.nimpas.util
 
-import android.support.annotation.ColorRes
+import androidx.annotation.ColorRes
 import com.tomclaw.nimpas.R
 import java.util.Random
 
