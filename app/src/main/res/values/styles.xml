@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
@@ -10,18 +10,18 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark</item>
+        <item name="popupTheme">@style/ThemeOverlay.MaterialComponents.Dark</item>
     </style>
 
-    <style name="AppTheme.BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+    <style name="AppTheme.BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppTheme.BottomSheetStyle</item>
     </style>
 
-    <style name="AppTheme.BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+    <style name="AppTheme.BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="behavior_hideable">true</item>
         <item name="behavior_skipCollapsed">true</item>
     </style>
