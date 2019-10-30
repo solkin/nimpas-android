@@ -20,14 +20,14 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingLeft="16dp"
             android:paddingTop="24dp"
-            android:paddingRight="16dp"
             android:paddingBottom="16dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/form_horizontal_padding"
+                android:paddingRight="@dimen/form_horizontal_padding"
                 android:paddingBottom="2dp"
                 android:text="@string/password"
                 android:textColor="@color/color_form_item_head"
@@ -39,24 +39,30 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:fontFamily="sans-serif-medium"
-                android:inputType="textPassword"
                 android:hint="@string/enter_password"
-                android:textColorHint="@color/color_form_item_hint"
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/form_horizontal_padding"
+                android:paddingRight="@dimen/form_horizontal_padding"
                 android:textColor="@color/color_form_item_text"
+                android:textColorHint="@color/color_form_item_hint"
                 android:textSize="20sp"
                 tools:ignore="Autofill,LabelFor" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/form_horizontal_padding"
+                android:paddingRight="@dimen/form_horizontal_padding" />
 
             <Button
                 android:id="@+id/unlock_button"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/form_horizontal_padding"
                 android:layout_marginTop="12dp"
+                android:layout_marginRight="@dimen/form_horizontal_padding"
                 android:text="@string/login" />
 
             <Button
@@ -64,6 +70,8 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/form_horizontal_padding"
+                android:layout_marginRight="@dimen/form_horizontal_padding"
                 android:text="@string/switch_user" />
 
         </LinearLayout>
