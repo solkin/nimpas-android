@@ -27,14 +27,13 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingTop="24dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="16dp">
+            android:paddingTop="24dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/form_horizontal_padding"
+                android:paddingRight="@dimen/form_horizontal_padding"
                 android:paddingBottom="2dp"
                 android:text="@string/book_title"
                 android:textColor="@color/color_form_item_head"
@@ -48,6 +47,8 @@
                 android:fontFamily="sans-serif-medium"
                 android:hint="@string/enter_book_title"
                 android:inputType="textCapWords"
+                android:paddingLeft="@dimen/form_horizontal_padding"
+                android:paddingRight="@dimen/form_horizontal_padding"
                 android:textColor="@color/color_form_item_text"
                 android:textColorHint="@color/color_form_item_hint"
                 android:textSize="20sp"
@@ -56,7 +57,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/form_horizontal_padding"
                 android:paddingTop="26dp"
+                android:paddingRight="@dimen/form_horizontal_padding"
                 android:paddingBottom="2dp"
                 android:text="@string/password"
                 android:textColor="@color/color_form_item_head"
@@ -70,6 +73,8 @@
                 android:fontFamily="sans-serif-medium"
                 android:hint="@string/enter_password"
                 android:inputType="textPassword"
+                android:paddingLeft="@dimen/form_horizontal_padding"
+                android:paddingRight="@dimen/form_horizontal_padding"
                 android:textColor="@color/color_form_item_text"
                 android:textColorHint="@color/color_form_item_hint"
                 android:textSize="20sp"
@@ -80,12 +85,15 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <androidx.appcompat.widget.AppCompatButton
+            <Button
                 android:id="@+id/book_add_button"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/form_horizontal_padding"
                 android:layout_marginTop="12dp"
+                android:layout_marginRight="@dimen/form_horizontal_padding"
+                android:layout_marginBottom="16dp"
                 android:text="@string/add_book" />
 
         </LinearLayout>
