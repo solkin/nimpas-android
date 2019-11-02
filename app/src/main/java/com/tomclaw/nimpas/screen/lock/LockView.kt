@@ -13,6 +13,8 @@ import io.reactivex.Observable
 
 interface LockView {
 
+    fun setTitle(title: String)
+
     fun keywordChanges(): Observable<String>
 
     fun unlockClicks(): Observable<Unit>
@@ -40,6 +42,10 @@ class LockViewImpl(view: View) : LockView {
         keywordView.changes { keywordChangesRelay.accept(it) }
         unlockButton.clicks(unlockClicksRelay)
         switchButton.clicks(switchClicksRelay)
+    }
+
+    override fun setTitle(title: String) {
+        toolbar.title = title
     }
 
     override fun keywordChanges() = keywordChangesRelay

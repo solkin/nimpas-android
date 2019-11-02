@@ -55,6 +55,11 @@ class LockActivity : AppCompatActivity(), LockPresenter.LockRouter {
         outState.putBundle(KEY_PRESENTER_STATE, presenter.saveState())
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        presenter.updateBookTitle()
+    }
+
     override fun showBookListScreen() {
         val intent = createBookListActivityIntent(this)
         startActivity(intent)

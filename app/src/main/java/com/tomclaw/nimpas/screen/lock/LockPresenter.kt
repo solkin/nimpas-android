@@ -19,6 +19,8 @@ interface LockPresenter {
 
     fun onBackPressed()
 
+    fun updateBookTitle()
+
     interface LockRouter {
 
         fun showBookListScreen()
@@ -48,6 +50,8 @@ class LockPresenterImpl(
         subscriptions += view.keywordChanges().subscribe { keyword = it }
         subscriptions += view.unlockClicks().subscribe { unlockBook() }
         subscriptions += view.switchClicks().subscribe { switchBook() }
+
+        updateBookTitle()
     }
 
     override fun detachView() {
@@ -69,6 +73,15 @@ class LockPresenterImpl(
 
     override fun onBackPressed() {
         router?.leaveScreen(isUnlocked = false)
+    }
+
+    override fun updateBookTitle() {
+        subscriptions += interactor.getBookTitle()
+                .observeOn(schedulers.mainThread())
+                .subscribe(
+                        { view?.setTitle(it) },
+                        { }
+                )
     }
 
     private fun unlockBook() {
