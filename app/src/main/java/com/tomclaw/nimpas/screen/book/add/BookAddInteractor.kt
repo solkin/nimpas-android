@@ -16,10 +16,8 @@ class BookAddInteractorImpl(
 ) : BookAddInteractor {
 
     override fun createBook(title: String, keyword: String): Completable {
-        return shelf.createBook()
+        return shelf.createBook(keyword, title)
                 .flatMapCompletable { shelf.switchBook(it) }
-                .andThen(shelf.activeBook())
-                .flatMapCompletable { it.init(keyword, title) }
                 .subscribeOn(schedulers.io())
     }
 

@@ -25,9 +25,9 @@ import java.util.HashMap
 
 interface Book {
 
-    fun init(keyword: String, title: String): Completable
-
     fun getFile(): File
+
+    fun getUniqueId(): String
 
     fun getTitle(): String
 
@@ -64,20 +64,18 @@ class BookImpl(private val file: File) : Book {
     private var keyword: String? = null
     private var templates: MutableMap<Long, Template>? = null
     private var records: MutableMap<Long, Record>? = null
+    private var uniqueId: String? = null
     private var writeTime: Long = 0
     private var title: String? = null
     private var nextId: Long = 0
-
-    override fun init(keyword: String, title: String): Completable = Completable.create { emitter ->
-        createBook(keyword, title)
-        emitter.onComplete()
-    }
 
     override fun getFile(): File = file
 
     override fun isUnlocked(): Boolean {
         return keyword != null && records != null && templates != null
     }
+
+    override fun getUniqueId(): String = uniqueId.orEmpty()
 
     override fun getTitle(): String = title.orEmpty()
 
@@ -162,11 +160,12 @@ class BookImpl(private val file: File) : Book {
         return ++nextId
     }
 
-    private fun createBook(keyword: String, title: String) {
+    fun createBook(uniqueId: String, keyword: String, title: String) {
         val templates = mutableMapOf<Long, Template>()
         val records = mutableMapOf<Long, Record>()
         this.templates = templates
         this.records = records
+        this.uniqueId = uniqueId
         this.keyword = keyword
         this.title = title
         writeBook(templates, records)
@@ -184,6 +183,7 @@ class BookImpl(private val file: File) : Book {
             directStream = DataOutputStream(fileStream)
             with(directStream) {
                 writeShort(BOOK_VERSION)
+                writeUTF(uniqueId)
                 writeLong(writeTime)
                 writeUTF(title.orEmpty())
                 flush()
@@ -254,6 +254,7 @@ class BookImpl(private val file: File) : Book {
             val fileStream = BufferedInputStream(FileInputStream(file))
             directStream = DataInputStream(fileStream)
             directStream.readShort()
+            uniqueId = directStream.readUTF()
             writeTime = directStream.readLong()
             title = directStream.readUTF()
         } finally {
@@ -269,6 +270,7 @@ class BookImpl(private val file: File) : Book {
             val fileStream = BufferedInputStream(FileInputStream(file))
             directStream = DataInputStream(fileStream)
             val version = directStream.readShort()
+            val uniqueId = directStream.readUTF()
             val writeTime = directStream.readLong()
             val title = directStream.readUTF()
             val templates = HashMap<Long, Template>()
@@ -346,6 +348,7 @@ class BookImpl(private val file: File) : Book {
                             records[id] = Record(id, groupId, time, template, fields)
                         }
                         this@BookImpl.records = records
+                        this@BookImpl.uniqueId = uniqueId
                         this@BookImpl.writeTime = writeTime
                         this@BookImpl.title = title
                         this@BookImpl.nextId = nextId

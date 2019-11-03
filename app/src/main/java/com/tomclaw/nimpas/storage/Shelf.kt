@@ -13,10 +13,11 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Collections
 
 interface Shelf {
 
-    fun createBook(): Single<String>
+    fun createBook(keyword: String, title: String): Single<String>
 
     fun importBook(uri: Uri): Single<String>
 
@@ -25,6 +26,8 @@ interface Shelf {
     fun activeBook(): Single<Book>
 
     fun switchBook(id: String): Completable
+
+    fun deleteBook(id: String): Completable
 
 }
 
@@ -36,15 +39,15 @@ class ShelfImpl(
         private val schedulers: SchedulersFactory
 ) : Shelf {
 
-    private var books: Map<String, Book>? = null
+    private var books: MutableMap<String, Book>? = null
     private var activeId: String? = null
 
-    override fun createBook(): Single<String> = books()
+    override fun createBook(keyword: String, title: String): Single<String> = books()
             .map {
                 val id = generateId(it.keys)
                 val file = File(directory(), "$id.nmp")
-                val book: Book = BookImpl(file)
-                books = it + (id to book)
+                val book: Book = BookImpl(file).apply { createBook(id, keyword, title) }
+                books?.plusAssign((id to book))
                 id
             }
             .subscribeOn(schedulers.io())
@@ -60,7 +63,10 @@ class ShelfImpl(
                 input.safeClose()
                 output.safeClose()
                 val book: Book = BookImpl(file).apply { openBook() }
-                books = it + (id to book)
+                books?.entries?.filter { entry ->
+                    entry.value.getUniqueId() == book.getUniqueId()
+                }?.forEach { entry -> deleteBookImplicit(entry.key) }
+                books?.plusAssign((id to book))
                 id
             }
             .subscribeOn(schedulers.io())
@@ -77,14 +83,28 @@ class ShelfImpl(
             .doOnComplete { activeId = id }
             .subscribeOn(schedulers.io())
 
+    override fun deleteBook(id: String): Completable = books()
+            .map { deleteBookImplicit(id) }
+            .ignoreElement()
+            .subscribeOn(schedulers.io())
+
     private fun books(): Single<Map<String, Book>> {
-        return books?.let { Single.just(it) } ?: Single.create { emitter ->
-            val books = directory()
-                    .listFiles()
-                    .filter { it.name != CONTENTS_FILE }
-                    .associate { it.name to BookImpl(it).apply { openBook() } }
-            this.books = books
-            emitter.onSuccess(books)
+        return books?.let { Single.just(Collections.unmodifiableMap(it)) }
+                ?: Single.create { emitter ->
+                    val books = directory()
+                            .listFiles()
+                            .filter { it.name != CONTENTS_FILE }
+                            .associate { it.name to BookImpl(it).apply { openBook() } as Book }
+                            .toMutableMap()
+                    this.books = books
+                    emitter.onSuccess(books)
+                }
+    }
+
+    private fun deleteBookImplicit(id: String) {
+        books?.remove(id)?.run {
+            lock()
+            getFile().delete()
         }
     }
 
