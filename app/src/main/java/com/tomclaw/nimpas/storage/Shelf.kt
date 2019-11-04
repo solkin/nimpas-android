@@ -45,7 +45,7 @@ class ShelfImpl(
     override fun createBook(keyword: String, title: String): Single<String> = books()
             .map {
                 val id = generateId(it.keys)
-                val file = File(directory(), "$id.nmp")
+                val file = File(directory(), createFileName(id))
                 val book: Book = BookImpl(file).apply { createBook(id, keyword, title) }
                 books?.plusAssign((id to book))
                 id
@@ -55,7 +55,7 @@ class ShelfImpl(
     override fun importBook(uri: Uri): Single<String> = books()
             .map {
                 val id = generateId(it.keys)
-                val file = File(directory(), "$id.nmp")
+                val file = File(directory(), createFileName(id))
                 val input = contentResolver.openInputStream(uri)
                         ?: throw IOException("unable to read uri")
                 val output = FileOutputStream(file)
@@ -94,7 +94,7 @@ class ShelfImpl(
                     val books = directory()
                             .listFiles()
                             .filter { it.name != CONTENTS_FILE }
-                            .associate { it.name to BookImpl(it).apply { openBook() } as Book }
+                            .associate { it.nameWithoutExtension to BookImpl(it).apply { openBook() } as Book }
                             .toMutableMap()
                     this.books = books
                     emitter.onSuccess(books)
@@ -165,6 +165,8 @@ class ShelfImpl(
     private fun directory(): File {
         return dir.takeIf { it.exists() } ?: dir.apply { mkdirs() }
     }
+
+    private fun createFileName(id: String) = "$id.nmp"
 
 }
 
