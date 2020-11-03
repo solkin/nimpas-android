@@ -248,18 +248,25 @@ class BookImpl(private val file: File) : Book {
         }
     }
 
-    fun openBook() {
+    fun openBook(): Boolean {
         var directStream: DataInputStream? = null
         try {
             val fileStream = BufferedInputStream(FileInputStream(file))
             directStream = DataInputStream(fileStream)
-            directStream.readShort()
-            uniqueId = directStream.readUTF()
-            writeTime = directStream.readLong()
-            title = directStream.readUTF()
+            when (directStream.readShort()) {
+                VERSION_1 -> {
+                    uniqueId = directStream.readUTF()
+                    writeTime = directStream.readLong()
+                    title = directStream.readUTF()
+                }
+                else -> throw UnknownFormatException()
+            }
+        } catch (ex: Throwable) {
+            return false
         } finally {
             directStream.safeClose()
         }
+        return true
     }
 
     @SuppressLint("UseSparseArrays")
