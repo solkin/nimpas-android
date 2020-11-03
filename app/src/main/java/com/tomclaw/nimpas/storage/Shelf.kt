@@ -53,8 +53,8 @@ class ShelfImpl(
             .subscribeOn(schedulers.io())
 
     override fun importBook(uri: Uri): Single<String> = books()
-            .map {
-                val id = generateId(it.keys)
+            .map { books ->
+                val id = generateId(books.keys)
                 val file = File(directory(), createFileName(id))
                 val input = contentResolver.openInputStream(uri)
                         ?: throw IOException("unable to read uri")
@@ -62,12 +62,17 @@ class ShelfImpl(
                 input.copyTo(output)
                 input.safeClose()
                 output.safeClose()
-                val book: Book = BookImpl(file).apply { openBook() }
+                BookImpl(file).takeIf { it.openBook() } ?: run {
+                    file.delete()
+                    throw UnknownFormatException()
+                }
+            }
+            .map { book ->
                 books?.entries?.filter { entry ->
                     entry.value.getUniqueId() == book.getUniqueId()
                 }?.forEach { entry -> deleteBookImplicit(entry.key) }
-                books?.plusAssign((id to book))
-                id
+                books?.plusAssign((book.getUniqueId() to book))
+                book.getUniqueId()
             }
             .subscribeOn(schedulers.io())
 
@@ -94,7 +99,9 @@ class ShelfImpl(
                     val books = directory()
                             .listFiles()
                             .filter { it.name != CONTENTS_FILE }
-                            .associate { it.nameWithoutExtension to BookImpl(it).apply { openBook() } as Book }
+                            .map { BookImpl(it) }
+                            .filter { it.openBook() }
+                            .associate { it.getFile().nameWithoutExtension to it as Book }
                             .toMutableMap()
                     this.books = books
                     emitter.onSuccess(books)
