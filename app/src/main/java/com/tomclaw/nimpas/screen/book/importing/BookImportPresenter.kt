@@ -84,6 +84,7 @@ class BookImportPresenterImpl(
 
     private fun onBookImportFailed(ex: Throwable) {
         // TODO: handle error
+        ex.printStackTrace()
     }
 
     private fun onBookImported() {
