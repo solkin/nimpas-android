@@ -84,6 +84,7 @@ class BookAddPresenterImpl(
 
     private fun onBookCreationFailed(ex: Throwable) {
         // TODO: handle error
+        ex.printStackTrace()
     }
 
     private fun onBookCreated() {
