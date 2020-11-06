@@ -101,7 +101,7 @@ class ShelfImpl(
                             .filter { it.name != CONTENTS_FILE }
                             .map { BookImpl(it) }
                             .filter { it.openBook() }
-                            .associate { it.getFile().nameWithoutExtension to it as Book }
+                            .associate { it.getUniqueId() to it as Book }
                             .toMutableMap()
                     this.books = books
                     emitter.onSuccess(books)
