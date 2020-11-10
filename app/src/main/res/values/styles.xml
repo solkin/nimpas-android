@@ -3,7 +3,10 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorAccent">@color/color_accent</item>
+        <item name="colorSecondary">@color/color_accent</item>
+        <item name="colorOnSecondary">@android:color/white</item>
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
