@@ -53,15 +53,15 @@ class InfoViewImpl(
         toolbar.setNavigationOnClickListener {
             navigationRelay.accept(Unit)
         }
-        val orientation = androidx.recyclerview.widget.RecyclerView.VERTICAL
-        val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context, orientation, false)
+        val orientation = RecyclerView.VERTICAL
+        val layoutManager = LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)
         recycler.adapter = adapter
         recycler.layoutManager = layoutManager
-        recycler.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
+        recycler.itemAnimator = DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
         ContextCompat.getDrawable(context, R.drawable.form_divider)?.let {
-            val dividerDecoration = androidx.recyclerview.widget.DividerItemDecoration(recycler.context, layoutManager.orientation)
+            val dividerDecoration = DividerItemDecoration(recycler.context, layoutManager.orientation)
             dividerDecoration.setDrawable(it)
             recycler.addItemDecoration(dividerDecoration)
         }

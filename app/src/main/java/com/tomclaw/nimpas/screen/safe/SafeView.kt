@@ -53,8 +53,8 @@ class SafeViewImpl(
     private val resources = view.resources
 
     private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-    private val recycler: androidx.recyclerview.widget.RecyclerView = view.findViewById(R.id.recycler)
-    private val coordinator: androidx.coordinatorlayout.widget.CoordinatorLayout = view.findViewById(R.id.coordinator)
+    private val recycler: RecyclerView = view.findViewById(R.id.recycler)
+    private val coordinator: CoordinatorLayout = view.findViewById(R.id.coordinator)
     private val createButton: FloatingActionButton = view.findViewById(R.id.create_button)
 
     private val exportRelay = PublishRelay.create<Unit>()
@@ -74,11 +74,11 @@ class SafeViewImpl(
             true
         }
         val orientation = VERTICAL
-        val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context, orientation, false)
+        val layoutManager = LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)
         recycler.adapter = adapter
         recycler.layoutManager = layoutManager
-        recycler.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
+        recycler.itemAnimator = DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
 
         createButton.clicks(buttonRelay)

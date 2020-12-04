@@ -33,7 +33,7 @@ class BookListViewImpl(
 ) : BookListView {
 
     private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-    private val recycler: androidx.recyclerview.widget.RecyclerView = view.findViewById(R.id.recycler)
+    private val recycler: RecyclerView = view.findViewById(R.id.recycler)
     private val bookAddButton: FloatingActionButton = view.findViewById(R.id.book_add_button)
 
     private val navigationRelay = PublishRelay.create<Unit>()
@@ -45,11 +45,11 @@ class BookListViewImpl(
             navigationRelay.accept(Unit)
         }
         val orientation = VERTICAL
-        val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(view.context, orientation, false)
+        val layoutManager = LinearLayoutManager(view.context, orientation, false)
         adapter.setHasStableIds(true)
         recycler.adapter = adapter
         recycler.layoutManager = layoutManager
-        recycler.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
+        recycler.itemAnimator = DefaultItemAnimator()
         recycler.itemAnimator?.changeDuration = DURATION_MEDIUM
 
         bookAddButton.clicks(bookAddRelay)
