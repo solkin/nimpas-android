@@ -11,6 +11,8 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.shapes.RectShape
 import android.graphics.drawable.shapes.RoundRectShape
+import java.util.*
+import kotlin.math.min
 
 
 interface ConfigBuilder {
@@ -80,7 +82,7 @@ class TextDrawable private constructor(builder: Builder) : ShapeDrawable(builder
         radius = builder.radius
 
         // title and color
-        text = if (builder.toUpperCase) builder.text.toUpperCase() else builder.text
+        text = if (builder.toUpperCase) builder.text.uppercase(Locale.getDefault()) else builder.text
         color = builder.color
 
         // title paint settings
@@ -128,9 +130,9 @@ class TextDrawable private constructor(builder: Builder) : ShapeDrawable(builder
         // draw title
         val width = if (this.width < 0) r.width() else this.width
         val height = if (this.height < 0) r.height() else this.height
-        val fontSize = if (this.fontSize < 0) Math.min(width, height) / 2 else this.fontSize
+        val fontSize = if (this.fontSize < 0) min(width, height) / 2 else this.fontSize
         textPaint.textSize = fontSize.toFloat()
-        canvas.drawText(text!!, (width / 2).toFloat(), height / 2 - (textPaint.descent() + textPaint.ascent()) / 2, textPaint)
+        canvas.drawText(text, (width / 2).toFloat(), height / 2 - (textPaint.descent() + textPaint.ascent()) / 2, textPaint)
 
         canvas.restoreToCount(count)
 
@@ -155,6 +157,9 @@ class TextDrawable private constructor(builder: Builder) : ShapeDrawable(builder
         textPaint.colorFilter = cf
     }
 
+    @Deprecated("Deprecated in Java",
+        ReplaceWith("PixelFormat.TRANSLUCENT", "android.graphics.PixelFormat")
+    )
     override fun getOpacity(): Int {
         return PixelFormat.TRANSLUCENT
     }
@@ -280,11 +285,6 @@ class TextDrawable private constructor(builder: Builder) : ShapeDrawable(builder
         }
     }
 
-    companion object {
-
-        fun builder(): ShapeBuilder = Builder()
-
-    }
 }
 
 private const val SHADE_FACTOR = 0.9f

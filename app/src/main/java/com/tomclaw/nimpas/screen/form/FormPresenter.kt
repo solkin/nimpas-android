@@ -41,16 +41,16 @@ interface FormPresenter {
 
 @Suppress("SuspiciousCollectionReassignment")
 class FormPresenterImpl(
-        private val templateId: Long,
-        private val fields: Map<String, String>,
-        private val interactor: FormInteractor,
-        private val adapterPresenter: Lazy<AdapterPresenter>,
-        private val templateConverter: TemplateConverter,
-        private val fieldConverter: FieldConverter,
-        private val events: Observable<FormEvent>,
-        private val plugins: Set<FormPlugin>,
-        private val schedulers: SchedulersFactory,
-        state: Bundle?
+    private val templateId: Long,
+    private val fields: Map<String, String>,
+    private val interactor: FormInteractor,
+    private val adapterPresenter: Lazy<AdapterPresenter>,
+    private val templateConverter: TemplateConverter,
+    private val fieldConverter: FieldConverter,
+    private val events: Observable<FormEvent>,
+    private val plugins: Set<FormPlugin>,
+    private val schedulers: SchedulersFactory,
+    state: Bundle?
 ) : FormPresenter {
 
     private var view: FormView? = null
@@ -59,7 +59,7 @@ class FormPresenterImpl(
     private val subscriptions = CompositeDisposable()
 
     private var navigation: Set<Long> = state?.getLongArray(KEY_NAVIGATION)?.toMutableSet()
-            ?: mutableSetOf(templateId)
+        ?: mutableSetOf(templateId)
     private var template: Template? = state?.getParcelable(KEY_TEMPLATE)
     private var items: List<FormItem>? = state?.getParcelableArrayList(KEY_ITEMS)
 
@@ -74,6 +74,7 @@ class FormPresenterImpl(
             when (event) {
                 is FormEvent.ActionClicked -> navigate(event.item.id)
                 is FormEvent.ButtonClicked -> execute(event.item.action)
+                else -> {}
             }
         }
 
@@ -93,13 +94,13 @@ class FormPresenterImpl(
         val template = template ?: return
         val items = items ?: return
         subscriptions += plugin.operation(template, items)
-                .observeOn(schedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.showContent() }
-                .subscribe(
-                        { onCompleted() },
-                        { onError(it) }
-                )
+            .observeOn(schedulers.mainThread())
+            .doOnSubscribe { view?.showProgress() }
+            .doAfterTerminate { view?.showContent() }
+            .subscribe(
+                { onCompleted() },
+                { onError(it) }
+            )
     }
 
     override fun detachView() {
@@ -123,43 +124,43 @@ class FormPresenterImpl(
 
     private fun loadTemplate() {
         subscriptions += interactor.getTemplate(navigation.last())
-                .observeOn(schedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.showContent() }
-                .subscribe(
-                        { onLoaded(it) },
-                        { onError(it) }
-                )
+            .observeOn(schedulers.mainThread())
+            .doOnSubscribe { view?.showProgress() }
+            .doAfterTerminate { view?.showContent() }
+            .subscribe(
+                { onLoaded(it) },
+                { onError(it) }
+            )
     }
 
     private fun onLoaded(template: Template?) {
         this.template = template
         subscriptions += Single
-                .create<List<FormItem>> { emitter ->
-                    val items = when {
-                        template == null -> {
-                            emitter.onError(IllegalStateException("Template not found"))
-                            return@create
-                        }
-                        template.nested != null -> template.nested.asSequence()
-                                .map { templateConverter.convert(it) }
-                                .toList()
-                        template.fields != null -> template.fields.asSequence()
-                                .map { fieldConverter.convert(it, fields) }
-                                .toList()
-                        else -> {
-                            emitter.onError(IllegalStateException("Template has no neither nested items nor fields"))
-                            return@create
-                        }
+            .create<List<FormItem>> { emitter ->
+                val items = when {
+                    template == null -> {
+                        emitter.onError(IllegalStateException("Template not found"))
+                        return@create
                     }
-                    emitter.onSuccess(items)
+                    template.nested != null -> template.nested.asSequence()
+                        .map { templateConverter.convert(it) }
+                        .toList()
+                    template.fields != null -> template.fields.asSequence()
+                        .map { fieldConverter.convert(it, fields) }
+                        .toList()
+                    else -> {
+                        emitter.onError(IllegalStateException("Template has no neither nested items nor fields"))
+                        return@create
+                    }
                 }
-                .subscribeOn(schedulers.io())
-                .observeOn(schedulers.mainThread())
-                .subscribe(
-                        { onReady(it) },
-                        { onError(it) }
-                )
+                emitter.onSuccess(items)
+            }
+            .subscribeOn(schedulers.io())
+            .observeOn(schedulers.mainThread())
+            .subscribe(
+                { onReady(it) },
+                { onError(it) }
+            )
     }
 
     private fun onReady(items: List<FormItem>) {

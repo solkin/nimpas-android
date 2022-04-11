@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".screen.start.StartActivity">
+        <activity
+            android:name=".screen.start.StartActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,7 +26,8 @@
         <activity android:name=".screen.lock.LockActivity" />
         <activity android:name=".screen.book.add.BookAddActivity" />
         <activity android:name=".screen.book.list.BookListActivity" />
-        <activity android:name=".screen.book.importing.BookImportActivity">
+        <activity android:name=".screen.book.importing.BookImportActivity"
+            android:exported="true">
             <intent-filter
                 android:label="@string/import_book"
                 tools:ignore="AppLinkUrlError">
