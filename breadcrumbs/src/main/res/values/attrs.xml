@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BreadcrumbsView">
+        <attr name="SelectedTextColor"      format="reference" />
+        <attr name="UnSelectedTextColor"    format="reference" />
+        <attr name="CustomTextSize"         format="dimension" />
+        <attr name="IsRtl"                  format="boolean" />
+    </declare-styleable>
+
+</resources>

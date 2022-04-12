@@ -1,1 +1,1 @@
-include ':app', ':crypto'
+include ':app', ':crypto', ':breadcrumbs'
