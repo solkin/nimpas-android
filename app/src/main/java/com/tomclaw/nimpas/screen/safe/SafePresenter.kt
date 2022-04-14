@@ -57,13 +57,13 @@ interface SafePresenter : ItemClickListener {
 
 @Suppress("SuspiciousCollectionReassignment")
 class SafePresenterImpl(
-        private val interactor: SafeInteractor,
-        private val adapterPresenter: Lazy<AdapterPresenter>,
-        private val recordConverter: RecordConverter,
-        private val templateRepository: TemplateRepository,
-        private val undoer: Undoer,
-        private val schedulers: SchedulersFactory,
-        state: Bundle?
+    private val interactor: SafeInteractor,
+    private val adapterPresenter: Lazy<AdapterPresenter>,
+    private val recordConverter: RecordConverter,
+    private val templateRepository: TemplateRepository,
+    private val undoer: Undoer,
+    private val schedulers: SchedulersFactory,
+    state: Bundle?
 ) : SafePresenter {
 
     private var view: SafeView? = null
@@ -71,8 +71,8 @@ class SafePresenterImpl(
 
     private val subscriptions = CompositeDisposable()
 
-    private var navigation: Set<Long> = state?.getLongArray(KEY_NAVIGATION)?.toMutableSet()
-            ?: mutableSetOf()
+    private var navigation: MutableSet<Long> = state?.getLongArray(KEY_NAVIGATION)?.toMutableSet()
+        ?: mutableSetOf()
     private var records: List<Record>? = state?.getParcelableArrayList(KEY_RECORDS)
 
     override fun attachView(view: SafeView) {
@@ -86,50 +86,61 @@ class SafePresenterImpl(
         subscriptions += view.undoClicks().subscribe { onUndo(it) }
         subscriptions += view.exportClicks().subscribe { onExport() }
         subscriptions += view.lockClicks().subscribe { onLock() }
+        subscriptions += view.breadcrumbNavigate().subscribe { position ->
+            navigation = navigation
+                .toList()
+                .dropLast(navigation.size - position)
+                .toMutableSet()
+            onUpdate()
+        }
 
         loadRecords(groupId = getGroupId())
+
+        if (navigation.isEmpty()) {
+            view.rootBreadcrumb()
+        }
     }
 
     private fun onUndo(undoId: Long) {
         subscriptions += undoer.invokeUndo(undoId)
-                ?.observeOn(schedulers.mainThread())
-                ?.subscribe(
-                        { onUpdate() },
-                        { onError(it) }
-                ) ?: return
+            ?.observeOn(schedulers.mainThread())
+            ?.subscribe(
+                { onUpdate() },
+                { onError(it) }
+            ) ?: return
     }
 
     private fun onShowCreateMenu() {
         subscriptions += templateRepository.getTemplates()
-                .observeOn(schedulers.mainThread())
-                .subscribe {
-                    val items = it.map { template ->
-                        MenuItem(
-                                id = template.id,
-                                title = template.title.orEmpty(),
-                                icon = template.icon
-                        )
-                    }
-                    view?.showCreateDialog(items)
+            .observeOn(schedulers.mainThread())
+            .subscribe {
+                val items = it.map { template ->
+                    MenuItem(
+                        id = template.id,
+                        title = template.title.orEmpty(),
+                        icon = template.icon
+                    )
                 }
+                view?.showCreateDialog(items)
+            }
     }
 
     private fun onExport() {
         subscriptions += interactor.getBookFile()
-                .observeOn(schedulers.mainThread())
-                .subscribe(
-                        { router?.showExportScreen(it.first, it.second) },
-                        { throw it }
-                )
+            .observeOn(schedulers.mainThread())
+            .subscribe(
+                { router?.showExportScreen(it.first, it.second) },
+                { throw it }
+            )
     }
 
     private fun onLock() {
         subscriptions += interactor.lockActiveBook()
-                .observeOn(schedulers.mainThread())
-                .subscribe(
-                        { router?.showLockScreen() },
-                        { throw it }
-                )
+            .observeOn(schedulers.mainThread())
+            .subscribe(
+                { router?.showLockScreen() },
+                { throw it }
+            )
     }
 
     override fun detachView() {
@@ -152,21 +163,21 @@ class SafePresenterImpl(
 
     private fun loadRecords(groupId: Long = GROUP_DEFAULT) {
         subscriptions += interactor.getRecords(groupId)
-                .observeOn(schedulers.mainThread())
-                .doOnSubscribe { view?.showProgress() }
-                .doAfterTerminate { view?.showContent() }
-                .subscribe(
-                        { onLoaded(it) },
-                        { onError(it) }
-                )
+            .observeOn(schedulers.mainThread())
+            .doOnSubscribe { view?.showProgress() }
+            .doAfterTerminate { view?.showContent() }
+            .subscribe(
+                { onLoaded(it) },
+                { onError(it) }
+            )
     }
 
     private fun onLoaded(records: List<Record>) {
         this.records = records
         val items = records.asSequence()
-                .sortedWith(compareBy({ it.template.type != TYPE_GROUP }, { it.time }))
-                .map { recordConverter.convert(it) }
-                .toList()
+            .sortedWith(compareBy({ it.template.type != TYPE_GROUP }, { it.time }))
+            .map { recordConverter.convert(it) }
+            .toList()
         val dataSource = ListDataSource(items)
         adapterPresenter.get().onDataSourceChanged(dataSource)
         view?.contentUpdated()
@@ -182,6 +193,7 @@ class SafePresenterImpl(
         if (navigation.isNotEmpty()) {
             navigation -= navigation.last()
             loadRecords(groupId = getGroupId())
+            view?.popBreadcrumb()
         } else {
             router?.leaveScreen()
         }
@@ -197,6 +209,7 @@ class SafePresenterImpl(
             is GroupItem -> {
                 navigation += item.id
                 loadRecords(item.id)
+                view?.pushBreadcrumb(item.title)
             }
             else -> {
                 records?.firstOrNull { it.id == item.id }?.let { router?.showInfo(it) }
@@ -206,8 +219,8 @@ class SafePresenterImpl(
 
     override fun onShowUndo(undo: Undo) {
         subscriptions += Observable.timer(250, TimeUnit.MILLISECONDS)
-                .observeOn(schedulers.mainThread())
-                .subscribe { view?.showUndoMessage(undo.id, undo.timeout, undo.message) }
+            .observeOn(schedulers.mainThread())
+            .subscribe { view?.showUndoMessage(undo.id, undo.timeout, undo.message) }
     }
 
     private fun getGroupId() = navigation.lastOrNull() ?: GROUP_DEFAULT
