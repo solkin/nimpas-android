@@ -1,10 +1,10 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 32
+        targetSdkVersion 33
     }
     buildTypes {
         release {
@@ -16,9 +16,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'moe.feng.common.view.breadcrumbs'
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 }

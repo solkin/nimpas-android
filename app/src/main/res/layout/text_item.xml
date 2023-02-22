@@ -43,6 +43,7 @@
             android:paddingRight="14dp"
             android:paddingBottom="14dp"
             android:textColor="@color/color_form_item_text"
+            android:textIsSelectable="true"
             android:textSize="16sp"
             tools:text="Text" />
 

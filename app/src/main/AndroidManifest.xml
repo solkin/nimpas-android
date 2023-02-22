@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.tomclaw.nimpas">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:name=".main.App"
@@ -26,18 +25,23 @@
         <activity android:name=".screen.lock.LockActivity" />
         <activity android:name=".screen.book.add.BookAddActivity" />
         <activity android:name=".screen.book.list.BookListActivity" />
-        <activity android:name=".screen.book.importing.BookImportActivity"
+        <activity
+            android:name=".screen.book.importing.BookImportActivity"
             android:exported="true">
-            <intent-filter
-                android:label="@string/import_book"
-                tools:ignore="AppLinkUrlError">
+            <intent-filter android:label="@string/import_book">
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.OPENABLE" />
 
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:host="*" />
                 <data android:mimeType="*/*" />
+                <data android:pathSuffix=".nmp"
+                    tools:targetApi="s" />
                 <data android:pathPattern=".*\\.nmp" />
                 <data android:pathPattern=".*\\..*\\.nmp" />
                 <data android:pathPattern=".*\\..*\\..*\\.nmp" />
