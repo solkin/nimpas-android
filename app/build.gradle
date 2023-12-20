@@ -18,7 +18,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 33
         versionCode project.hasProperty("versionCode") ? Integer.parseInt(project.versionCode) : 1
-        versionName "1.0"
+        versionName "1.1"
         multiDexEnabled true
     }
     buildTypes {
