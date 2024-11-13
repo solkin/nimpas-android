@@ -17,6 +17,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     namespace 'moe.feng.common.view.breadcrumbs'
+    buildFeatures {
+        buildConfig true
+    }
 }
 
 dependencies {
